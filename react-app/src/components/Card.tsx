@@ -1,25 +1,44 @@
+import { ICharacterSchema } from 'models';
 import React, { Component } from 'react';
 
-export default class Card extends Component {
+type MyProps = {
+  character: ICharacterSchema; // using `interface` is also ok
+};
+
+type MyState = {
+  [index: string]: string | number; // like this
+};
+
+export default class Card extends Component<MyProps, MyState> {
+  character: ICharacterSchema = this.props.character;
+  date: Date = new Date(Date.parse(this.character.created));
+  dateOptions: Intl.DateTimeFormatOptions = {
+    weekday: 'long',
+    year: 'numeric',
+    month: 'long',
+    day: 'numeric',
+  };
+  formattedDate = this.date.toLocaleString('en-US', this.dateOptions);
+
   render(): JSX.Element {
     return (
-      <div className="flex justify-center">
-        <div className="flex flex-col rounded-lg shadow-lg bg-white max-w-sm text-center">
+      <div className="flex justify-center mx-3 my-3">
+        <div className="flex flex-col rounded-lg shadow-lg bg-white max-w-xs text-center">
           <img
-            className="rounded-t-lg"
-            src="https://rickandmortyapi.com/api/character/avatar/1.jpeg"
-            alt="Rick Sanchez"
+            className="rounded-t-lg max-w-full h-auto"
+            src={this.character.image}
+            alt={this.character.name}
           />
           <div className="p-6">
-            <h5 className="text-gray-900 text-xl font-medium mb-2">Rick Sanchez</h5>
+            <h5 className="text-gray-900 text-xl font-medium mb-2">{this.character.name}</h5>
             <p className="text-gray-700 text-base mb-2 text-start">
-              <i>The status:</i> <b>Alive</b>
+              <i>The status:</i> <b>{this.character.status}</b>
             </p>
             <p className="text-gray-700 text-base mb-2 text-start">
-              <i>The species:</i> <b>Human</b>
+              <i>The species:</i> <b>{this.character.species}</b>
             </p>
             <p className="text-gray-700 text-base mb-2 text-start">
-              <i> The gender:</i> <b>Male</b>
+              <i> The gender:</i> <b>{this.character.gender}</b>
             </p>
             <button
               type="button"
@@ -29,8 +48,8 @@ export default class Card extends Component {
             </button>
           </div>
           <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
-            Time at which the character was created in the database <br />{' '}
-            <b>2017-11-04T18:48:46.250Z</b>
+            Time at which the character was created in the database: <br />{' '}
+            <b>{this.formattedDate}</b>
           </div>
         </div>
       </div>
