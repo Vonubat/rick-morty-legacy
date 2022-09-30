@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import { Link } from 'react-router-dom';
 
 export default class Navigation extends Component {
   render(): JSX.Element {
@@ -40,25 +41,39 @@ export default class Navigation extends Component {
               id="navbarSupportedContentY"
             >
               <ul className="navbar-nav mr-auto md:flex md:flex-row">
-                <li className="nav-item">
-                  <a
+                <li className="nav-item mb-2 md:mb-0">
+                  <Link
                     className="nav-link block text-end md:px-2 py-2 text-gray-600 hover:text-blue-300  transition duration-150 ease-in-out"
-                    href="#!"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="light"
+                    to="/"
                   >
-                    Home
-                  </a>
+                    <span className="hidden md:block">Home</span>
+                    <span
+                      className="block md:hidden"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#navbarSupportedContentY"
+                    >
+                      Home
+                    </span>
+                  </Link>
                 </li>
                 <li className="nav-item mb-2 md:mb-0">
-                  <a
-                    className="nav-link block text-end md:px-2 py-2 text-gray-600 font-semibold hover:text-blue-300  transition duration-150 ease-in-out"
-                    href="#!"
+                  <Link
+                    className="nav-link block text-end md:px-2 py-2 text-gray-600 hover:text-blue-300  transition duration-150 ease-in-out"
                     data-mdb-ripple="true"
                     data-mdb-ripple-color="light"
+                    to="/about"
                   >
-                    About
-                  </a>
+                    <span className="hidden md:block">About</span>
+                    <span
+                      className="block md:hidden"
+                      data-bs-toggle="collapse"
+                      data-bs-target="#navbarSupportedContentY"
+                    >
+                      About
+                    </span>
+                  </Link>
                 </li>
               </ul>
             </div>
