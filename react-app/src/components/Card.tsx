@@ -18,7 +18,7 @@ export default class Card extends Component<MyProps, MyState> {
     month: 'long',
     day: 'numeric',
   };
-  formattedDate = this.date.toLocaleString('en-US', this.dateOptions);
+  formattedDate: string = this.date.toLocaleString('en-US', this.dateOptions);
 
   render(): JSX.Element {
     return (

@@ -10,10 +10,6 @@ export default class Home extends Component {
         {characters.map((character: ICharacterSchema) => (
           <Card character={character} key={character.id} />
         ))}
-
-        {/* <Card />
-        <Card />
-        <Card /> */}
       </div>
     );
   }
