@@ -29,7 +29,7 @@ export default class Card extends Component<MyProps, MyState> {
             src={this.character.image}
             alt={this.character.name}
           />
-          <div className="p-6">
+          <div className="p-5">
             <h5 className="text-gray-900 text-xl font-medium mb-2">{this.character.name}</h5>
             <p className="text-gray-700 text-base mb-2 text-start">
               <i>The status:</i> <b>{this.character.status}</b>
@@ -42,7 +42,7 @@ export default class Card extends Component<MyProps, MyState> {
             </p>
             <button
               type="button"
-              className=" inline-block px-6 mt-4 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+              className=" inline-block px-6 mt-3 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
             >
               Tell me more!
             </button>
