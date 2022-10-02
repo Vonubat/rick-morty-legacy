@@ -1,7 +1,7 @@
-import React, { Component } from 'react';
+import React, { Component, ChangeEvent } from 'react';
 
 type MyProps = {
-  [index: string]: string; // using `interface` is also ok
+  [index: string]: string | number; // using `interface` is also ok
 };
 
 type MyState = {
@@ -9,12 +9,37 @@ type MyState = {
 };
 
 export default class SearchBar extends Component<MyProps, MyState> {
+  constructor(props: MyProps) {
+    super(props);
+    this.state = { value: '' };
+
+    this.handleChange = this.handleChange.bind(this);
+    // this.handleSearch = this.handleSearch.bind(this);
+  }
+
+  handleChange(event: ChangeEvent<HTMLInputElement>): void {
+    this.setState({ value: event.target.value });
+  }
+
+  componentDidMount(): void {
+    const searchedValue = localStorage.getItem('searchedValue') || '';
+    // console.log(`componentDidMount() ${searchedValue}`);
+    this.setState({ value: searchedValue });
+  }
+
+  componentWillUnmount(): void {
+    // console.log(`componentWillUnmount() ${this.state.value}`);
+    localStorage.setItem('searchedValue', `${this.state.value}`);
+  }
+
   render(): JSX.Element {
     return (
-      <div className={`flex justify-center ${this.props.className}`}>
-        <div className="xl:w-96">
+      <div className={`flex justify-center pt-3`}>
+        <div className="w-72 sm:w-96">
           <div className="input-group relative flex flex-wrap items-stretch w-full rounded">
             <input
+              value={this.state.value}
+              onChange={this.handleChange}
               type="search"
               className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               placeholder="Search"
@@ -22,7 +47,7 @@ export default class SearchBar extends Component<MyProps, MyState> {
               aria-describedby="button-addon2"
             />
             <span
-              className="input-group-text flex items-center px-3 py-1.5 text-base font-normal text-gray-700 text-center whitespace-nowrap rounded"
+              className="input-group-text flex items-center px-3 py-1.5 text-base font-normal text-gray-700 text-center whitespace-nowrap"
               id="basic-addon2"
             >
               <svg

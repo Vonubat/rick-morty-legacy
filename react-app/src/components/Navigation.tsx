@@ -1,20 +1,17 @@
 import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
-import SearchBar from './SearchBar';
 
 export default class Navigation extends Component {
   setActiveNavLink = ({ isActive }: { isActive: boolean }) => (isActive ? 'active-nav-link' : '');
 
   render(): JSX.Element {
     return (
-      <nav className="navbar navbar-expand-md shadow-md py-2 bg-gray-100 relative flex items-center w-full justify-between">
+      <nav className="navbar navbar-expand-md shadow-md py-2 bg-gray-100 relative flex items-center w-full justify-between flex-wrap">
         {/* Logo */}
+
         <div className="pl-6 pt-2 md:pt-1 text-2xl text-blue-600 self-start font-bold whitespace-nowrap">
           React App
         </div>
-
-        {/* SearchBar */}
-        <SearchBar className={'self-start pt-1'} />
 
         {/* Menu */}
 
@@ -23,7 +20,7 @@ export default class Navigation extends Component {
             {/* Burger */}
 
             <button
-              className="navbar-toggler border-0 py-3  md:hidden leading-none text-xl bg-transparent text-gray-600 hover:text-gray-900 transition-shadow duration-150 ease-in-out mr-2 self-end"
+              className="navbar-toggler border-0 py-3 md:hidden leading-none text-xl bg-transparent text-gray-600 hover:text-gray-900 transition-shadow duration-150 ease-in-out mr-2 self-end"
               type="button"
               data-bs-toggle="collapse"
               data-bs-target="#navbarSupportedContentY"
