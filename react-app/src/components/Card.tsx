@@ -2,11 +2,11 @@ import { ICharacterSchema } from 'models';
 import React, { Component } from 'react';
 
 type MyProps = {
-  character: ICharacterSchema; // using `interface` is also ok
+  character: ICharacterSchema;
 };
 
 type MyState = {
-  [index: string]: string | number; // like this
+  [index: string]: string | number;
 };
 
 export default class Card extends Component<MyProps, MyState> {

@@ -1,35 +1,29 @@
 import React, { Component, ChangeEvent } from 'react';
 
 type MyProps = {
-  [index: string]: string | number; // using `interface` is also ok
+  [index: string]: string | number;
 };
 
 type MyState = {
-  [index: string]: string | number; // like this
+  [index: string]: string | number;
 };
 
 export default class SearchBar extends Component<MyProps, MyState> {
   constructor(props: MyProps) {
     super(props);
-    this.state = { value: '' };
+    this.state = {
+      value: localStorage.getItem('searchValue') || '',
+    };
 
     this.handleChange = this.handleChange.bind(this);
-    // this.handleSearch = this.handleSearch.bind(this);
   }
 
   handleChange(event: ChangeEvent<HTMLInputElement>): void {
     this.setState({ value: event.target.value });
   }
 
-  componentDidMount(): void {
-    const searchedValue = localStorage.getItem('searchedValue') || '';
-    // console.log(`componentDidMount() ${searchedValue}`);
-    this.setState({ value: searchedValue });
-  }
-
   componentWillUnmount(): void {
-    // console.log(`componentWillUnmount() ${this.state.value}`);
-    localStorage.setItem('searchedValue', `${this.state.value}`);
+    localStorage.setItem('searchValue', `${this.state.value}`);
   }
 
   render(): JSX.Element {
