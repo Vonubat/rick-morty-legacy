@@ -15,6 +15,7 @@ describe('Navigation component', () => {
     const linkElement: HTMLElement = screen.getByText(/React App/i);
     expect(linkElement).toBeInTheDocument();
   });
+
   it('has menu elements', async () => {
     render(NAVIGATION);
     const listElements: HTMLElement[] = screen.getAllByRole('listitem');
