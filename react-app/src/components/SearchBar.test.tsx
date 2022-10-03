@@ -3,17 +3,15 @@ import { render, screen } from '@testing-library/react';
 import SearchBar from './SearchBar';
 import userEvent from '@testing-library/user-event';
 
-const SEARCHBAR: JSX.Element = <SearchBar />;
-
 describe('SearchBar component', () => {
   it('renders SearchBar component', async () => {
-    render(SEARCHBAR);
+    render(<SearchBar />);
     const linkElement: HTMLElement = screen.getByRole('searchbox');
     expect(linkElement).toBeInTheDocument();
   });
 
   it('typing in SearchBar works', async () => {
-    render(SEARCHBAR);
+    render(<SearchBar />);
     expect(screen.queryByDisplayValue('test_string')).toBeNull();
     userEvent.type(screen.getByRole('searchbox'), 'test_string');
     expect(screen.queryByDisplayValue('test_string')).toBeInTheDocument();

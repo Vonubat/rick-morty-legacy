@@ -3,15 +3,9 @@ import { fireEvent, render, screen } from '@testing-library/react';
 import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 
-const APP: JSX.Element = (
-  <BrowserRouter>
-    <App />
-  </BrowserRouter>
-);
-
 describe('App component', () => {
   it('renders App component', async () => {
-    render(APP);
+    render(<App />, { wrapper: BrowserRouter });
     const linkElement: HTMLElement = screen.getByText(/React App/i);
     expect(linkElement).toBeInTheDocument();
   });
