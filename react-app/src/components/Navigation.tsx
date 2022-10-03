@@ -9,9 +9,9 @@ export default class Navigation extends Component {
       <nav className="navbar navbar-expand-md shadow-md py-2 bg-gray-100 relative flex items-center w-full justify-between flex-wrap">
         {/* Logo */}
 
-        <div className="pl-6 pt-2 md:pt-1 text-2xl text-blue-600 self-start font-bold whitespace-nowrap">
+        <h1 className="pl-6 pt-2 md:pt-1 text-2xl text-blue-600 self-start font-bold whitespace-nowrap">
           React App
-        </div>
+        </h1>
 
         {/* Menu */}
 

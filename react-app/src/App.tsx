@@ -6,17 +6,15 @@ import Home from 'pages/Home';
 import PageNotFound from 'pages/PageNotFound';
 import Layout from 'components/Layout';
 
-function App() {
+function App(): JSX.Element {
   return (
-    <>
-      <Routes>
-        <Route path="/" element={<Layout />}>
-          <Route index element={<Home />} />
-          <Route path="about" element={<About />} />
-          <Route path="*" element={<PageNotFound />} />
-        </Route>
-      </Routes>
-    </>
+    <Routes>
+      <Route path="/" element={<Layout />}>
+        <Route index element={<Home />} />
+        <Route path="about" element={<About />} />
+        <Route path="*" element={<PageNotFound />} />
+      </Route>
+    </Routes>
   );
 }
 
