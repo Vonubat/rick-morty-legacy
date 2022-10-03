@@ -3,6 +3,7 @@ import { render, screen } from '@testing-library/react';
 import App from './App';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
+import { setLocalStorage } from 'setupTests';
 
 describe('App component', () => {
   it('renders App component', () => {
@@ -43,5 +44,43 @@ describe('Router', () => {
     expect(
       screen.getByText(/The page you are trying to search has been moved to another universe/i)
     ).toBeInTheDocument();
+  });
+});
+
+describe('LocalStorage', () => {
+  beforeEach(() => {
+    window.localStorage.clear();
+  });
+
+  it('data is added into local storage', () => {
+    const mockId = '1';
+    const mockJson = { data: 'json data' };
+    setLocalStorage(mockId, mockJson);
+    expect(localStorage.getItem(mockId)).toEqual(JSON.stringify(mockJson));
+  });
+
+  it('data in local storage which is overwritten', () => {
+    const mockId = '222';
+    const mockOldData = { data: 'json data' };
+    const mockNewData = { data: ' new data' };
+
+    window.localStorage.setItem(mockId, JSON.stringify(mockOldData));
+    expect(localStorage.getItem(mockId)).toEqual(JSON.stringify(mockOldData));
+
+    setLocalStorage(mockId, mockNewData);
+    window.localStorage.setItem(mockId, JSON.stringify(mockNewData));
+  });
+
+  it('only one ID is in localStorage', () => {
+    const mockId = '333';
+    const mockOldData = { data: 'json data' };
+    const mockNewData = { data: ' new data' };
+
+    window.localStorage.setItem(mockId, JSON.stringify(mockOldData));
+    setLocalStorage(mockId, mockNewData);
+
+    const allItems = window.localStorage.getAll();
+
+    expect(Object.keys(allItems).length).toBe(1);
   });
 });
