@@ -4,7 +4,7 @@ import SearchBar from './SearchBar';
 import userEvent from '@testing-library/user-event';
 
 describe('SearchBar component', () => {
-  it('renders SearchBar component', async () => {
+  it('renders SearchBar component', () => {
     render(<SearchBar />);
     const linkElement: HTMLElement = screen.getByRole('searchbox');
     expect(linkElement).toBeInTheDocument();

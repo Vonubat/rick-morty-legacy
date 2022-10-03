@@ -22,7 +22,7 @@ export default class Card extends Component<MyProps, MyState> {
 
   render(): JSX.Element {
     return (
-      <div className="flex justify-center mx-3 my-3">
+      <div className="flex justify-center mx-3 my-3" data-testid="card">
         <div className="flex flex-col rounded-lg shadow-lg bg-white max-w-xs text-center">
           <img
             className="rounded-t-lg max-w-full h-auto"

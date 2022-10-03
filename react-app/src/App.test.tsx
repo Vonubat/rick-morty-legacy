@@ -4,7 +4,7 @@ import App from './App';
 import { BrowserRouter } from 'react-router-dom';
 
 describe('App component', () => {
-  it('renders App component', async () => {
+  it('renders App component', () => {
     render(<App />, { wrapper: BrowserRouter });
     const linkElement: HTMLElement = screen.getByText(/React App/i);
     expect(linkElement).toBeInTheDocument();
