@@ -41,7 +41,9 @@ export default class Card extends Component<MyProps, MyState> {
             <p className="text-gray-700 text-base mb-2 text-start">
               <i> The gender:</i> <b>{this.character.gender}</b>
             </p>
-            <Button role="button">Tell me more!</Button>
+            <Button disabled={false} role="button">
+              Tell me more!
+            </Button>
           </div>
           <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
             Time at which the character was created in the database: <br />

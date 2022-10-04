@@ -34,7 +34,7 @@ export default class Forms extends Component<MyProps, MyState> {
                     <TextForm role="Species" />
                     <SelectForm subject="Select gender" options={['Male', 'Female']} />
                     <DateForm />
-                    <Button extraClass="w-36" role="submit">
+                    <Button disabled={false} extraClass="w-36" role="submit">
                       Submit
                     </Button>
                   </form>
