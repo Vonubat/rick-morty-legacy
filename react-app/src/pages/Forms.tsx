@@ -3,6 +3,7 @@ import TextForm from './../components/UI/Forms/TextForm';
 import React, { Component } from 'react';
 import formsImg from './../assets/forms-img.webp';
 import Button from 'components/UI/Button';
+import DateForm from 'components/UI/Forms/DateForm';
 
 type MyProps = {
   [index: string]: string;
@@ -32,6 +33,7 @@ export default class Forms extends Component<MyProps, MyState> {
                     <SelectForm subject="Select status" options={['Alive', 'Dead', 'unknown']} />
                     <TextForm role="Species" />
                     <SelectForm subject="Select gender" options={['Male', 'Female']} />
+                    <DateForm />
                     <Button extraClass="w-36" role="submit">
                       Submit
                     </Button>

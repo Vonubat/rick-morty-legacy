@@ -14,7 +14,7 @@ export default class SelectForm extends Component<MyProps, MyState> {
     return (
       <div className="mb-3 xl:w-96">
         <select
-          defaultValue={'DEFAULT'}
+          defaultValue={''}
           className="form-select form-select-lg
       appearance-none
       block
@@ -33,8 +33,9 @@ export default class SelectForm extends Component<MyProps, MyState> {
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           aria-label=".form-select-lg example"
           placeholder="Gender"
+          required
         >
-          <option disabled value="DEFAULT">
+          <option disabled value="">
             {this.props.subject}
           </option>
           {this.props.options.map((item) => {
