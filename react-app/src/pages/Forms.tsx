@@ -4,6 +4,7 @@ import React, { Component } from 'react';
 import formsImg from './../assets/forms-img.webp';
 import Button from 'components/UI/Button';
 import DateForm from 'components/UI/Forms/DateForm';
+import Checkbox from 'components/UI/Forms/Checkbox';
 
 type MyProps = {
   [index: string]: string;
@@ -34,6 +35,7 @@ export default class Forms extends Component<MyProps, MyState> {
                     <TextForm role="Species" />
                     <SelectForm subject="Select gender" options={['Male', 'Female']} />
                     <DateForm />
+                    <Checkbox>I consent to my personal data by Galactic Federation</Checkbox>
                     <Button disabled={false} extraClass="w-36" role="submit">
                       Submit
                     </Button>
