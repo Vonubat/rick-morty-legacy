@@ -1,9 +1,9 @@
-import SelectForm from './../components/UI/Forms/SelectForm';
-import TextForm from './../components/UI/Forms/TextForm';
+import SelectForm from '../components/UI/Forms/Select';
+import TextForm from '../components/UI/Forms/TextInput';
 import React, { Component } from 'react';
 import formsImg from './../assets/forms-img.webp';
 import Button from 'components/UI/Button';
-import DateForm from 'components/UI/Forms/DateForm';
+import DateForm from 'components/UI/Forms/Datepicker';
 import Checkbox from 'components/UI/Forms/Checkbox';
 
 type MyProps = {
