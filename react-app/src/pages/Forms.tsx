@@ -2,6 +2,7 @@ import SelectForm from './../components/UI/Forms/SelectForm';
 import TextForm from './../components/UI/Forms/TextForm';
 import React, { Component } from 'react';
 import formsImg from './../assets/forms-img.webp';
+import Button from 'components/UI/Button';
 
 type MyProps = {
   [index: string]: string;
@@ -26,12 +27,15 @@ export default class Forms extends Component<MyProps, MyState> {
                   <h5 className="text-lg text-blue-600 font-bold mb-6 sm:mb-4 xl:mb-6">
                     Create your own unique character!!!
                   </h5>
-                  <div className="flex flex-col justify-center sm:justify-start xl:justify-start">
+                  <form className="flex flex-col justify-center  sm:justify-start xl:justify-start">
                     <TextForm role="Name" />
                     <SelectForm subject="Select status" options={['Alive', 'Dead', 'unknown']} />
                     <TextForm role="Species" />
                     <SelectForm subject="Select gender" options={['Male', 'Female']} />
-                  </div>
+                    <Button extraClass="w-36" role="submit">
+                      Submit
+                    </Button>
+                  </form>
                 </div>
               </div>
 

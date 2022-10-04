@@ -31,6 +31,7 @@ export default class TextForm extends Component<MyProps, MyState> {
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           id="floatingInput"
           placeholder={this.props.role}
+          required
         />
         <label htmlFor="floatingInput" className="text-gray-700">
           {this.props.role}
