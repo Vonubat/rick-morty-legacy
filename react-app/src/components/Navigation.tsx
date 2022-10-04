@@ -64,6 +64,20 @@ export default class Navigation extends Component {
                 </NavLink>
               </li>
               <li className="nav-item mb-2 md:mb-0 nav-link block text-end md:px-2 py-2 font-semibold text-gray-500 hover:text-blue-300  transition duration-150 ease-in-out">
+                <NavLink to="/forms" className={this.setActiveNavLink}>
+                  <span className="hidden md:block">Forms</span>
+                  <span
+                    className="block md:hidden"
+                    data-bs-toggle="collapse"
+                    data-bs-target="#navbarSupportedContentY"
+                    data-mdb-ripple="false"
+                    data-mdb-ripple-color="light"
+                  >
+                    Forms
+                  </span>
+                </NavLink>
+              </li>
+              <li className="nav-item mb-2 md:mb-0 nav-link block text-end md:px-2 py-2 font-semibold text-gray-500 hover:text-blue-300  transition duration-150 ease-in-out">
                 <NavLink to="/about" className={this.setActiveNavLink}>
                   <span className="hidden md:block">About</span>
                   <span
