@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { characters } from './../data/characters';
+import { characters } from './../../data/characters';
 import Card from './Card';
 
 describe('Card component', () => {

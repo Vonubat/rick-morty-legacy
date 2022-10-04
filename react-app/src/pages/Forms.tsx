@@ -1,5 +1,5 @@
-import SelectForm from 'components/SelectForm';
-import TextForm from 'components/TextForm';
+import SelectForm from './../components/UI/Forms/SelectForm';
+import TextForm from './../components/UI/Forms/TextForm';
 import React, { Component } from 'react';
 import formsImg from './../assets/forms-img.webp';
 

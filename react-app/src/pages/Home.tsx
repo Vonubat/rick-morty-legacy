@@ -1,5 +1,5 @@
-import Card from 'components/Card';
-import SearchBar from 'components/SearchBar';
+import Card from 'components/UI/Card';
+import SearchBar from 'components/UI/SearchBar';
 import { characters } from 'data/characters';
 import { ICharacterSchema } from 'models';
 import React, { Component } from 'react';

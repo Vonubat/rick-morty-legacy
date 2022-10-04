@@ -1,8 +1,8 @@
 @import-normalize;
 @import url(https://fonts.googleapis.com/css?family=Ubuntu:300,300italic,regular,italic,500,500italic,700,700italic);
-@import './pages/PageNotFound.module';
-@import './pages/About.module';
-@import './pages/Forms.module';
+@import './pages/PageNotFound';
+@import './pages/About';
+@import './pages/Forms';
 
 @tailwind base;
 @tailwind components;
