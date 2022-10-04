@@ -5,6 +5,7 @@ import formsImg from './../assets/forms-img.webp';
 import Button from 'components/UI/Button';
 import DateForm from 'components/UI/Forms/Datepicker';
 import Checkbox from 'components/UI/Forms/Checkbox';
+import FileInput from 'components/UI/Forms/FileInput';
 
 type MyProps = {
   [index: string]: string;
@@ -30,6 +31,7 @@ export default class Forms extends Component<MyProps, MyState> {
                     Create your own unique character!!!
                   </h5>
                   <form className="flex flex-col justify-center  sm:justify-start xl:justify-start">
+                    <FileInput>Choose avatar for your character</FileInput>
                     <TextForm role="Name" />
                     <SelectForm subject="Select status" options={['Alive', 'Dead', 'unknown']} />
                     <TextForm role="Species" />

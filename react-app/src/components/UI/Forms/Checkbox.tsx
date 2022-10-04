@@ -9,7 +9,7 @@ type MyState = {
 };
 
 export default class Checkbox extends Component<MyProps, MyState> {
-  render() {
+  render(): JSX.Element {
     return (
       <div className="form-check">
         <input
