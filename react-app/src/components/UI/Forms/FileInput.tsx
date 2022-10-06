@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 
 type MyProps = {
   children: string;
+  name: string;
 };
 
 type MyState = Record<string, never>;
@@ -30,6 +31,7 @@ export default class FileInput extends Component<MyProps, MyState> {
     m-0
     focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           type="file"
+          name={this.props.name}
         />
       </div>
     );

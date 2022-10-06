@@ -2,12 +2,13 @@ import React, { Component } from 'react';
 
 type MyProps = {
   subject: string;
+  name: string;
   options: string[];
 };
 
 type MyState = Record<string, never>;
 
-export default class SelectForm extends Component<MyProps, MyState> {
+export default class Select extends Component<MyProps, MyState> {
   render(): JSX.Element | JSX.Element[] {
     return (
       <div className="mb-3 xl:w-96">
@@ -30,7 +31,8 @@ export default class SelectForm extends Component<MyProps, MyState> {
       m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           aria-label=".form-select-lg example"
-          placeholder="Gender"
+          placeholder={this.props.subject}
+          name={this.props.name}
         >
           <option disabled value="">
             {this.props.subject}

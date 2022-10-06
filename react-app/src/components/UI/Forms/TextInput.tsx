@@ -2,11 +2,12 @@ import React, { Component } from 'react';
 
 type MyProps = {
   role: string;
+  name: string;
 };
 
 type MyState = Record<string, never>;
 
-export default class TextForm extends Component<MyProps, MyState> {
+export default class TextInput extends Component<MyProps, MyState> {
   render(): JSX.Element {
     return (
       <div className="form-floating mb-3 xl:w-96">
@@ -28,6 +29,7 @@ export default class TextForm extends Component<MyProps, MyState> {
       m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder={this.props.role}
+          name={this.props.name}
         />
         <label htmlFor="floatingInput" className="text-gray-700">
           {this.props.role}
