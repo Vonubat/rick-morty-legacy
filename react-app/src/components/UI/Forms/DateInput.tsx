@@ -1,10 +1,12 @@
 import React, { Component } from 'react';
+import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
   name: string;
   valid: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   reference: React.RefObject<HTMLInputElement>;
+  warningMessage: string;
 };
 
 type MyState = Record<string, never>;
@@ -27,19 +29,22 @@ export default class DateInput extends Component<MyProps, MyState> {
     }
 
     return (
-      <div className="datepicker relative form-floating mt-3 xl:w-96">
-        <input
-          type="date"
-          className={className}
-          placeholder="Select a date"
-          name={this.props.name}
-          onChange={this.props.onChange}
-          ref={this.props.reference}
-        />
-        <label htmlFor="floatingInput" className="text-gray-700">
-          Select a date
-        </label>
-      </div>
+      <>
+        <div className="datepicker relative form-floating mt-3 xl:w-96">
+          <input
+            type="date"
+            className={className}
+            placeholder="Select a date"
+            name={this.props.name}
+            onChange={this.props.onChange}
+            ref={this.props.reference}
+          />
+          <label htmlFor="floatingInput" className="text-gray-700">
+            Select a date
+          </label>
+        </div>
+        <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>
+      </>
     );
   }
 }

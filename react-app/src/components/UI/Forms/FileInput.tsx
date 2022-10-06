@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
   children: string;
@@ -7,6 +8,7 @@ type MyProps = {
   valid: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   reference: React.RefObject<HTMLInputElement>;
+  warningMessage: string;
 };
 
 type MyState = Record<string, never>;
@@ -43,19 +45,22 @@ export default class FileInput extends Component<MyProps, MyState> {
     }
 
     return (
-      <div className="mt-3 xl:w-96">
-        <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700">
-          {this.props.children}
-        </label>
-        <input
-          type="file"
-          className={className}
-          placeholder={this.props.role}
-          name={this.props.name}
-          onChange={this.props.onChange}
-          ref={this.props.reference}
-        />
-      </div>
+      <>
+        <div className="mt-3 xl:w-96">
+          <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700">
+            {this.props.children}
+          </label>
+          <input
+            type="file"
+            className={className}
+            placeholder={this.props.role}
+            name={this.props.name}
+            onChange={this.props.onChange}
+            ref={this.props.reference}
+          />
+        </div>
+        <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>
+      </>
     );
   }
 }

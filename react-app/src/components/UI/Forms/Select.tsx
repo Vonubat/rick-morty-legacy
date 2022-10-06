@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
   subject: string;
@@ -7,6 +8,7 @@ type MyProps = {
   valid: boolean;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   reference: React.RefObject<HTMLSelectElement>;
+  warningMessage: string;
 };
 
 type MyState = Record<string, never>;
@@ -44,28 +46,31 @@ export default class Select extends Component<MyProps, MyState> {
     }
 
     return (
-      <div className="mt-3 xl:w-96">
-        <select
-          defaultValue={''}
-          className={className}
-          aria-label=".form-select-lg example"
-          placeholder={this.props.subject}
-          name={this.props.name}
-          onChange={this.props.onChange}
-          ref={this.props.reference}
-        >
-          <option disabled value="">
-            {this.props.subject}
-          </option>
-          {this.props.options.map((option) => {
-            return (
-              <option key={option} value={option}>
-                {option}
-              </option>
-            );
-          })}
-        </select>
-      </div>
+      <>
+        <div className="mt-3 xl:w-96">
+          <select
+            defaultValue={''}
+            className={className}
+            aria-label=".form-select-lg example"
+            placeholder={this.props.subject}
+            name={this.props.name}
+            onChange={this.props.onChange}
+            ref={this.props.reference}
+          >
+            <option disabled value="">
+              {this.props.subject}
+            </option>
+            {this.props.options.map((option) => {
+              return (
+                <option key={option} value={option}>
+                  {option}
+                </option>
+              );
+            })}
+          </select>
+        </div>
+        <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>
+      </>
     );
   }
 }

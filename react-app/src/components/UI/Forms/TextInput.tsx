@@ -1,4 +1,5 @@
 import React, { Component } from 'react';
+import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
   role: string;
@@ -6,6 +7,7 @@ type MyProps = {
   valid: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   reference: React.RefObject<HTMLInputElement>;
+  warningMessage: string;
 };
 
 type MyState = Record<string, never>;
@@ -42,19 +44,22 @@ export default class TextInput extends Component<MyProps, MyState> {
     }
 
     return (
-      <div className="form-floating mt-3 xl:w-96">
-        <input
-          type="text"
-          className={className}
-          placeholder={this.props.role}
-          name={this.props.name}
-          onChange={this.props.onChange}
-          ref={this.props.reference}
-        />
-        <label htmlFor="floatingInput" className="text-gray-700">
-          {this.props.role}
-        </label>
-      </div>
+      <>
+        <div className="form-floating mt-3 xl:w-96">
+          <input
+            type="text"
+            className={className}
+            placeholder={this.props.role}
+            name={this.props.name}
+            onChange={this.props.onChange}
+            ref={this.props.reference}
+          />
+          <label htmlFor="floatingInput" className="text-gray-700">
+            {this.props.role}
+          </label>
+        </div>
+        <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>
+      </>
     );
   }
 }

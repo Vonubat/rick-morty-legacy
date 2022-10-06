@@ -6,7 +6,6 @@ import Button from 'components/UI/Button';
 import DateInput from 'components/UI/Forms/DateInput';
 import Checkbox from 'components/UI/Forms/Checkbox';
 import FileInput from 'components/UI/Forms/FileInput';
-import ValidationWarning from 'components/UI/Forms/ValidationWarning';
 import { IUserCharacterSchema } from 'models';
 import Card from 'components/UI/Card';
 import Alert from 'components/UI/Alert';
@@ -165,38 +164,37 @@ export default class Forms extends Component<MyProps, MyState> {
     try {
       const fileElement: HTMLInputElement | null = this.fileInput.current;
       if (!fileElement) {
-        console.log(fileElement);
-        throw new Error('avatarValue is undefined');
+        throw new Error('fileElement is undefined');
       }
 
       const nameElement: HTMLInputElement | null = this.nameInput.current;
       if (!nameElement) {
-        throw new Error('nameValue is undefined');
+        throw new Error('nameElement is undefined');
       }
 
       const statusElement: HTMLSelectElement | null = this.statusSelect.current;
       if (!statusElement) {
-        throw new Error('statusValue is undefined');
+        throw new Error('statusElement is undefined');
       }
 
       const speciesElement: HTMLInputElement | null = this.speciesInput.current;
       if (!speciesElement) {
-        throw new Error('speciesValue is undefined');
+        throw new Error('speciesElement is undefined');
       }
 
       const genderElement: HTMLSelectElement | null = this.genderSelect.current;
       if (!genderElement) {
-        throw new Error('genderValue is undefined');
+        throw new Error('genderElement is undefined');
       }
 
       const dateElement: HTMLInputElement | null = this.dateInput.current;
       if (!dateElement) {
-        throw new Error('createdValue is undefined');
+        throw new Error('dateElement is undefined');
       }
 
       const checkboxElement: HTMLInputElement | null = this.checkboxProcessing.current;
       if (!checkboxElement) {
-        throw new Error('checkboxValue is undefined');
+        throw new Error('checkboxElement is undefined');
       }
 
       return {
@@ -230,7 +228,6 @@ export default class Forms extends Component<MyProps, MyState> {
     this.setState({ firstChangeForm: true });
 
     if (!this.validate()) {
-      console.log('form cannot be submitted!');
       this.setState({ buttonDisabled: true });
       return;
     }
@@ -248,7 +245,6 @@ export default class Forms extends Component<MyProps, MyState> {
     });
 
     this.resetStateInputs();
-    console.log(this.userCards);
   }
 
   resetStateInputs(): void {
@@ -312,12 +308,10 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="file"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.fileInput}
+                      warningMessage="Please, choose avatar for your character"
                     >
                       Choose avatar for your character
                     </FileInput>
-                    <ValidationWarning valid={this.state.file}>
-                      Please, choose avatar for your character
-                    </ValidationWarning>
 
                     <TextInput
                       valid={this.state.name}
@@ -325,10 +319,8 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="name"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.nameInput}
+                      warningMessage="Name of your character should contains at least 3 chars"
                     />
-                    <ValidationWarning valid={this.state.name}>
-                      Name of your character should contains at least 3 chars
-                    </ValidationWarning>
 
                     <Select
                       valid={this.state.status}
@@ -337,10 +329,8 @@ export default class Forms extends Component<MyProps, MyState> {
                       options={['Alive', 'Dead', 'unknown']}
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.statusSelect}
+                      warningMessage="Please, select status of your character"
                     />
-                    <ValidationWarning valid={this.state.status}>
-                      Please, select status of your character
-                    </ValidationWarning>
 
                     <TextInput
                       valid={this.state.species}
@@ -348,10 +338,8 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="species"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.speciesInput}
+                      warningMessage="Species of your character should contains at least 3 chars"
                     />
-                    <ValidationWarning valid={this.state.species}>
-                      Species of your character should contains at least 3 chars
-                    </ValidationWarning>
 
                     <Select
                       valid={this.state.gender}
@@ -360,31 +348,26 @@ export default class Forms extends Component<MyProps, MyState> {
                       options={['Male', 'Female']}
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.genderSelect}
+                      warningMessage="Please, select gender of your character"
                     />
-                    <ValidationWarning valid={this.state.gender}>
-                      Please, select gender of your character
-                    </ValidationWarning>
 
                     <DateInput
                       valid={this.state.date}
                       name="date"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.dateInput}
+                      warningMessage="Please, choose a date"
                     />
-                    <ValidationWarning valid={this.state.date}>
-                      Please, choose a date
-                    </ValidationWarning>
 
                     <Checkbox
+                      valid={this.state.checkbox}
                       name="checkbox"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.checkboxProcessing}
+                      warningMessage="Checkbox is required"
                     >
                       I consent to my personal data by Galactic Federation
                     </Checkbox>
-                    <ValidationWarning valid={this.state.checkbox}>
-                      Checkbox is required
-                    </ValidationWarning>
 
                     <div className="flex gap-4">
                       <Button color="primary" disabled={this.state.buttonDisabled} role="submit">
