@@ -6,6 +6,7 @@ import Button from 'components/UI/Button';
 import DateForm from 'components/UI/Forms/Datepicker';
 import Checkbox from 'components/UI/Forms/Checkbox';
 import FileInput from 'components/UI/Forms/FileInput';
+import ValidationWarning from 'components/UI/Forms/ValidationWarning';
 
 export default class Forms extends Component {
   render(): JSX.Element {
@@ -24,15 +25,25 @@ export default class Forms extends Component {
                   </h5>
                   <form className="flex flex-col justify-center  sm:justify-start xl:justify-start">
                     <FileInput>Choose avatar for your character</FileInput>
+                    <ValidationWarning>Please, choose avatar for your character</ValidationWarning>
                     <TextForm role="Name" />
+                    <ValidationWarning>Please, write name for your character</ValidationWarning>
                     <SelectForm subject="Select status" options={['Alive', 'Dead', 'unknown']} />
+                    <ValidationWarning>Please, choose status of your character</ValidationWarning>
                     <TextForm role="Species" />
+                    <ValidationWarning>Please, write species of your character</ValidationWarning>
                     <SelectForm subject="Select gender" options={['Male', 'Female']} />
+                    <ValidationWarning>Please, choose gender of your character</ValidationWarning>
                     <DateForm />
+                    <ValidationWarning>Please, choose a date</ValidationWarning>
                     <Checkbox>I consent to my personal data by Galactic Federation</Checkbox>
-                    <div className="w-36">
+                    <ValidationWarning>Checkbox is required</ValidationWarning>
+                    <div className="flex gap-4">
                       <Button color="primary" disabled={false} role="submit">
                         Submit
+                      </Button>
+                      <Button color="danger" disabled={false} role="submit">
+                        Reset
                       </Button>
                     </div>
                   </form>
