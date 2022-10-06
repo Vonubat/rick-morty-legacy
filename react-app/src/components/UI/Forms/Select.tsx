@@ -44,7 +44,7 @@ export default class Select extends Component<MyProps, MyState> {
     }
 
     return (
-      <div className="mb-3 xl:w-96">
+      <div className="mt-3 xl:w-96">
         <select
           defaultValue={''}
           className={className}

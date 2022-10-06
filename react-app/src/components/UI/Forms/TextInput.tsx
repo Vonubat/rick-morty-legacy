@@ -42,7 +42,7 @@ export default class TextInput extends Component<MyProps, MyState> {
     }
 
     return (
-      <div className="form-floating mb-3 xl:w-96">
+      <div className="form-floating mt-3 xl:w-96">
         <input
           type="text"
           className={className}

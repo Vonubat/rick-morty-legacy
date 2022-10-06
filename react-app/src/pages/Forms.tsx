@@ -19,7 +19,7 @@ type MyState = {
   status: boolean;
   species: boolean;
   gender: boolean;
-  created: boolean;
+  date: boolean;
   checkbox: boolean;
   image: string | null;
 };
@@ -30,7 +30,7 @@ export default class Forms extends Component<MyProps, MyState> {
   statusSelect: React.RefObject<HTMLSelectElement>;
   speciesInput: React.RefObject<HTMLInputElement>;
   genderSelect: React.RefObject<HTMLSelectElement>;
-  dateCreatedInput: React.RefObject<HTMLInputElement>;
+  dateInput: React.RefObject<HTMLInputElement>;
   checkboxProcessing: React.RefObject<HTMLInputElement>;
 
   constructor(props: MyProps) {
@@ -40,7 +40,7 @@ export default class Forms extends Component<MyProps, MyState> {
     this.statusSelect = createRef();
     this.speciesInput = createRef();
     this.genderSelect = createRef();
-    this.dateCreatedInput = createRef();
+    this.dateInput = createRef();
     this.checkboxProcessing = createRef();
 
     this.state = {
@@ -51,7 +51,7 @@ export default class Forms extends Component<MyProps, MyState> {
       status: true,
       species: true,
       gender: true,
-      created: true,
+      date: true,
       checkbox: true,
       image: null,
     };
@@ -64,7 +64,7 @@ export default class Forms extends Component<MyProps, MyState> {
     const name: string = target.name;
     const avatar: HTMLInputElement | null = this.fileInput.current;
 
-    if (name === 'file' && avatar?.files && !avatar.files.length) {
+    if (name === 'file' && avatar?.files && avatar.files.length) {
       this.setState({ image: URL.createObjectURL(avatar.files[0]), file: true });
     }
 
@@ -85,7 +85,7 @@ export default class Forms extends Component<MyProps, MyState> {
       this.state.status &&
       this.state.species &&
       this.state.gender &&
-      this.state.created &&
+      this.state.date &&
       this.state.checkbox
     ) {
       this.setState((prevState: Readonly<MyState>) => {
@@ -115,7 +115,7 @@ export default class Forms extends Component<MyProps, MyState> {
       statusElement,
       speciesElement,
       genderElement,
-      createdElement,
+      dateElement,
       checkboxElement,
     } = this.getFormElements() as {
       fileElement: HTMLInputElement;
@@ -123,22 +123,23 @@ export default class Forms extends Component<MyProps, MyState> {
       statusElement: HTMLSelectElement;
       speciesElement: HTMLInputElement;
       genderElement: HTMLSelectElement;
-      createdElement: HTMLInputElement;
+      dateElement: HTMLInputElement;
       checkboxElement: HTMLInputElement;
     };
 
-    let isValid = false;
+    let isValid = true;
 
-    isValid = this.checkValidation(
-      !this.state.image || !fileElement.files || !fileElement.files.length,
-      'file'
-    );
-    isValid = this.checkValidation(nameElement.value.trim().length < 3, 'name');
-    isValid = this.checkValidation(!statusElement.value, 'status');
-    isValid = this.checkValidation(speciesElement.value.trim().length < 3, 'species');
-    isValid = this.checkValidation(!genderElement.value, 'gender');
-    isValid = this.checkValidation(!createdElement.value, 'date');
-    isValid = this.checkValidation(!checkboxElement.value, 'checkbox');
+    isValid =
+      this.checkValidation(
+        !this.state.image || !fileElement.files || !fileElement.files.length,
+        'file'
+      ) && isValid;
+    isValid = this.checkValidation(nameElement.value.trim().length < 3, 'name') && isValid;
+    isValid = this.checkValidation(!statusElement.value, 'status') && isValid;
+    isValid = this.checkValidation(speciesElement.value.trim().length < 3, 'species') && isValid;
+    isValid = this.checkValidation(!genderElement.value, 'gender') && isValid;
+    isValid = this.checkValidation(!dateElement.value, 'date') && isValid;
+    isValid = this.checkValidation(!checkboxElement.checked, 'checkbox') && isValid;
 
     return isValid;
   }
@@ -150,7 +151,7 @@ export default class Forms extends Component<MyProps, MyState> {
         statusElement: HTMLSelectElement;
         speciesElement: HTMLInputElement;
         genderElement: HTMLSelectElement;
-        createdElement: HTMLInputElement;
+        dateElement: HTMLInputElement;
         checkboxElement: HTMLInputElement;
       }
     | undefined {
@@ -181,8 +182,8 @@ export default class Forms extends Component<MyProps, MyState> {
         throw new Error('genderValue is undefined');
       }
 
-      const createdElement: HTMLInputElement | null = this.dateCreatedInput.current;
-      if (!createdElement) {
+      const dateElement: HTMLInputElement | null = this.dateInput.current;
+      if (!dateElement) {
         throw new Error('createdValue is undefined');
       }
 
@@ -197,7 +198,7 @@ export default class Forms extends Component<MyProps, MyState> {
         statusElement,
         speciesElement,
         genderElement,
-        createdElement,
+        dateElement,
         checkboxElement,
       };
     } catch (error) {
@@ -208,14 +209,14 @@ export default class Forms extends Component<MyProps, MyState> {
   onFormSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
 
-    const { nameElement, statusElement, speciesElement, genderElement, createdElement } =
+    const { nameElement, statusElement, speciesElement, genderElement, dateElement } =
       this.getFormElements() as {
         fileElement: HTMLInputElement;
         nameElement: HTMLInputElement;
         statusElement: HTMLSelectElement;
         speciesElement: HTMLInputElement;
         genderElement: HTMLSelectElement;
-        createdElement: HTMLInputElement;
+        dateElement: HTMLInputElement;
         checkboxElement: HTMLInputElement;
       };
 
@@ -233,8 +234,11 @@ export default class Forms extends Component<MyProps, MyState> {
       species: speciesElement.value,
       gender: genderElement.value,
       image: this.state.image as string,
-      created: createdElement.value,
+      created: dateElement.value,
     };
+
+    this.resetStateInputs();
+    console.log(newUserCharacterCard);
   }
 
   resetStateInputs(): void {
@@ -244,7 +248,7 @@ export default class Forms extends Component<MyProps, MyState> {
       statusElement,
       speciesElement,
       genderElement,
-      createdElement,
+      dateElement,
       checkboxElement,
     } = this.getFormElements() as {
       fileElement: HTMLInputElement;
@@ -252,7 +256,7 @@ export default class Forms extends Component<MyProps, MyState> {
       statusElement: HTMLSelectElement;
       speciesElement: HTMLInputElement;
       genderElement: HTMLSelectElement;
-      createdElement: HTMLInputElement;
+      dateElement: HTMLInputElement;
       checkboxElement: HTMLInputElement;
     };
 
@@ -261,7 +265,7 @@ export default class Forms extends Component<MyProps, MyState> {
     statusElement.value = '';
     speciesElement.value = '';
     genderElement.value = '';
-    createdElement.value = '';
+    dateElement.value = '';
     checkboxElement.checked = false;
 
     this.setState({
@@ -271,7 +275,7 @@ export default class Forms extends Component<MyProps, MyState> {
       status: true,
       species: true,
       gender: true,
-      created: true,
+      date: true,
       checkbox: true,
       image: null,
     });
@@ -352,17 +356,16 @@ export default class Forms extends Component<MyProps, MyState> {
                     </ValidationWarning>
 
                     <DateInput
-                      valid={this.state.created}
+                      valid={this.state.date}
                       name="date"
                       onChange={this.onChangeHandler.bind(this)}
-                      reference={this.dateCreatedInput}
+                      reference={this.dateInput}
                     />
-                    <ValidationWarning valid={this.state.created}>
+                    <ValidationWarning valid={this.state.date}>
                       Please, choose a date
                     </ValidationWarning>
 
                     <Checkbox
-                      valid={this.state.checkbox}
                       name="checkbox"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.checkboxProcessing}
@@ -377,7 +380,12 @@ export default class Forms extends Component<MyProps, MyState> {
                       <Button color="primary" disabled={this.state.buttonDisable} role="submit">
                         Submit
                       </Button>
-                      <Button color="danger" disabled={false} role="button">
+                      <Button
+                        color="danger"
+                        disabled={false}
+                        role="button"
+                        onClick={this.resetStateInputs.bind(this)}
+                      >
                         Reset
                       </Button>
                     </div>

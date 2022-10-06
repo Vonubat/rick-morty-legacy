@@ -5,6 +5,7 @@ type MyProps = {
   children: string;
   disabled: boolean;
   color: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark'; // tailwind presentation
+  onClick?: () => void;
 };
 
 type MyState = Record<string, never>;
@@ -47,6 +48,7 @@ export default class Button extends Component<MyProps, MyState> {
         data-mdb-ripple="true"
         data-mdb-ripple-color="light"
         disabled={this.props.disabled}
+        onClick={this.props.onClick}
       >
         {this.props.children}
       </button>
