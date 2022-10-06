@@ -4,9 +4,7 @@ type MyProps = {
   children: string;
 };
 
-type MyState = {
-  [index: string]: string;
-};
+type MyState = Record<string, never>;
 
 export default class FileInput extends Component<MyProps, MyState> {
   render(): JSX.Element {
@@ -32,7 +30,6 @@ export default class FileInput extends Component<MyProps, MyState> {
     m-0
     focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           type="file"
-          required
         />
       </div>
     );

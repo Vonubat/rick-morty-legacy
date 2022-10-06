@@ -41,9 +41,7 @@ describe('Router', () => {
     );
 
     // verify navigation to "no match" route
-    expect(
-      screen.getByText(/The page you are trying to search has been moved to another universe/i)
-    ).toBeInTheDocument();
+    expect(screen.getByText(/GET ME HOME/i)).toBeInTheDocument();
   });
 });
 

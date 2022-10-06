@@ -7,15 +7,7 @@ import DateForm from 'components/UI/Forms/Datepicker';
 import Checkbox from 'components/UI/Forms/Checkbox';
 import FileInput from 'components/UI/Forms/FileInput';
 
-type MyProps = {
-  [index: string]: string;
-};
-
-type MyState = {
-  [index: string]: string;
-};
-
-export default class Forms extends Component<MyProps, MyState> {
+export default class Forms extends Component {
   render(): JSX.Element {
     return (
       <div className="container my-12 px-6 mx-auto">
@@ -26,9 +18,9 @@ export default class Forms extends Component<MyProps, MyState> {
             <div className="grid sm:grid-cols-2 items-center">
               <div className="mb-12 sm:mb-0">
                 <div className="jumbotron-forms block rounded-sm shadow-sm px-6 py-12 sm:py-6 xl:py-12 sm:px-12 sm:-mr-14">
-                  <h3 className="text-2xl font-bold mb-3">Character generator</h3>
+                  <h3 className="text-2xl font-bold">Character generator</h3>
                   <h5 className="text-lg text-blue-600 font-bold mb-6 sm:mb-4 xl:mb-6">
-                    Create your own unique character!!!
+                    <i>Create your own unique character!!!</i>
                   </h5>
                   <form className="flex flex-col justify-center  sm:justify-start xl:justify-start">
                     <FileInput>Choose avatar for your character</FileInput>
@@ -38,9 +30,11 @@ export default class Forms extends Component<MyProps, MyState> {
                     <SelectForm subject="Select gender" options={['Male', 'Female']} />
                     <DateForm />
                     <Checkbox>I consent to my personal data by Galactic Federation</Checkbox>
-                    <Button disabled={false} extraClass="w-36" role="submit">
-                      Submit
-                    </Button>
+                    <div className="w-36">
+                      <Button color="primary" disabled={false} role="submit">
+                        Submit
+                      </Button>
+                    </div>
                   </form>
                 </div>
               </div>

@@ -1,12 +1,10 @@
 import React, { Component } from 'react';
 
 type MyProps = {
-  [index: string]: string;
+  role: string;
 };
 
-type MyState = {
-  [index: string]: string;
-};
+type MyState = Record<string, never>;
 
 export default class TextForm extends Component<MyProps, MyState> {
   render(): JSX.Element {
@@ -18,7 +16,7 @@ export default class TextForm extends Component<MyProps, MyState> {
       block
       w-full
       px-3
-      // py-1.5
+      py-1.5
       text-base
       font-normal
       text-gray-700
@@ -30,7 +28,6 @@ export default class TextForm extends Component<MyProps, MyState> {
       m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           placeholder={this.props.role}
-          required
         />
         <label htmlFor="floatingInput" className="text-gray-700">
           {this.props.role}

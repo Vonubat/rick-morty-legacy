@@ -6,9 +6,7 @@ type MyProps = {
   character: ICharacterSchema;
 };
 
-type MyState = {
-  [index: string]: string | number;
-};
+type MyState = Record<string, never>;
 
 export default class Card extends Component<MyProps, MyState> {
   character: ICharacterSchema = this.props.character;
@@ -41,12 +39,12 @@ export default class Card extends Component<MyProps, MyState> {
             <p className="text-gray-700 text-base mb-2 text-start">
               <i> The gender:</i> <b>{this.character.gender}</b>
             </p>
-            <Button disabled={false} role="button">
+            <Button disabled={true} role="button" color="primary">
               Tell me more!
             </Button>
           </div>
           <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
-            Time at which the character was created in the database: <br />
+            <div>Time at which the character was created in the database:</div>
             <b>{this.formattedDate}</b>
           </div>
         </div>

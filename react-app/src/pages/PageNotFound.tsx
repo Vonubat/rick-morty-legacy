@@ -22,7 +22,8 @@ export default class PageNotFound extends Component {
               <span>44</span>
             </div>
             <p>
-              The page you are trying to search has been <br /> moved to another universe.
+              <div>The page you are trying to search has been</div>
+              <div>moved to another universe.</div>
             </p>
             <NavLink to="/">
               <button type="button">GET ME HOME</button>

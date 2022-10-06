@@ -5,9 +5,7 @@ type MyProps = {
   options: string[];
 };
 
-type MyState = {
-  [index: string]: string;
-};
+type MyState = Record<string, never>;
 
 export default class SelectForm extends Component<MyProps, MyState> {
   render(): JSX.Element | JSX.Element[] {
@@ -33,15 +31,14 @@ export default class SelectForm extends Component<MyProps, MyState> {
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
           aria-label=".form-select-lg example"
           placeholder="Gender"
-          required
         >
           <option disabled value="">
             {this.props.subject}
           </option>
-          {this.props.options.map((item) => {
+          {this.props.options.map((option) => {
             return (
-              <option key={item} value={item}>
-                {item}
+              <option key={option} value={option}>
+                {option}
               </option>
             );
           })}

@@ -1,11 +1,9 @@
 import React, { Component, ChangeEvent } from 'react';
 
-type MyProps = {
-  [index: string]: string | number;
-};
+type MyProps = Record<string, never>;
 
 type MyState = {
-  [index: string]: string | number;
+  value: string;
 };
 
 export default class SearchBar extends Component<MyProps, MyState> {
