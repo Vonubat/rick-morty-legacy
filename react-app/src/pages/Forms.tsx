@@ -133,17 +133,11 @@ export default class Forms extends Component<MyProps, MyState> {
       !this.state.image || !fileElement.files || !fileElement.files.length,
       'file'
     );
-
     isValid = this.checkValidation(nameElement.value.trim().length < 3, 'name');
-
     isValid = this.checkValidation(!statusElement.value, 'status');
-
     isValid = this.checkValidation(speciesElement.value.trim().length < 3, 'species');
-
     isValid = this.checkValidation(!genderElement.value, 'gender');
-
     isValid = this.checkValidation(!createdElement.value, 'date');
-
     isValid = this.checkValidation(!checkboxElement.value, 'checkbox');
 
     return isValid;
@@ -163,6 +157,7 @@ export default class Forms extends Component<MyProps, MyState> {
     try {
       const fileElement: HTMLInputElement | null = this.fileInput.current;
       if (!fileElement) {
+        console.log(fileElement);
         throw new Error('avatarValue is undefined');
       }
 
@@ -206,7 +201,7 @@ export default class Forms extends Component<MyProps, MyState> {
         checkboxElement,
       };
     } catch (error) {
-      console.error('error');
+      console.error(error);
     }
   }
 
@@ -297,35 +292,89 @@ export default class Forms extends Component<MyProps, MyState> {
                     className="flex flex-col justify-center sm:justify-start xl:justify-start"
                     onSubmit={this.onFormSubmit.bind(this)}
                   >
-                    <FileInput name="file">Choose avatar for your character</FileInput>
-                    <ValidationWarning>Please, choose avatar for your character</ValidationWarning>
+                    <FileInput
+                      valid={this.state.file}
+                      role="File"
+                      name="file"
+                      onChange={this.onChangeHandler.bind(this)}
+                      reference={this.fileInput}
+                    >
+                      Choose avatar for your character
+                    </FileInput>
+                    <ValidationWarning valid={this.state.file}>
+                      Please, choose avatar for your character
+                    </ValidationWarning>
 
-                    <TextInput role="Name" name="name" />
-                    <ValidationWarning>Please, write name for your character</ValidationWarning>
+                    <TextInput
+                      valid={this.state.name}
+                      role="Name"
+                      name="name"
+                      onChange={this.onChangeHandler.bind(this)}
+                      reference={this.nameInput}
+                    />
+                    <ValidationWarning valid={this.state.name}>
+                      Name of your character should contains at least 3 chars
+                    </ValidationWarning>
 
                     <Select
+                      valid={this.state.status}
                       subject="Select status"
                       name="status"
                       options={['Alive', 'Dead', 'unknown']}
+                      onChange={this.onChangeHandler.bind(this)}
+                      reference={this.statusSelect}
                     />
-                    <ValidationWarning>Please, choose status of your character</ValidationWarning>
+                    <ValidationWarning valid={this.state.status}>
+                      Please, select status of your character
+                    </ValidationWarning>
 
-                    <TextInput role="Species" name="species" />
-                    <ValidationWarning>Please, write species of your character</ValidationWarning>
+                    <TextInput
+                      valid={this.state.species}
+                      role="Species"
+                      name="species"
+                      onChange={this.onChangeHandler.bind(this)}
+                      reference={this.speciesInput}
+                    />
+                    <ValidationWarning valid={this.state.species}>
+                      Species of your character should contains at least 3 chars
+                    </ValidationWarning>
 
-                    <Select subject="Select gender" name="gender" options={['Male', 'Female']} />
-                    <ValidationWarning>Please, choose gender of your character</ValidationWarning>
+                    <Select
+                      valid={this.state.gender}
+                      subject="Select gender"
+                      name="gender"
+                      options={['Male', 'Female']}
+                      onChange={this.onChangeHandler.bind(this)}
+                      reference={this.genderSelect}
+                    />
+                    <ValidationWarning valid={this.state.gender}>
+                      Please, select gender of your character
+                    </ValidationWarning>
 
-                    <DateInput name="date" />
-                    <ValidationWarning>Please, choose a date</ValidationWarning>
+                    <DateInput
+                      valid={this.state.created}
+                      name="date"
+                      onChange={this.onChangeHandler.bind(this)}
+                      reference={this.dateCreatedInput}
+                    />
+                    <ValidationWarning valid={this.state.created}>
+                      Please, choose a date
+                    </ValidationWarning>
 
-                    <Checkbox name="checkbox">
+                    <Checkbox
+                      valid={this.state.checkbox}
+                      name="checkbox"
+                      onChange={this.onChangeHandler.bind(this)}
+                      reference={this.checkboxProcessing}
+                    >
                       I consent to my personal data by Galactic Federation
                     </Checkbox>
-                    <ValidationWarning>Checkbox is required</ValidationWarning>
+                    <ValidationWarning valid={this.state.checkbox}>
+                      Checkbox is required
+                    </ValidationWarning>
 
                     <div className="flex gap-4">
-                      <Button color="primary" disabled={false} role="submit">
+                      <Button color="primary" disabled={this.state.buttonDisable} role="submit">
                         Submit
                       </Button>
                       <Button color="danger" disabled={false} role="button">

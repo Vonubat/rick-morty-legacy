@@ -4,17 +4,19 @@ type MyProps = {
   subject: string;
   name: string;
   options: string[];
+  valid: boolean;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
+  reference: React.RefObject<HTMLSelectElement>;
 };
 
 type MyState = Record<string, never>;
 
 export default class Select extends Component<MyProps, MyState> {
   render(): JSX.Element | JSX.Element[] {
-    return (
-      <div className="mb-3 xl:w-96">
-        <select
-          defaultValue={''}
-          className="form-select form-select-lg
+    let className = '';
+
+    const cls = {
+      baseClass: `form-select form-select-lg
       appearance-none
       block
       w-full
@@ -29,10 +31,28 @@ export default class Select extends Component<MyProps, MyState> {
       transition
       ease-in-out
       m-0
-      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
+      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none`,
+      isValid: `is-valid`,
+      isInvalid: `is-invalid`,
+    };
+
+    const valid = this.props.valid;
+    if (!valid) {
+      className = `${cls.baseClass} ${cls.isInvalid}`;
+    } else {
+      className = `${cls.baseClass}`;
+    }
+
+    return (
+      <div className="mb-3 xl:w-96">
+        <select
+          defaultValue={''}
+          className={className}
           aria-label=".form-select-lg example"
           placeholder={this.props.subject}
           name={this.props.name}
+          onChange={this.props.onChange}
+          ref={this.props.reference}
         >
           <option disabled value="">
             {this.props.subject}
