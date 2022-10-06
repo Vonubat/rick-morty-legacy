@@ -6,7 +6,7 @@ import { BrowserRouter } from 'react-router-dom';
 describe('Navigation component', () => {
   it('renders Navigation component', () => {
     render(<Navigation />, { wrapper: BrowserRouter });
-    const linkElement: HTMLElement = screen.getByText(/React App/i);
+    const linkElement: HTMLElement = screen.getByText(/Rick Morty Legacy/i);
     expect(linkElement).toBeInTheDocument();
   });
 

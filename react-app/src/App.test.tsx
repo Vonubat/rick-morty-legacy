@@ -8,7 +8,7 @@ import { setLocalStorage } from 'setupTests';
 describe('App component', () => {
   it('renders App component', () => {
     render(<App />, { wrapper: BrowserRouter });
-    const linkElement: HTMLElement = screen.getByText(/React App/i);
+    const linkElement: HTMLElement = screen.getByText(/Rick Morty Legacy/i);
     expect(linkElement).toBeInTheDocument();
   });
 });

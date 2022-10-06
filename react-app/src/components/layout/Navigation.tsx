@@ -6,11 +6,11 @@ export default class Navigation extends Component {
 
   render(): JSX.Element {
     return (
-      <nav className="navbar navbar-expand-md shadow-md py-2 bg-gray-100 relative flex items-center w-full justify-between flex-wrap">
+      <nav className="navbar navbar-expand-md shadow-md py-2 bg-gray-100 relative flex items-center w-full justify-between">
         {/* Logo */}
 
         <h1 className="pl-6 pt-2 md:pt-1 text-2xl text-blue-600 self-start font-bold whitespace-nowrap">
-          React App
+          Rick Morty Legacy
         </h1>
 
         {/* Menu */}
