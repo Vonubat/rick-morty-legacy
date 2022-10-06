@@ -11,9 +11,11 @@ export default class Home extends Component {
         {/* SearchBar */}
         <SearchBar />
         <div className="flex flex-wrap mx-auto items-center justify-center">
-          {characters.map((character: ICharacterSchema) => (
-            <Card character={character} key={character.id} />
-          ))}
+          {characters.map(
+            (character: ICharacterSchema): JSX.Element => (
+              <Card character={character} key={character.id} />
+            )
+          )}
         </div>
       </div>
     );

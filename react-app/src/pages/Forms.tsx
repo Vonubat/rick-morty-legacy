@@ -8,6 +8,7 @@ import Checkbox from 'components/UI/Forms/Checkbox';
 import FileInput from 'components/UI/Forms/FileInput';
 import ValidationWarning from 'components/UI/Forms/ValidationWarning';
 import { IUserCharacterSchema } from 'models';
+import Card from 'components/UI/Card';
 
 type MyProps = Record<string, never>;
 
@@ -32,6 +33,7 @@ export default class Forms extends Component<MyProps, MyState> {
   genderSelect: React.RefObject<HTMLSelectElement>;
   dateInput: React.RefObject<HTMLInputElement>;
   checkboxProcessing: React.RefObject<HTMLInputElement>;
+  userCards: IUserCharacterSchema[];
 
   constructor(props: MyProps) {
     super(props);
@@ -55,6 +57,8 @@ export default class Forms extends Component<MyProps, MyState> {
       checkbox: true,
       image: null,
     };
+
+    this.userCards = [];
   }
 
   onChangeHandler(
@@ -228,17 +232,17 @@ export default class Forms extends Component<MyProps, MyState> {
       return;
     }
 
-    const newUserCharacterCard: IUserCharacterSchema = {
+    this.userCards.push({
       name: nameElement.value,
       status: statusElement.value,
       species: speciesElement.value,
       gender: genderElement.value,
       image: this.state.image as string,
       created: dateElement.value,
-    };
+    });
 
     this.resetStateInputs();
-    console.log(newUserCharacterCard);
+    console.log(this.userCards);
   }
 
   resetStateInputs(): void {
@@ -283,7 +287,7 @@ export default class Forms extends Component<MyProps, MyState> {
 
   render(): JSX.Element {
     return (
-      <div className="container my-12 px-6 mx-auto">
+      <div className="container py-6 px-6 mx-auto">
         {/* <!-- Section: Design Block --> */}
         <section className="text-gray-800">
           {/* <!-- Jumbotron --> */}
@@ -397,7 +401,14 @@ export default class Forms extends Component<MyProps, MyState> {
                 <img src={formsImg} className="w-full rounded-sm shadow-sm" alt="forms-img" />
               </div>
             </div>
-            <div className="user-cards-container"></div>
+            <div className="user-cards-container flex flex-wrap mx-auto items-center justify-center mt-6 bg-gray-100 rounded-sm shadow-sm">
+              {this.userCards.length > 0 &&
+                this.userCards.map(
+                  (character: IUserCharacterSchema, index: number): JSX.Element => (
+                    <Card character={character} key={index} />
+                  )
+                )}
+            </div>
           </div>
           {/* <!-- Jumbotron --> */}
         </section>
