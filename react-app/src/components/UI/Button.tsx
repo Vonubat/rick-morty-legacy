@@ -45,8 +45,6 @@ export default class Button extends Component<MyProps, MyState> {
       <button
         type={this.props.role}
         className={className}
-        data-mdb-ripple="true"
-        data-mdb-ripple-color="light"
         disabled={this.props.disabled}
         onClick={this.props.onClick}
       >

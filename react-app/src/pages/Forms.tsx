@@ -9,12 +9,14 @@ import FileInput from 'components/UI/Forms/FileInput';
 import ValidationWarning from 'components/UI/Forms/ValidationWarning';
 import { IUserCharacterSchema } from 'models';
 import Card from 'components/UI/Card';
+import Alert from 'components/UI/Alert';
 
 type MyProps = Record<string, never>;
 
 type MyState = {
   firstChangeForm: boolean;
-  buttonDisable: boolean;
+  alertIsVisible: boolean;
+  buttonDisabled: boolean;
   file: boolean;
   name: boolean;
   status: boolean;
@@ -47,7 +49,8 @@ export default class Forms extends Component<MyProps, MyState> {
 
     this.state = {
       firstChangeForm: false,
-      buttonDisable: true,
+      alertIsVisible: false,
+      buttonDisabled: true,
       file: true,
       name: true,
       status: true,
@@ -77,7 +80,7 @@ export default class Forms extends Component<MyProps, MyState> {
     }, this.enableButton);
 
     if (!this.state.firstChangeForm) {
-      this.setState({ buttonDisable: false });
+      this.setState({ buttonDisabled: false });
     }
   }
 
@@ -93,7 +96,7 @@ export default class Forms extends Component<MyProps, MyState> {
       this.state.checkbox
     ) {
       this.setState((prevState: Readonly<MyState>) => {
-        return { ...prevState, buttonDisable: false };
+        return { ...prevState, buttonDisabled: false };
       });
     }
   }
@@ -228,9 +231,12 @@ export default class Forms extends Component<MyProps, MyState> {
 
     if (!this.validate()) {
       console.log('form cannot be submitted!');
-      this.setState({ buttonDisable: true });
+      this.setState({ buttonDisabled: true });
       return;
     }
+
+    this.setState({ alertIsVisible: true });
+    setTimeout(() => this.setState({ alertIsVisible: false }), 3000);
 
     this.userCards.push({
       name: nameElement.value,
@@ -273,7 +279,7 @@ export default class Forms extends Component<MyProps, MyState> {
     checkboxElement.checked = false;
 
     this.setState({
-      buttonDisable: true,
+      buttonDisabled: true,
       file: true,
       name: true,
       status: true,
@@ -381,13 +387,13 @@ export default class Forms extends Component<MyProps, MyState> {
                     </ValidationWarning>
 
                     <div className="flex gap-4">
-                      <Button color="primary" disabled={this.state.buttonDisable} role="submit">
+                      <Button color="primary" disabled={this.state.buttonDisabled} role="submit">
                         Submit
                       </Button>
                       <Button
                         color="danger"
                         disabled={false}
-                        role="button"
+                        role="reset"
                         onClick={this.resetStateInputs.bind(this)}
                       >
                         Reset
@@ -401,7 +407,10 @@ export default class Forms extends Component<MyProps, MyState> {
                 <img src={formsImg} className="w-full rounded-sm shadow-sm" alt="forms-img" />
               </div>
             </div>
-            <div className="user-cards-container flex flex-wrap mx-auto items-center justify-center mt-6 bg-gray-100 rounded-sm shadow-sm">
+            <div
+              className="user-cards-container flex flex-wrap mx-auto items-center justify-center
+             mt-6 bg-gray-100 rounded-sm shadow-smg"
+            >
               {this.userCards.length > 0 &&
                 this.userCards.map(
                   (character: IUserCharacterSchema, index: number): JSX.Element => (
@@ -413,6 +422,9 @@ export default class Forms extends Component<MyProps, MyState> {
           {/* <!-- Jumbotron --> */}
         </section>
         {/* <!-- Section: Design Block --> */}
+        <Alert visibility={this.state.alertIsVisible} color={'success'}>
+          User card is created
+        </Alert>
       </div>
     );
   }

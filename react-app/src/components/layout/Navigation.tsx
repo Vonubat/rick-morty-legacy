@@ -56,8 +56,6 @@ export default class Navigation extends Component {
                     className="block md:hidden"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContentY"
-                    data-mdb-ripple="false"
-                    data-mdb-ripple-color="light"
                   >
                     Home
                   </span>
@@ -70,8 +68,6 @@ export default class Navigation extends Component {
                     className="block md:hidden"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContentY"
-                    data-mdb-ripple="false"
-                    data-mdb-ripple-color="light"
                   >
                     Forms
                   </span>
@@ -84,8 +80,6 @@ export default class Navigation extends Component {
                     className="block md:hidden"
                     data-bs-toggle="collapse"
                     data-bs-target="#navbarSupportedContentY"
-                    data-mdb-ripple="false"
-                    data-mdb-ripple-color="light"
                   >
                     About
                   </span>
