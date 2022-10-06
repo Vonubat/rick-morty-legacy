@@ -1,15 +1,15 @@
-import { ICharacterSchema } from 'models';
+import { ICharacterSchema, IUserCharacterSchema } from 'models';
 import React, { Component } from 'react';
 import Button from './Button';
 
 type MyProps = {
-  character: ICharacterSchema;
+  character: ICharacterSchema | IUserCharacterSchema;
 };
 
 type MyState = Record<string, never>;
 
 export default class Card extends Component<MyProps, MyState> {
-  character: ICharacterSchema = this.props.character;
+  character: ICharacterSchema | IUserCharacterSchema = this.props.character;
   date: Date = new Date(Date.parse(this.character.created));
   dateOptions: Intl.DateTimeFormatOptions = {
     weekday: 'long',

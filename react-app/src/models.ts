@@ -22,3 +22,12 @@ export interface ICharacterSchema {
   url: string;
   created: string;
 }
+
+export interface IUserCharacterSchema {
+  name: string;
+  status: string;
+  species: string;
+  gender: string;
+  image: string;
+  created: string;
+}
