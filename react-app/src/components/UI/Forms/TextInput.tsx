@@ -53,8 +53,10 @@ export default class TextInput extends Component<MyProps, MyState> {
             name={this.props.name}
             onChange={this.props.onChange}
             ref={this.props.reference}
+            data-testid="textInput"
+            id={this.props.role}
           />
-          <label htmlFor="floatingInput" className="text-gray-700">
+          <label htmlFor={this.props.role} className="text-gray-700">
             {this.props.role}
           </label>
         </div>

@@ -4,6 +4,8 @@
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
 
+// Mock local storage
+
 const localStorageMock = (function () {
   let store: { [index: string]: string } = {};
 
@@ -34,6 +36,13 @@ const localStorageMock = (function () {
 
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
-export const setLocalStorage = (id: string, data: unknown) => {
+export const setLocalStorage = (id: string, data: unknown): void => {
   window.localStorage.setItem(id, JSON.stringify(data));
 };
+
+// Mock URL.createObjectURL
+
+Object.defineProperty(URL, 'createObjectURL', {
+  writable: true,
+  value: jest.fn(),
+});

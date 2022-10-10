@@ -23,6 +23,10 @@ export default class ValidationWarning extends Component<MyProps, MyState> {
     } else {
       className = `${cls.baseClass} ${cls.isValid}`;
     }
-    return <p className={className}>{this.props.children}</p>;
+    return (
+      <p className={className} data-testid="validationWarning">
+        {this.props.children}
+      </p>
+    );
   }
 }

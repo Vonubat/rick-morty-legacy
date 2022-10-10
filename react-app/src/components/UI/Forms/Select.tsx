@@ -51,16 +51,17 @@ export default class Select extends Component<MyProps, MyState> {
           <select
             defaultValue={''}
             className={className}
-            aria-label=".form-select-lg example"
+            aria-label=".form-select-lg"
             placeholder={this.props.subject}
             name={this.props.name}
             onChange={this.props.onChange}
             ref={this.props.reference}
+            data-testid="select"
           >
             <option disabled value="">
               {this.props.subject}
             </option>
-            {this.props.options.map((option) => {
+            {this.props.options.map((option: string): JSX.Element => {
               return (
                 <option key={option} value={option}>
                   {option}

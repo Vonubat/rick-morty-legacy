@@ -52,11 +52,13 @@ export default class FileInput extends Component<MyProps, MyState> {
           </label>
           <input
             type="file"
+            id="formFile"
             className={className}
             placeholder={this.props.role}
             name={this.props.name}
             onChange={this.props.onChange}
             ref={this.props.reference}
+            data-testid="fileInput"
           />
         </div>
         <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>

@@ -38,6 +38,7 @@ export default class DateInput extends Component<MyProps, MyState> {
             name={this.props.name}
             onChange={this.props.onChange}
             ref={this.props.reference}
+            data-testid="dateInput"
           />
           <label htmlFor="floatingInput" className="text-gray-700">
             Select a date

@@ -10,6 +10,7 @@ import { characters } from 'data/characters';
 import SearchBar from 'components/UI/SearchBar';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 import { ICharacterSchema } from 'models';
+import Forms from 'pages/Forms';
 
 describe('App component', (): void => {
   it('renders App component', (): void => {
@@ -167,4 +168,70 @@ describe('SearchBar component', (): void => {
     expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();
     expect(screen.getByText('Morty Smith')).toBeNull();
   }); */
+});
+
+describe('Forms page', (): void => {
+  it('renders Forms page', (): void => {
+    render(<Forms />);
+    const element: HTMLElement = screen.getByText('Character generator');
+    expect(element).toBeInTheDocument();
+  });
+
+  it('renders all form elements', (): void => {
+    render(<Forms />);
+
+    const fileInputs: HTMLInputElement[] = screen.getAllByTestId('fileInput');
+    const textInputs: HTMLInputElement[] = screen.getAllByTestId('textInput');
+    const selects: HTMLSelectElement[] = screen.getAllByTestId('select');
+    const dateInputs: HTMLInputElement[] = screen.getAllByTestId('dateInput');
+    const checkboxes: HTMLInputElement[] = screen.getAllByTestId('checkbox');
+    const btns: HTMLButtonElement[] = screen.getAllByRole('button');
+
+    expect(fileInputs).toHaveLength(1);
+    expect(textInputs).toHaveLength(2);
+    expect(selects).toHaveLength(2);
+    expect(dateInputs).toHaveLength(1);
+    expect(checkboxes).toHaveLength(1);
+    expect(btns).toHaveLength(2);
+  });
+
+  it('submit button disabled at initialization (before the first typing)', async (): Promise<void> => {
+    render(<Forms />);
+
+    const submitBtn: HTMLButtonElement = screen.getByText(/submit/i);
+    const nameInput: HTMLInputElement = screen.getByPlaceholderText(/name/i);
+    const user: UserEvent = userEvent.setup();
+
+    expect(submitBtn).toBeDisabled();
+    await user.type(nameInput, 'test_string');
+    expect(submitBtn).not.toBeDisabled();
+  });
+
+  it('upload file', async (): Promise<void> => {
+    render(<Forms />);
+
+    const user: UserEvent = userEvent.setup();
+    const fakeFile: File = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
+    const fileInput: HTMLInputElement = screen.getByLabelText('Choose avatar for your character');
+
+    await user.upload(fileInput, fakeFile);
+
+    expect(fileInput.files![0]).toStrictEqual(fakeFile);
+    expect(fileInput.files!.item(0)).toStrictEqual(fakeFile);
+    expect(fileInput.files).toHaveLength(1);
+  });
+
+  it('filling name input', async (): Promise<void> => {
+    render(<Forms />);
+    const user: UserEvent = userEvent.setup();
+    const nameInput: HTMLInputElement = screen.getByLabelText(/name/i);
+    let value: string = nameInput.value;
+
+    expect(value).toMatch('');
+
+    await user.type(nameInput, 'test_string');
+    value = nameInput.value;
+
+    expect(value).toMatch('test_string');
+  });
 });
