@@ -100,8 +100,8 @@ export default class Forms extends Component<MyProps, MyState> {
     }
   }
 
-  checkValidation(condition: boolean, name: string): boolean {
-    if (condition) {
+  checkValidation(condition: boolean | string, name: string): boolean {
+    if (!condition) {
       this.setState((prevState: Readonly<MyState>) => {
         return { ...prevState, [name]: false };
       });
@@ -137,15 +137,15 @@ export default class Forms extends Component<MyProps, MyState> {
 
     isValid =
       this.checkValidation(
-        !this.state.image || !fileElement.files || !fileElement.files.length,
+        this.state.image || Boolean(fileElement.files && fileElement.files.length),
         'file'
       ) && isValid;
-    isValid = this.checkValidation(nameElement.value.trim().length < 3, 'name') && isValid;
-    isValid = this.checkValidation(!statusElement.value, 'status') && isValid;
-    isValid = this.checkValidation(speciesElement.value.trim().length < 3, 'species') && isValid;
-    isValid = this.checkValidation(!genderElement.value, 'gender') && isValid;
-    isValid = this.checkValidation(!dateElement.value, 'date') && isValid;
-    isValid = this.checkValidation(!checkboxElement.checked, 'checkbox') && isValid;
+    isValid = this.checkValidation(nameElement.value.trim().length > 3, 'name') && isValid;
+    isValid = this.checkValidation(statusElement.value, 'status') && isValid;
+    isValid = this.checkValidation(speciesElement.value.trim().length > 3, 'species') && isValid;
+    isValid = this.checkValidation(genderElement.value, 'gender') && isValid;
+    isValid = this.checkValidation(dateElement.value, 'date') && isValid;
+    isValid = this.checkValidation(checkboxElement.checked, 'checkbox') && isValid;
 
     return isValid;
   }
