@@ -6,7 +6,7 @@ import Button from 'components/UI/Button';
 import DateInput from 'components/UI/Forms/DateInput';
 import Checkbox from 'components/UI/Forms/Checkbox';
 import FileInput from 'components/UI/Forms/FileInput';
-import { IUserCharacterSchema } from 'models';
+import { IUserCharacter } from 'types/models';
 import Card from 'components/UI/Card';
 import Alert from 'components/UI/Alert';
 
@@ -34,7 +34,7 @@ export default class Forms extends Component<MyProps, MyState> {
   genderSelect: React.RefObject<HTMLSelectElement>;
   dateInput: React.RefObject<HTMLInputElement>;
   checkboxProcessing: React.RefObject<HTMLInputElement>;
-  userCards: IUserCharacterSchema[];
+  userCards: IUserCharacter[];
 
   constructor(props: MyProps) {
     super(props);
@@ -396,7 +396,7 @@ export default class Forms extends Component<MyProps, MyState> {
             >
               {this.userCards.length > 0 &&
                 this.userCards.map(
-                  (character: IUserCharacterSchema, index: number): JSX.Element => (
+                  (character: IUserCharacter, index: number): JSX.Element => (
                     <Card character={character} key={index} />
                   )
                 )}

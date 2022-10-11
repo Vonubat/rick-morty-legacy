@@ -8,7 +8,7 @@ export interface ILocation {
   url: string;
 }
 
-export interface ICharacterSchema {
+export interface ICharacter {
   id: number;
   name: string;
   status: string;
@@ -23,7 +23,7 @@ export interface ICharacterSchema {
   created: string;
 }
 
-export interface IUserCharacterSchema {
+export interface IUserCharacter {
   name: string;
   status: string;
   species: string;

@@ -9,7 +9,7 @@ import Card from 'components/UI/Card';
 import { characters } from 'data/characters';
 import SearchBar from 'components/UI/SearchBar';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
-import { ICharacterSchema } from 'models';
+import { ICharacter } from 'types/models';
 import Forms from 'pages/Forms';
 
 describe('App component', (): void => {
@@ -21,9 +21,10 @@ describe('App component', (): void => {
 });
 
 describe('Router', (): void => {
+  const user: UserEvent = userEvent.setup();
+
   it('full app rendering/navigating', async (): Promise<void> => {
     render(<App />, { wrapper: BrowserRouter });
-    const user: UserEvent = userEvent.setup();
 
     // verify page content for default route
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
@@ -118,7 +119,7 @@ describe('Card component', (): void => {
   });
 
   it('renders all cards from data', (): void => {
-    characters.forEach((character: ICharacterSchema): void => {
+    characters.forEach((character: ICharacter): void => {
       render(<Card character={character} />);
     });
 
@@ -128,6 +129,8 @@ describe('Card component', (): void => {
 });
 
 describe('SearchBar component', (): void => {
+  const user: UserEvent = userEvent.setup();
+
   it('renders SearchBar component', (): void => {
     render(<SearchBar />);
     const element: HTMLElement = screen.getByRole('searchbox');
@@ -136,7 +139,6 @@ describe('SearchBar component', (): void => {
 
   it('typing in SearchBar works', async (): Promise<void> => {
     render(<SearchBar />);
-    const user: UserEvent = userEvent.setup();
 
     expect(screen.queryByDisplayValue('test_string')).toBeNull();
     await user.type(screen.getByRole('searchbox'), 'test_string');
@@ -146,7 +148,6 @@ describe('SearchBar component', (): void => {
   it('case: Input value should be saved to LocalStorage during component’s unmount. During the initialization pick the value from LocalStorage and show it.', async (): Promise<void> => {
     window.localStorage.clear();
     render(<App />, { wrapper: BrowserRouter });
-    const user: UserEvent = userEvent.setup();
 
     await user.click(screen.getAllByText(/home/i)[0]);
 
@@ -171,6 +172,8 @@ describe('SearchBar component', (): void => {
 });
 
 describe('Forms page', (): void => {
+  const user: UserEvent = userEvent.setup();
+
   it('renders Forms page', (): void => {
     render(<Forms />);
     const element: HTMLElement = screen.getByText('Character generator');
@@ -200,7 +203,17 @@ describe('Forms page', (): void => {
 
     const submitBtn: HTMLButtonElement = screen.getByText(/submit/i);
     const nameInput: HTMLInputElement = screen.getByPlaceholderText(/name/i);
-    const user: UserEvent = userEvent.setup();
+
+    expect(submitBtn).toBeDisabled();
+    await user.type(nameInput, 'test_string');
+    expect(submitBtn).not.toBeDisabled();
+  });
+
+  it('check reset btn functionality', async (): Promise<void> => {
+    render(<Forms />);
+
+    const resetBtn: HTMLButtonElement = screen.getByText(/reset/i);
+    const nameInput: HTMLInputElement = screen.getByPlaceholderText(/name/i);
 
     expect(submitBtn).toBeDisabled();
     await user.type(nameInput, 'test_string');
@@ -210,7 +223,6 @@ describe('Forms page', (): void => {
   it('upload file', async (): Promise<void> => {
     render(<Forms />);
 
-    const user: UserEvent = userEvent.setup();
     const fakeFile: File = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
     const fileInput: HTMLInputElement = screen.getByLabelText('Choose avatar for your character');
 
@@ -223,8 +235,34 @@ describe('Forms page', (): void => {
 
   it('filling name input', async (): Promise<void> => {
     render(<Forms />);
-    const user: UserEvent = userEvent.setup();
     const nameInput: HTMLInputElement = screen.getByLabelText(/name/i);
+    let value: string = nameInput.value;
+
+    expect(value).toMatch('');
+
+    await user.type(nameInput, 'test_string');
+    value = nameInput.value;
+
+    expect(value).toMatch('test_string');
+  });
+
+  it('check name input restriction > 3 chars', async (): Promise<void> => {
+    render(<Forms />);
+    const nameInput: HTMLInputElement = screen.getByLabelText(/name/i);
+    const submitBtn: HTMLButtonElement = screen.getByText(/submit/i);
+    let value: string = nameInput.value;
+
+    expect(value).toMatch('');
+
+    await user.type(nameInput, 'abc');
+    value = nameInput.value;
+
+    expect(value).toMatch('test_string');
+  });
+
+  it('filling species input', async (): Promise<void> => {
+    render(<Forms />);
+    const nameInput: HTMLInputElement = screen.getByLabelText(/species/i);
     let value: string = nameInput.value;
 
     expect(value).toMatch('');

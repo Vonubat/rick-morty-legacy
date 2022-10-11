@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { NavLink } from 'react-router-dom';
 
 export default class Navigation extends Component {
-  setActiveNavLink = ({ isActive }: { isActive: boolean }) => (isActive ? 'active-nav-link' : '');
+  setNavLinkClass = ({ isActive }: { isActive: boolean }) => (isActive ? 'active-nav-link' : '');
 
   render(): JSX.Element {
     return (
@@ -50,7 +50,7 @@ export default class Navigation extends Component {
           <div className="navbar-collapse collapse grow items-center" id="navbarSupportedContentY">
             <ul className="navbar-nav mr-auto md:flex md:flex-row items-center">
               <li className="nav-item mb-2 md:mb-0 nav-link block text-end md:px-2 py-2 font-semibold text-gray-500 hover:text-blue-300  transition duration-150 ease-in-out">
-                <NavLink end to="/" className={this.setActiveNavLink}>
+                <NavLink end to="/" className={this.setNavLinkClass}>
                   <span className="hidden md:block">Home</span>
                   <span
                     className="block md:hidden"
@@ -62,7 +62,7 @@ export default class Navigation extends Component {
                 </NavLink>
               </li>
               <li className="nav-item mb-2 md:mb-0 nav-link block text-end md:px-2 py-2 font-semibold text-gray-500 hover:text-blue-300  transition duration-150 ease-in-out">
-                <NavLink to="/forms" className={this.setActiveNavLink}>
+                <NavLink to="/forms" className={this.setNavLinkClass}>
                   <span className="hidden md:block">Forms</span>
                   <span
                     className="block md:hidden"
@@ -74,7 +74,7 @@ export default class Navigation extends Component {
                 </NavLink>
               </li>
               <li className="nav-item mb-2 md:mb-0 nav-link block text-end md:px-2 py-2 font-semibold text-gray-500 hover:text-blue-300  transition duration-150 ease-in-out">
-                <NavLink to="/about" className={this.setActiveNavLink}>
+                <NavLink to="/about" className={this.setNavLinkClass}>
                   <span className="hidden md:block">About</span>
                   <span
                     className="block md:hidden"
