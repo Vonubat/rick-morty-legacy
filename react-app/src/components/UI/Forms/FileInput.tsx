@@ -47,7 +47,10 @@ export default class FileInput extends Component<MyProps, MyState> {
     return (
       <>
         <div className="mt-3 xl:w-96">
-          <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700">
+          <label
+            htmlFor="formFile"
+            className="form-label inline-block mb-2 text-gray-700 text-start"
+          >
             {this.props.children}
           </label>
           <input

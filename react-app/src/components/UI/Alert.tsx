@@ -13,7 +13,7 @@ export default class Alert extends Component<MyProps, MyState> {
     let className = '';
 
     const cls = {
-      baseClass: `fixed font-semibold text-center inset-x-72 top-5 animate-bounce`,
+      baseClass: `fixed font-semibold text-center inset-x-0 top-5 mx-10 animate-bounce`,
       isVisible: `block`,
       invisible: `hidden`,
       // https://tailwindcss.com/docs/content-configuration#dynamic-class-names

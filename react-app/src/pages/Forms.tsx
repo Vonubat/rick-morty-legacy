@@ -293,11 +293,11 @@ export default class Forms extends Component<MyProps, MyState> {
         {/* <!-- Section: Design Block --> */}
         <section className="text-gray-800">
           {/* <!-- Jumbotron --> */}
-          <div className="container mx-auto xl:px-32 text-center sm:text-left">
+          <div className="container mx-auto xl:px-32 text-left">
             <div className="grid sm:grid-cols-2 items-center">
-              <div className="mb-12 sm:mb-0">
+              <div className="-mb-12 sm:mb-0">
                 <div className="jumbotron-forms block rounded-sm shadow-sm px-6 py-12 sm:py-6 xl:py-12 sm:px-12 sm:-mr-14">
-                  <h3 className="text-2xl font-bold text-blue-600 mb-5 ">Character generator</h3>
+                  <h3 className="text-2xl font-bold text-blue-600 mb-3 ">Character generator</h3>
                   <form
                     className="flex flex-col justify-center sm:justify-start xl:justify-start"
                     onSubmit={this.onFormSubmit.bind(this)}
