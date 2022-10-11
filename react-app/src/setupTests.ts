@@ -46,3 +46,7 @@ Object.defineProperty(URL, 'createObjectURL', {
   writable: true,
   value: jest.fn(),
 });
+
+// Change default JEST Timeout
+
+jest.setTimeout(30000);
