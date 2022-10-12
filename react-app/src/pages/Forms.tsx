@@ -9,6 +9,7 @@ import FileInput from 'components/UI/Forms/FileInput';
 import { IUserCharacter } from 'types/models';
 import Card from 'components/UI/Card';
 import Alert from 'components/UI/Alert';
+import warningMessages from 'utils/warning-messages';
 
 type MyProps = Record<string, never>;
 
@@ -16,6 +17,7 @@ type MyState = {
   firstChangeForm: boolean;
   alertIsVisible: boolean;
   buttonDisabled: boolean;
+  extension: boolean;
   file: boolean;
   name: boolean;
   status: boolean;
@@ -35,6 +37,7 @@ export default class Forms extends Component<MyProps, MyState> {
   dateInput: React.RefObject<HTMLInputElement>;
   checkboxProcessing: React.RefObject<HTMLInputElement>;
   userCards: IUserCharacter[];
+  validFileExtensions: string[];
 
   constructor(props: MyProps) {
     super(props);
@@ -50,6 +53,7 @@ export default class Forms extends Component<MyProps, MyState> {
       firstChangeForm: false,
       alertIsVisible: false,
       buttonDisabled: true,
+      extension: true,
       file: true,
       name: true,
       status: true,
@@ -61,6 +65,7 @@ export default class Forms extends Component<MyProps, MyState> {
     };
 
     this.userCards = [];
+    this.validFileExtensions = ['image/png', 'image/jpeg', 'image/gif'];
   }
 
   onChangeHandler(
@@ -71,7 +76,11 @@ export default class Forms extends Component<MyProps, MyState> {
     const avatar: HTMLInputElement | null = this.fileInput.current;
 
     if (name === 'file' && avatar?.files && avatar.files.length) {
-      this.setState({ image: URL.createObjectURL(avatar.files[0]), file: true });
+      if (!this.validFileExtensions.includes(avatar.files[0].type)) {
+        this.setState({ extension: false });
+      } else {
+        this.setState({ image: URL.createObjectURL(avatar.files[0]), file: true });
+      }
     }
 
     this.setState((prevState: Readonly<MyState>) => {
@@ -100,7 +109,7 @@ export default class Forms extends Component<MyProps, MyState> {
     }
   }
 
-  checkValidation(condition: boolean | string, name: string): boolean {
+  checkValidation(condition: boolean | string | null, name: string): boolean {
     if (!condition) {
       this.setState((prevState: Readonly<MyState>) => {
         return { ...prevState, [name]: false };
@@ -116,7 +125,6 @@ export default class Forms extends Component<MyProps, MyState> {
 
   validate(): boolean {
     const {
-      fileElement,
       nameElement,
       statusElement,
       speciesElement,
@@ -135,11 +143,7 @@ export default class Forms extends Component<MyProps, MyState> {
 
     let isValid = true;
 
-    isValid =
-      this.checkValidation(
-        this.state.image || Boolean(fileElement.files && fileElement.files.length),
-        'file'
-      ) && isValid;
+    isValid = this.checkValidation(this.state.image, 'file') && isValid;
     isValid = this.checkValidation(nameElement.value.trim().length > 3, 'name') && isValid;
     isValid = this.checkValidation(statusElement.value, 'status') && isValid;
     isValid = this.checkValidation(speciesElement.value.trim().length > 3, 'species') && isValid;
@@ -276,6 +280,7 @@ export default class Forms extends Component<MyProps, MyState> {
 
     this.setState({
       buttonDisabled: true,
+      extension: true,
       file: true,
       name: true,
       status: true,
@@ -308,7 +313,11 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="file"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.fileInput}
-                      warningMessage="Please, choose avatar for your character"
+                      warningMessage={
+                        this.state.extension
+                          ? warningMessages.file.empty
+                          : warningMessages.file.imgFormat
+                      }
                     >
                       Choose avatar for your character
                     </FileInput>
@@ -319,7 +328,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="name"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.nameInput}
-                      warningMessage="Name of your character should contains at least 3 chars"
+                      warningMessage={warningMessages.name.empty}
                     />
 
                     <Select
@@ -329,7 +338,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       options={['Alive', 'Dead', 'unknown']}
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.statusSelect}
-                      warningMessage="Please, select status of your character"
+                      warningMessage={warningMessages.status.empty}
                     />
 
                     <TextInput
@@ -338,7 +347,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="species"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.speciesInput}
-                      warningMessage="Species of your character should contains at least 3 chars"
+                      warningMessage={warningMessages.species.empty}
                     />
 
                     <Select
@@ -348,7 +357,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       options={['Male', 'Female']}
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.genderSelect}
-                      warningMessage="Please, select gender of your character"
+                      warningMessage={warningMessages.gender.empty}
                     />
 
                     <DateInput
@@ -356,7 +365,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="date"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.dateInput}
-                      warningMessage="Please, choose a date"
+                      warningMessage={warningMessages.date.empty}
                     />
 
                     <Checkbox
@@ -364,7 +373,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="checkbox"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.checkboxProcessing}
-                      warningMessage="Checkbox is required"
+                      warningMessage={warningMessages.checkbox.empty}
                     >
                       I consent to my personal data by Galactic Federation
                     </Checkbox>

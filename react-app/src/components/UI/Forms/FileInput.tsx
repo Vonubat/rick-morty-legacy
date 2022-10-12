@@ -61,6 +61,7 @@ export default class FileInput extends Component<MyProps, MyState> {
             name={this.props.name}
             onChange={this.props.onChange}
             ref={this.props.reference}
+            accept="image/png, image/gif, image/jpeg"
             data-testid="fileInput"
           />
         </div>

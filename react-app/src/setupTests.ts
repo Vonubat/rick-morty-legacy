@@ -42,10 +42,9 @@ export const setLocalStorage = (id: string, data: unknown): void => {
 
 // Mock URL.createObjectURL
 
-Object.defineProperty(URL, 'createObjectURL', {
-  writable: true,
-  value: jest.fn(),
-});
+window.URL.createObjectURL = function (obj: Blob | MediaSource): string {
+  return `${obj}`;
+};
 
 // Change default JEST Timeout
 

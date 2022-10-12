@@ -297,7 +297,8 @@ describe('Forms page', (): void => {
   it('check ValidationWarning functionality', async (): Promise<void> => {
     render(<Forms />);
 
-    const fakeFile: File = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
+    const fakeFileImg: File = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
+    const fakeFilePdf: File = new File(['pdfFile'], 'chucknorris.pdf', { type: 'application/pdf' });
     const submitBtn: HTMLButtonElement = screen.getByText(/submit/i);
 
     const fileInput: HTMLInputElement = screen.getByLabelText('Choose avatar for your character');
@@ -308,14 +309,14 @@ describe('Forms page', (): void => {
     const dateInput: HTMLInputElement = screen.getByPlaceholderText(/select a date/i);
     const checkbox: HTMLInputElement = screen.getByTestId(/checkbox/i);
 
+    const fileValidationWarning: HTMLParagraphElement = screen.getByText(
+      /Please, choose avatar for your character/i
+    );
     const nameValidationWarning: HTMLParagraphElement = screen.getByText(
       /Name of your character should contains at least 3 chars/i
     );
     const speciesValidationWarning: HTMLParagraphElement = screen.getByText(
       /Species of your character should contains at least 3 chars/i
-    );
-    const fileValidationWarning: HTMLParagraphElement = screen.getByText(
-      /Please, choose avatar for your character/i
     );
     const statusValidationWarning: HTMLParagraphElement = screen.getByText(
       /Please, select status of your character/i
@@ -365,7 +366,7 @@ describe('Forms page', (): void => {
     expect(checkboxValidationWarning).toHaveClass('text-transparent');
     expect(submitBtn).toBeDisabled();
 
-    await user.upload(fileInput, fakeFile);
+    await user.upload(fileInput, fakeFileImg);
     expect(nameValidationWarning).toHaveClass('text-transparent');
     expect(speciesValidationWarning).toHaveClass('text-transparent');
     expect(fileValidationWarning).toHaveClass('text-transparent');
@@ -404,6 +405,13 @@ describe('Forms page', (): void => {
     expect(dateValidationWarning).toHaveClass('text-transparent');
     expect(checkboxValidationWarning).toHaveClass('text-transparent');
     expect(submitBtn).not.toBeDisabled();
+
+    /* Check non-image file validation */
+    await user.click(submitBtn);
+    fileInput.accept = ''; // turn-off accept="image/png, image/gif, image/jpeg" in fileInput
+    await user.upload(fileInput, fakeFilePdf);
+    await user.click(submitBtn);
+    expect(screen.getByText(/Please upload only jpg, png, jpeg, gif files!/i)).toBeInTheDocument();
   });
 
   it('check User card creation functionality', async (): Promise<void> => {
