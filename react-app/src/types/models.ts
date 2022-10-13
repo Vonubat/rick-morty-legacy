@@ -1,11 +1,8 @@
-export interface IOrigin {
-  name: string;
-  url: string;
-}
-
-export interface ILocation {
-  name: string;
-  url: string;
+export interface IInfo {
+  count: number;
+  pages: number;
+  next: URL | null;
+  prev: URL | null;
 }
 
 export interface ICharacter {
@@ -15,8 +12,14 @@ export interface ICharacter {
   species: string;
   type: string;
   gender: string;
-  origin: IOrigin;
-  location: ILocation;
+  origin: {
+    name: string;
+    url: string;
+  };
+  location: {
+    name: string;
+    url: string;
+  };
   image: string;
   episode: string[];
   url: string;
@@ -30,4 +33,9 @@ export interface IUserCharacter {
   gender: string;
   image: string;
   created: string;
+}
+
+export interface ICharacterContent {
+  info: IInfo;
+  results: ICharacter[];
 }
