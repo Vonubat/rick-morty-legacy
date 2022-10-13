@@ -1,3 +1,4 @@
+// API data interfaces & types
 export interface IInfo {
   count: number;
   pages: number;
@@ -38,4 +39,17 @@ export interface IUserCharacter {
 export interface ICharacterContent {
   info: IInfo;
   results: ICharacter[];
+}
+
+export type ICharacterFilter = 'name' | 'status' | 'species' | 'type' | 'gender';
+
+export interface IFilter {
+  query: ICharacterFilter;
+  value: string | null;
+}
+
+// Internal interfaces
+export interface IPageIndicators {
+  error: boolean;
+  loading: boolean;
 }
