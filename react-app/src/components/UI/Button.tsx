@@ -6,6 +6,8 @@ type MyProps = {
   disabled: boolean;
   color: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark'; // tailwind presentation
   onClick?: () => void;
+  dataBsToggle?: string;
+  dataBsTarget?: string;
 };
 
 type MyState = Record<string, never>;
@@ -47,6 +49,8 @@ export default class Button extends Component<MyProps, MyState> {
         className={className}
         disabled={this.props.disabled}
         onClick={this.props.onClick}
+        data-bs-toggle={this.props.dataBsToggle}
+        data-bs-target={this.props.dataBsTarget}
       >
         {this.props.children}
       </button>

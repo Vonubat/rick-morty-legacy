@@ -11,6 +11,7 @@ import React, { Component } from 'react';
 import Api from 'api/api';
 import LoadIndicator from 'components/UI/Indicators/Load';
 import ErrorIndicator from 'components/UI/Indicators/Error';
+import Modal from 'components/Modal';
 
 type MyProps = Record<string, never>;
 
@@ -69,6 +70,7 @@ export default class Home extends Component<MyProps, MyState> {
             )
           )}
         </div>
+        <Modal />
       </div>
     );
   }

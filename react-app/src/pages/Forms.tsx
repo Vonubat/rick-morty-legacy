@@ -66,6 +66,10 @@ export default class Forms extends Component<MyProps, MyState> {
 
     this.userCards = [];
     this.validFileExtensions = ['image/png', 'image/jpeg', 'image/gif'];
+
+    this.onFormSubmit = this.onFormSubmit.bind(this);
+    this.onChangeHandler = this.onChangeHandler.bind(this);
+    this.resetStateInputs = this.resetStateInputs.bind(this);
   }
 
   onChangeHandler(
@@ -305,13 +309,13 @@ export default class Forms extends Component<MyProps, MyState> {
                   <h3 className="text-2xl font-bold text-blue-600 mb-3 ">Character generator</h3>
                   <form
                     className="flex flex-col justify-center sm:justify-start xl:justify-start xl:w-96"
-                    onSubmit={this.onFormSubmit.bind(this)}
+                    onSubmit={this.onFormSubmit}
                   >
                     <FileInput
                       valid={this.state.file}
                       role="File"
                       name="file"
-                      onChange={this.onChangeHandler.bind(this)}
+                      onChange={this.onChangeHandler}
                       reference={this.fileInput}
                       warningMessage={
                         this.state.extension
@@ -326,7 +330,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       valid={this.state.name}
                       role="Name"
                       name="name"
-                      onChange={this.onChangeHandler.bind(this)}
+                      onChange={this.onChangeHandler}
                       reference={this.nameInput}
                       warningMessage={warningMessages.name.empty}
                     />
@@ -337,7 +341,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="status"
                       options={['Alive', 'Dead', 'unknown']}
                       defaultValue=""
-                      onChange={this.onChangeHandler.bind(this)}
+                      onChange={this.onChangeHandler}
                       reference={this.statusSelect}
                       warningMessage={warningMessages.status.empty}
                     />
@@ -346,7 +350,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       valid={this.state.species}
                       role="Species"
                       name="species"
-                      onChange={this.onChangeHandler.bind(this)}
+                      onChange={this.onChangeHandler}
                       reference={this.speciesInput}
                       warningMessage={warningMessages.species.empty}
                     />
@@ -357,7 +361,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="gender"
                       options={['Male', 'Female']}
                       defaultValue=""
-                      onChange={this.onChangeHandler.bind(this)}
+                      onChange={this.onChangeHandler}
                       reference={this.genderSelect}
                       warningMessage={warningMessages.gender.empty}
                     />
@@ -365,7 +369,7 @@ export default class Forms extends Component<MyProps, MyState> {
                     <DateInput
                       valid={this.state.date}
                       name="date"
-                      onChange={this.onChangeHandler.bind(this)}
+                      onChange={this.onChangeHandler}
                       reference={this.dateInput}
                       warningMessage={warningMessages.date.empty}
                     />
@@ -373,7 +377,7 @@ export default class Forms extends Component<MyProps, MyState> {
                     <Checkbox
                       valid={this.state.checkbox}
                       name="checkbox"
-                      onChange={this.onChangeHandler.bind(this)}
+                      onChange={this.onChangeHandler}
                       reference={this.checkboxProcessing}
                       warningMessage={warningMessages.checkbox.empty}
                     >
@@ -388,7 +392,7 @@ export default class Forms extends Component<MyProps, MyState> {
                         color="danger"
                         disabled={false}
                         role="reset"
-                        onClick={this.resetStateInputs.bind(this)}
+                        onClick={this.resetStateInputs}
                       >
                         Reset
                       </Button>

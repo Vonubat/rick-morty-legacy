@@ -39,7 +39,13 @@ export default class Card extends Component<MyProps, MyState> {
             <p className="text-gray-700 text-base mb-2 text-start">
               <i> The gender:</i> <b>{this.character.gender}</b>
             </p>
-            <Button disabled={true} role="button" color="primary">
+            <Button
+              disabled={false}
+              role="button"
+              color="primary"
+              dataBsToggle="modal"
+              dataBsTarget="#ModalCenteredScrollable"
+            >
               Tell me more!
             </Button>
           </div>

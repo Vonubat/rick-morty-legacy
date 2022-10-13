@@ -50,7 +50,7 @@ export default class SearchBar extends Component<MyProps, MyState> {
           name="searchQuery"
           options={['name', 'status', 'species', 'type', 'gender']}
           defaultValue={this.state.query}
-          onChange={this.onChangeSelect.bind(this)}
+          onChange={this.onChangeSelect}
           warningMessage={''}
         />
         {/* SearchBar */}
