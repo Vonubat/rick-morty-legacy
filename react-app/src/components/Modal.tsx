@@ -5,9 +5,9 @@ export default class Modal extends Component {
     return (
       <div
         className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
-        id="ModalCenteredScrollable"
+        id="modalCenteredScrollable"
         tabIndex={-1}
-        aria-labelledby="ModalCenteredScrollable"
+        aria-labelledby="modalCenteredScrollable"
         aria-modal="true"
         role="dialog"
       >
@@ -16,7 +16,7 @@ export default class Modal extends Component {
             <div className="modal-header flex flex-shrink-0 items-center justify-between p-4 border-b border-gray-200 rounded-t-md">
               <h5
                 className="text-xl font-medium leading-normal text-gray-800"
-                id="ModalCenteredScrollableLabel"
+                id="modalCenteredScrollableLabel"
               >
                 Modal title
               </h5>

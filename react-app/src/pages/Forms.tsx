@@ -7,7 +7,7 @@ import DateInput from 'components/UI/Forms/DateInput';
 import Checkbox from 'components/UI/Forms/Checkbox';
 import FileInput from 'components/UI/Forms/FileInput';
 import { IUserCharacter } from 'types/models';
-import Card from 'components/UI/Card';
+import Card from 'components/Card';
 import Alert from 'components/UI/Alert';
 import warningMessages from 'utils/warning-messages';
 

@@ -27,6 +27,26 @@ export interface ICharacter {
   created: string;
 }
 
+export interface ILocation {
+  id: number;
+  name: string;
+  type: string;
+  dimension: string;
+  residents: string[];
+  url: string;
+  created: string;
+}
+
+export interface IEpisode {
+  id: number;
+  name: string;
+  air_date: string;
+  episode: string;
+  characters: string[];
+  url: string;
+  created: Date;
+}
+
 export interface IUserCharacter {
   name: string;
   status: string;
@@ -39,6 +59,16 @@ export interface IUserCharacter {
 export interface ICharacterContent {
   info: IInfo;
   results: ICharacter[];
+}
+
+export interface ILocationContent {
+  info: IInfo;
+  results: ILocation[];
+}
+
+export interface IEpisode {
+  info: IInfo;
+  results: ILocation[];
 }
 
 export type ICharacterFilter = 'name' | 'status' | 'species' | 'type' | 'gender';

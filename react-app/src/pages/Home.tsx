@@ -1,5 +1,5 @@
-import Card from 'components/UI/Card';
-import SearchBar from 'components/UI/SearchBar';
+import Card from 'components/Card';
+import SearchBar from 'components/SearchBar';
 import {
   ICharacter,
   ICharacterContent,
@@ -12,6 +12,7 @@ import Api from 'api/api';
 import LoadIndicator from 'components/UI/Indicators/Load';
 import ErrorIndicator from 'components/UI/Indicators/Error';
 import Modal from 'components/Modal';
+import { EPISODES, LOCATIONS } from 'constants/constants';
 
 type MyProps = Record<string, never>;
 
@@ -44,6 +45,9 @@ export default class Home extends Component<MyProps, MyState> {
         value: filter?.value || localStorage.getItem('searchValue') || '',
       });
       this.setState({ ...content });
+
+      const test = await this.api.getDataForModal(EPISODES);
+      console.log(test);
 
       this.setState({ loading: false });
     } catch (error: unknown) {

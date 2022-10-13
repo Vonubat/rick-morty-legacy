@@ -1,6 +1,6 @@
 import React, { Component, ChangeEvent } from 'react';
 import { ICharacterFilter, IFilter } from 'types/models';
-import Select from './Forms/Select';
+import Select from './UI/Forms/Select';
 
 type MyProps = {
   search: (filter?: IFilter) => Promise<void>;

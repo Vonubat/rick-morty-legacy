@@ -1,6 +1,6 @@
 import { ICharacter, IUserCharacter } from 'types/models';
 import React, { Component } from 'react';
-import Button from './Button';
+import Button from './UI/Button';
 
 type MyProps = {
   character: ICharacter | IUserCharacter;
@@ -44,7 +44,7 @@ export default class Card extends Component<MyProps, MyState> {
               role="button"
               color="primary"
               dataBsToggle="modal"
-              dataBsTarget="#ModalCenteredScrollable"
+              dataBsTarget="#modalCenteredScrollable"
             >
               Tell me more!
             </Button>
