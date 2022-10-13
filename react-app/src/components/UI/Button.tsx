@@ -15,7 +15,7 @@ export default class Button extends Component<MyProps, MyState> {
     let className = '';
 
     const cls = {
-      baseClass: `inline-block px-6 mt-3 py-2.5 font-medium text-xs leading-tight uppercase rounded shadow-md focus:outline-none focus:ring-0 transition duration-150 ease-in-out`,
+      baseClass: `btn px-6 mt-3 py-2.5 font-medium text-xs leading-tight uppercase rounded shadow-md focus:outline-none focus:ring-0 transition duration-150 ease-in-out`,
       nonDisabledBtnClass: `hover:shadow-lg focus:shadow-lg active:shadow-lg`,
       disabledBtnClass: `pointer-events-none opacity-60`,
       // https://tailwindcss.com/docs/content-configuration#dynamic-class-names

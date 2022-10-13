@@ -9,6 +9,8 @@ import {
 } from 'types/models';
 import React, { Component } from 'react';
 import Api from 'api/api';
+import LoadIndicator from 'components/UI/Indicators/Load';
+import ErrorIndicator from 'components/UI/Indicators/Error';
 
 type MyProps = Record<string, never>;
 
@@ -32,6 +34,7 @@ export default class Home extends Component<MyProps, MyState> {
 
   async fetchCharacters(filter?: IFilter): Promise<void> {
     try {
+      this.setState({ results: [] });
       this.setState({ error: false });
       this.setState({ loading: true });
 
@@ -58,6 +61,8 @@ export default class Home extends Component<MyProps, MyState> {
       <div className="flex flex-col">
         <SearchBar search={this.fetchCharacters.bind(this)} />
         <div className="flex flex-wrap mx-auto items-center justify-center">
+          {this.state.loading && <LoadIndicator />}
+          {this.state.error && <ErrorIndicator />}
           {this.state.results.map(
             (character: ICharacter): JSX.Element => (
               <Card character={character} key={character.id} />
