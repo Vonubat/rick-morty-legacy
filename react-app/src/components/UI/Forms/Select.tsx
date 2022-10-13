@@ -5,9 +5,10 @@ type MyProps = {
   subject: string;
   name: string;
   options: string[];
+  defaultValue: string;
   valid: boolean;
   onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  reference: React.RefObject<HTMLSelectElement>;
+  reference?: React.RefObject<HTMLSelectElement>;
   warningMessage: string;
 };
 
@@ -23,7 +24,7 @@ export default class Select extends Component<MyProps, MyState> {
       block
       w-full
       px-3
-      py-2
+      py-1.5
       text-base
       font-normal
       text-gray-700
@@ -33,7 +34,7 @@ export default class Select extends Component<MyProps, MyState> {
       transition
       ease-in-out
       m-0
-      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none`,
+      focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none capitalize`,
       isValid: `is-valid`,
       isInvalid: `is-invalid`,
     };
@@ -47,9 +48,9 @@ export default class Select extends Component<MyProps, MyState> {
 
     return (
       <>
-        <div className="mt-3 xl:w-96">
+        <div className="mt-3">
           <select
-            defaultValue={''}
+            defaultValue={this.props.defaultValue}
             className={className}
             aria-label=".form-select-lg"
             placeholder={this.props.subject}

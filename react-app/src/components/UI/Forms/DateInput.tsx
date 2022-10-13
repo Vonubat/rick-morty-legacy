@@ -30,7 +30,7 @@ export default class DateInput extends Component<MyProps, MyState> {
 
     return (
       <>
-        <div className="datepicker relative form-floating mt-3 xl:w-96">
+        <div className="datepicker relative form-floating mt-3">
           <input
             type="date"
             className={className}

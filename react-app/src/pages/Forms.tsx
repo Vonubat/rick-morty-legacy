@@ -304,7 +304,7 @@ export default class Forms extends Component<MyProps, MyState> {
                 <div className="jumbotron-forms block rounded-sm shadow-sm px-6 py-12 sm:py-6 xl:py-12 sm:px-12 sm:-mr-14">
                   <h3 className="text-2xl font-bold text-blue-600 mb-3 ">Character generator</h3>
                   <form
-                    className="flex flex-col justify-center sm:justify-start xl:justify-start"
+                    className="flex flex-col justify-center sm:justify-start xl:justify-start xl:w-96"
                     onSubmit={this.onFormSubmit.bind(this)}
                   >
                     <FileInput
@@ -336,6 +336,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       subject="Select status"
                       name="status"
                       options={['Alive', 'Dead', 'unknown']}
+                      defaultValue=""
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.statusSelect}
                       warningMessage={warningMessages.status.empty}
@@ -355,6 +356,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       subject="Select gender"
                       name="gender"
                       options={['Male', 'Female']}
+                      defaultValue=""
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.genderSelect}
                       warningMessage={warningMessages.gender.empty}
