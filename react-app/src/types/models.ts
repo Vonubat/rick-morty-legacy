@@ -45,7 +45,7 @@ export type ICharacterFilter = 'name' | 'status' | 'species' | 'type' | 'gender'
 
 export interface IFilter {
   query: ICharacterFilter;
-  value: string | null;
+  value: string;
 }
 
 // Internal interfaces

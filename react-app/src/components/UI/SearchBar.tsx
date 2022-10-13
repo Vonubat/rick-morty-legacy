@@ -1,37 +1,64 @@
 import React, { Component, ChangeEvent } from 'react';
+import { ICharacterFilter, IFilter } from 'types/models';
+import Select from './Forms/Select';
 
-type MyProps = Record<string, never>;
-
-type MyState = {
-  value: string;
+type MyProps = {
+  search: (filter?: IFilter) => Promise<void>;
 };
+
+type MyState = IFilter;
 
 export default class SearchBar extends Component<MyProps, MyState> {
   constructor(props: MyProps) {
     super(props);
     this.state = {
+      query: (localStorage.getItem('queryValue') as ICharacterFilter) || 'name',
       value: localStorage.getItem('searchValue') || '',
     };
 
-    this.handleChange = this.handleChange.bind(this);
+    this.onChangeSearchInput = this.onChangeSearchInput.bind(this);
+    this.onChangeSelect = this.onChangeSelect.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  handleChange(event: ChangeEvent<HTMLInputElement>): void {
-    this.setState({ value: event.target.value });
+  onChangeSearchInput(e: ChangeEvent<HTMLInputElement>): void {
+    this.setState({ value: e.target.value });
+    localStorage.setItem('searchValue', e.target.value);
   }
 
-  componentWillUnmount(): void {
-    localStorage.setItem('searchValue', this.state.value);
+  onChangeSelect(e: React.ChangeEvent<HTMLSelectElement>): void {
+    this.setState({ query: e.target.value as ICharacterFilter });
+    localStorage.setItem('queryValue', e.target.value);
+  }
+
+  async handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
+    e.preventDefault();
+    const { value, query } = this.state;
+    await this.props.search({ query, value });
   }
 
   render(): JSX.Element {
     return (
-      <div className={`flex justify-center pt-3`}>
-        <div className="w-72 sm:w-96">
+      <form
+        onSubmit={this.handleSubmit}
+        className="flex justify-center gap-1 items-center flex-wrap-reverse"
+      >
+        {/* Select search query*/}
+        <Select
+          valid={true}
+          subject="Select search query:"
+          name="searchQuery"
+          options={['name', 'status', 'species', 'type', 'gender']}
+          defaultValue={this.state.query}
+          onChange={this.onChangeSelect.bind(this)}
+          warningMessage={''}
+        />
+        {/* SearchBar */}
+        <div className="w-72 sm:w-96 mt-3">
           <div className="input-group relative flex flex-wrap items-stretch w-full rounded">
             <input
               value={this.state.value}
-              onChange={this.handleChange}
+              onChange={this.onChangeSearchInput}
               type="search"
               className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
               placeholder="Search..."
@@ -40,7 +67,7 @@ export default class SearchBar extends Component<MyProps, MyState> {
             />
             <button
               className="btn px-6 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700  focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out flex items-center"
-              type="button"
+              type="submit"
               id="button-addon2"
             >
               <svg
@@ -61,7 +88,7 @@ export default class SearchBar extends Component<MyProps, MyState> {
             </button>
           </div>
         </div>
-      </div>
+      </form>
     );
   }
 }

@@ -9,11 +9,10 @@ import {
 } from 'types/models';
 import React, { Component } from 'react';
 import Api from 'api/api';
-import Select from 'components/UI/Forms/Select';
 
 type MyProps = Record<string, never>;
 
-type MyState = ICharacterContent & IPageIndicators & IFilter;
+type MyState = ICharacterContent & IPageIndicators;
 
 export default class Home extends Component<MyProps, MyState> {
   api: Api;
@@ -26,19 +25,19 @@ export default class Home extends Component<MyProps, MyState> {
       results: [],
       error: false,
       loading: false,
-      query: 'name',
-      value: localStorage.getItem('searchValue') || '',
     };
+
+    this.fetchCharacters = this.fetchCharacters.bind(this);
   }
 
-  async componentDidMount(): Promise<void> {
+  async fetchCharacters(filter?: IFilter): Promise<void> {
     try {
       this.setState({ error: false });
       this.setState({ loading: true });
 
       const content: ICharacterContent = await this.api.getCharacters(1, {
-        query: this.state.query,
-        value: this.state.value,
+        query: filter?.query || (localStorage.getItem('queryValue') as ICharacterFilter) || 'name',
+        value: filter?.value || localStorage.getItem('searchValue') || '',
       });
       this.setState({ ...content });
 
@@ -50,28 +49,14 @@ export default class Home extends Component<MyProps, MyState> {
     }
   }
 
-  onChangeSelect(e: React.ChangeEvent<HTMLSelectElement>): void {
-    this.setState({ query: e.target.value as ICharacterFilter });
+  async componentDidMount(): Promise<void> {
+    await this.fetchCharacters();
   }
 
   render(): JSX.Element {
     return (
       <div className="flex flex-col">
-        <div className="flex justify-center gap-1 items-center flex-wrap-reverse">
-          {/* Select search query*/}
-          <Select
-            valid={true}
-            subject="Select search query:"
-            name="searchQuery"
-            options={['name', 'status', 'species', 'type', 'gender']}
-            defaultValue="name"
-            onChange={this.onChangeSelect.bind(this)}
-            warningMessage={''}
-          />
-          {/* SearchBar */}
-          <SearchBar />
-        </div>
-
+        <SearchBar search={this.fetchCharacters.bind(this)} />
         <div className="flex flex-wrap mx-auto items-center justify-center">
           {this.state.results.map(
             (character: ICharacter): JSX.Element => (
