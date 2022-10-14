@@ -412,7 +412,7 @@ export default class Forms extends Component<MyProps, MyState> {
               {this.userCards.length > 0 &&
                 this.userCards.map(
                   (character: IUserCharacter, index: number): JSX.Element => (
-                    <Card character={character} key={index} />
+                    <Card character={character} key={index} isButtonDisabled={true} />
                   )
                 )}
             </div>

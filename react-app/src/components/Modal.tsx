@@ -1,7 +1,15 @@
 import React, { Component } from 'react';
+import { IEpisode, ILocation } from 'types/models';
 
-export default class Modal extends Component {
-  render() {
+type MyProps = {
+  locations: ILocation[];
+  episodes: IEpisode[];
+  modalId: number;
+};
+
+type MyState = Record<string, never>;
+export default class Modal extends Component<MyProps, MyState> {
+  render(): JSX.Element {
     return (
       <div
         className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
@@ -28,7 +36,9 @@ export default class Modal extends Component {
               ></button>
             </div>
             <div className="modal-body relative p-4">
-              <p>This is some placeholder content to show a vertically centered modal.</p>
+              <p>{this.props.modalId}</p>
+              <p>{this.props.episodes[this.props.modalId]?.name || 'test-episodes'}</p>
+              <p>{this.props.locations[this.props.modalId]?.name || 'test-episodes'}</p>
               <p>Just like that.</p>
             </div>
           </div>

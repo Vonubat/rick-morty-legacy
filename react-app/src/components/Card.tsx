@@ -4,11 +4,25 @@ import Button from './UI/Button';
 
 type MyProps = {
   character: ICharacter | IUserCharacter;
+  isButtonDisabled: boolean;
+  setModal?: (id: number) => void;
 };
 
-type MyState = Record<string, never>;
+type MyState = {
+  id: number;
+};
 
 export default class Card extends Component<MyProps, MyState> {
+  constructor(props: MyProps) {
+    super(props);
+
+    this.state = {
+      id: (this.props.character as ICharacter).id || 1,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
   character: ICharacter | IUserCharacter = this.props.character;
   date: Date = new Date(Date.parse(this.character.created));
   dateOptions: Intl.DateTimeFormatOptions = {
@@ -19,6 +33,12 @@ export default class Card extends Component<MyProps, MyState> {
   };
   formattedDate: string = this.date.toLocaleString('en-US', this.dateOptions);
 
+  handleClick(): void {
+    if (this.props.setModal) {
+      this.props.setModal(this.state.id - 1);
+    }
+  }
+
   render(): JSX.Element {
     return (
       <div className="flex justify-center mx-3 my-3" data-testid="card">
@@ -27,6 +47,7 @@ export default class Card extends Component<MyProps, MyState> {
             className="rounded-t-lg max-w-full h-auto"
             src={this.character.image}
             alt={this.character.name}
+            loading="lazy"
           />
           <div className="p-5">
             <h5 className="text-gray-900 text-xl font-medium mb-2">{this.character.name}</h5>
@@ -40,11 +61,12 @@ export default class Card extends Component<MyProps, MyState> {
               <i> The gender:</i> <b>{this.character.gender}</b>
             </p>
             <Button
-              disabled={false}
+              disabled={this.props.isButtonDisabled}
               role="button"
               color="primary"
               dataBsToggle="modal"
               dataBsTarget="#modalCenteredScrollable"
+              onClick={this.handleClick}
             >
               Tell me more!
             </Button>

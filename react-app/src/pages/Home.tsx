@@ -4,7 +4,9 @@ import {
   ICharacter,
   ICharacterContent,
   ICharacterFilter,
+  IEpisode,
   IFilter,
+  ILocation,
   IPageIndicators,
 } from 'types/models';
 import React, { Component } from 'react';
@@ -16,7 +18,12 @@ import { EPISODES, LOCATIONS } from 'constants/constants';
 
 type MyProps = Record<string, never>;
 
-type MyState = ICharacterContent & IPageIndicators;
+type MyState = ICharacterContent &
+  IPageIndicators & {
+    locations: ILocation[];
+    episodes: IEpisode[];
+    modalId: number;
+  };
 
 export default class Home extends Component<MyProps, MyState> {
   api: Api;
@@ -29,9 +36,13 @@ export default class Home extends Component<MyProps, MyState> {
       results: [],
       error: false,
       loading: false,
+      locations: [],
+      episodes: [],
+      modalId: 0,
     };
 
     this.fetchCharacters = this.fetchCharacters.bind(this);
+    this.setModal = this.setModal.bind(this);
   }
 
   async fetchCharacters(filter?: IFilter): Promise<void> {
@@ -46,8 +57,23 @@ export default class Home extends Component<MyProps, MyState> {
       });
       this.setState({ ...content });
 
-      const test = await this.api.getDataForModal(EPISODES);
-      console.log(test);
+      this.setState({ loading: false });
+    } catch (error: unknown) {
+      this.setState({ error: true });
+      this.setState({ loading: false });
+      console.error(error);
+    }
+  }
+
+  async fetchDataForModal(): Promise<void> {
+    try {
+      this.setState({ error: false });
+      this.setState({ loading: true });
+
+      this.setState({ locations: (await this.api.getDataForModal(LOCATIONS)) as ILocation[] });
+      this.setState({ episodes: (await this.api.getDataForModal(EPISODES)) as IEpisode[] });
+
+      console.log(this.state.locations);
 
       this.setState({ loading: false });
     } catch (error: unknown) {
@@ -59,6 +85,11 @@ export default class Home extends Component<MyProps, MyState> {
 
   async componentDidMount(): Promise<void> {
     await this.fetchCharacters();
+    await this.fetchDataForModal();
+  }
+
+  setModal(id: number): void {
+    this.setState({ modalId: id });
   }
 
   render(): JSX.Element {
@@ -70,11 +101,21 @@ export default class Home extends Component<MyProps, MyState> {
           {this.state.error && <ErrorIndicator />}
           {this.state.results.map(
             (character: ICharacter): JSX.Element => (
-              <Card character={character} key={character.id} />
+              <Card
+                character={character}
+                key={character.id}
+                isButtonDisabled={false}
+                setModal={this.setModal}
+              />
             )
           )}
         </div>
-        <Modal />
+
+        <Modal
+          modalId={this.state.modalId}
+          locations={this.state.locations}
+          episodes={this.state.episodes}
+        />
       </div>
     );
   }
