@@ -359,7 +359,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       valid={this.state.gender}
                       subject="Select gender"
                       name="gender"
-                      options={['Male', 'Female']}
+                      options={['Male', 'Female', 'unknown']}
                       defaultValue=""
                       onChange={this.onChangeHandler}
                       reference={this.genderSelect}

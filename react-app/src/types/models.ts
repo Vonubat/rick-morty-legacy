@@ -71,7 +71,7 @@ export interface IEpisodeContent {
   results: IEpisode[];
 }
 
-export type ICharacterFilter = 'name' | 'status' | 'species' | 'type' | 'gender';
+export type ICharacterFilter = 'name' | 'species';
 
 export interface IFilter {
   query: ICharacterFilter;

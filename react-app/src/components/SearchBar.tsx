@@ -48,7 +48,7 @@ export default class SearchBar extends Component<MyProps, MyState> {
           valid={true}
           subject="Select search query:"
           name="searchQuery"
-          options={['name', 'status', 'species', 'type', 'gender']}
+          options={['name', 'species']}
           defaultValue={this.state.query}
           onChange={this.onChangeSelect}
           warningMessage={''}
