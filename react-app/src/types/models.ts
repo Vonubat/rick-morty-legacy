@@ -66,9 +66,9 @@ export interface ILocationContent {
   results: ILocation[];
 }
 
-export interface IEpisode {
+export interface IEpisodeContent {
   info: IInfo;
-  results: ILocation[];
+  results: IEpisode[];
 }
 
 export type ICharacterFilter = 'name' | 'status' | 'species' | 'type' | 'gender';

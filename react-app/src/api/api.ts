@@ -1,5 +1,12 @@
 import { CHARACTERS, EPISODES, LOCATIONS } from 'constants/constants';
-import { ICharacterContent, IEpisode, IFilter, ILocation, ILocationContent } from 'types/models';
+import {
+  ICharacterContent,
+  IEpisode,
+  IEpisodeContent,
+  IFilter,
+  ILocation,
+  ILocationContent,
+} from 'types/models';
 import HttpMethods from './http-methods';
 
 class Api extends HttpMethods {
@@ -23,7 +30,7 @@ class Api extends HttpMethods {
   public async getDataForModal(
     type: typeof LOCATIONS | typeof EPISODES
   ): Promise<ILocation[] | IEpisode[]> {
-    let content: ILocationContent = {
+    let content: ILocationContent | IEpisodeContent = {
       info: { count: 0, pages: 0, next: null, prev: null },
       results: [],
     };
@@ -43,20 +50,24 @@ class Api extends HttpMethods {
         allUrls.push(new URL(`${type}/?page=${i}`));
       }
 
-      const requests: Promise<ILocation[]>[] = allUrls.map(
-        async (url: URL): Promise<ILocation[]> => {
+      const requests: Promise<ILocation[] | IEpisode[]>[] = allUrls.map(
+        async (url: URL): Promise<ILocation[] | IEpisode[]> => {
           const response: Response = await this.get(url);
           if (!response.ok) {
             throw new Error(`Can't get the ${type}`);
           }
-          const nextContent: ILocationContent = await response.json();
+          const nextContent: ILocationContent | IEpisodeContent = await response.json();
           return nextContent.results;
         }
       );
 
-      Promise.all(requests).then((responses: ILocation[][]): void =>
-        responses.forEach((results: ILocation[]): void => {
-          content.results.push(...results);
+      Promise.all(requests).then((responses: (ILocation[] | IEpisode[])[]): void =>
+        responses.forEach((results: ILocation[] | IEpisode[]): void => {
+          if (type === LOCATIONS) {
+            (content.results as ILocation[]).push(...(results as ILocation[]));
+          } else {
+            (content.results as IEpisode[]).push(...(results as IEpisode[]));
+          }
         })
       );
     }
