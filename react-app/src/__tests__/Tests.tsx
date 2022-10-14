@@ -112,7 +112,7 @@ describe('Navigation component', (): void => {
 
 describe('Card component', (): void => {
   it('renders Card component', (): void => {
-    render(<Card character={characters[0]} />);
+    render(<Card isButtonDisabled={false} character={characters[0]} />);
 
     const img: HTMLElement = screen.getByRole('img');
     const heading: HTMLElement = screen.getByRole('heading');
@@ -124,7 +124,7 @@ describe('Card component', (): void => {
 
   it('renders all cards from data', (): void => {
     characters.forEach((character: ICharacter): void => {
-      render(<Card character={character} />);
+      render(<Card isButtonDisabled={false} character={character} />);
     });
 
     const arrayOfCards: HTMLElement[] = screen.getAllByTestId('card');
@@ -136,14 +136,14 @@ describe('SearchBar component', (): void => {
   const user: UserEvent = userEvent.setup();
 
   it('renders SearchBar component', (): void => {
-    render(<SearchBar />);
+    render(<SearchBar search={jest.fn()} />);
 
     const element: HTMLElement = screen.getByRole('searchbox');
     expect(element).toBeInTheDocument();
   });
 
   it('typing in SearchBar works', async (): Promise<void> => {
-    render(<SearchBar />);
+    render(<SearchBar search={jest.fn()} />);
 
     expect(screen.queryByDisplayValue('test_string')).toBeNull();
 
