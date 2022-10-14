@@ -88,6 +88,7 @@ export interface IDataForModal {
   locations: ILocation[];
   episodes: IEpisode[];
   nameModal: string;
+  isButtonModalDisabled: boolean;
   locationModal: { name: string; type: string; dimension: string };
   episodesModal: { name: string; air_date: string; episode: string }[];
 }

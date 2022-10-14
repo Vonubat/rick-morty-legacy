@@ -35,6 +35,7 @@ export default class Home extends Component<MyProps, MyState> {
       locations: [],
       episodes: [],
       nameModal: '',
+      isButtonModalDisabled: true,
       locationModal: { name: '', type: '', dimension: '' },
       episodesModal: [{ name: '', air_date: '', episode: '' }],
     };
@@ -64,12 +65,18 @@ export default class Home extends Component<MyProps, MyState> {
   }
 
   async fetchDataForModal(): Promise<void> {
+    this.setState({ locations: (await this.api.getDataForModal(LOCATIONS)) as ILocation[] });
+    this.setState({ episodes: (await this.api.getDataForModal(EPISODES)) as IEpisode[] });
+    this.setState({ isButtonModalDisabled: false });
+  }
+
+  async componentDidMount(): Promise<void> {
     try {
       this.setState({ error: false });
       this.setState({ loading: true });
 
-      this.setState({ locations: (await this.api.getDataForModal(LOCATIONS)) as ILocation[] });
-      this.setState({ episodes: (await this.api.getDataForModal(EPISODES)) as IEpisode[] });
+      await this.fetchCharacters();
+      await this.fetchDataForModal();
 
       this.setState({ loading: false });
     } catch (error: unknown) {
@@ -77,11 +84,6 @@ export default class Home extends Component<MyProps, MyState> {
       this.setState({ loading: false });
       console.error(error);
     }
-  }
-
-  async componentDidMount(): Promise<void> {
-    await this.fetchCharacters();
-    await this.fetchDataForModal();
   }
 
   setModal(id: number): void {
@@ -143,7 +145,7 @@ export default class Home extends Component<MyProps, MyState> {
               <Card
                 character={character}
                 key={character.id}
-                isButtonDisabled={false}
+                isButtonDisabled={this.state.isButtonModalDisabled}
                 setModal={this.setModal}
               />
             )
