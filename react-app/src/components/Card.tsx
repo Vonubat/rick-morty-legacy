@@ -35,7 +35,7 @@ export default class Card extends Component<MyProps, MyState> {
 
   handleClick(): void {
     if (this.props.setModal) {
-      this.props.setModal(this.state.id - 1);
+      this.props.setModal(this.state.id);
     }
   }
 

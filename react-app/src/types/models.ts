@@ -83,3 +83,11 @@ export interface IPageIndicators {
   error: boolean;
   loading: boolean;
 }
+
+export interface IDataForModal {
+  locations: ILocation[];
+  episodes: IEpisode[];
+  nameModal: string;
+  locationModal: { name: string; type: string; dimension: string };
+  episodesModal: { name: string; air_date: string; episode: string }[];
+}

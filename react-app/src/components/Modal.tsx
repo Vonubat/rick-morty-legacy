@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { IEpisode, ILocation } from 'types/models';
+import { IDataForModal } from 'types/models';
 
-type MyProps = {
-  locations: ILocation[];
-  episodes: IEpisode[];
-  modalId: number;
-};
+type MyProps = Pick<IDataForModal, 'episodesModal' | 'locationModal' | 'nameModal'>;
 
 type MyState = Record<string, never>;
 export default class Modal extends Component<MyProps, MyState> {
@@ -26,7 +22,7 @@ export default class Modal extends Component<MyProps, MyState> {
                 className="text-xl font-medium leading-normal text-gray-800"
                 id="modalCenteredScrollableLabel"
               >
-                Modal title
+                {this.props.nameModal}
               </h5>
               <button
                 type="button"
@@ -36,9 +32,12 @@ export default class Modal extends Component<MyProps, MyState> {
               ></button>
             </div>
             <div className="modal-body relative p-4">
-              <p>{this.props.modalId}</p>
-              <p>{this.props.episodes[this.props.modalId]?.name || 'test-episodes'}</p>
-              <p>{this.props.locations[this.props.modalId]?.name || 'test-episodes'}</p>
+              <p>{this.props.locationModal.name}</p>
+              <p>{this.props.locationModal.type}</p>
+              <p>{this.props.locationModal.dimension}</p>
+              <p>Just like that.</p>
+              {/* <p>{this.props.episodes[this.props.modalId]?.name || 'test-episodes'}</p>
+              <p>{this.props.locations[this.props.modalId]?.name || 'test-episodes'}</p> */}
               <p>Just like that.</p>
             </div>
           </div>

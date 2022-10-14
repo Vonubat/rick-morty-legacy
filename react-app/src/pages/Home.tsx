@@ -4,6 +4,7 @@ import {
   ICharacter,
   ICharacterContent,
   ICharacterFilter,
+  IDataForModal,
   IEpisode,
   IFilter,
   ILocation,
@@ -18,12 +19,7 @@ import { EPISODES, LOCATIONS } from 'constants/constants';
 
 type MyProps = Record<string, never>;
 
-type MyState = ICharacterContent &
-  IPageIndicators & {
-    locations: ILocation[];
-    episodes: IEpisode[];
-    modalId: number;
-  };
+type MyState = ICharacterContent & IPageIndicators & IDataForModal;
 
 export default class Home extends Component<MyProps, MyState> {
   api: Api;
@@ -38,7 +34,9 @@ export default class Home extends Component<MyProps, MyState> {
       loading: false,
       locations: [],
       episodes: [],
-      modalId: 0,
+      nameModal: '',
+      locationModal: { name: '', type: '', dimension: '' },
+      episodesModal: [{ name: '', air_date: '', episode: '' }],
     };
 
     this.fetchCharacters = this.fetchCharacters.bind(this);
@@ -73,8 +71,6 @@ export default class Home extends Component<MyProps, MyState> {
       this.setState({ locations: (await this.api.getDataForModal(LOCATIONS)) as ILocation[] });
       this.setState({ episodes: (await this.api.getDataForModal(EPISODES)) as IEpisode[] });
 
-      console.log(this.state.locations);
-
       this.setState({ loading: false });
     } catch (error: unknown) {
       this.setState({ error: true });
@@ -89,7 +85,50 @@ export default class Home extends Component<MyProps, MyState> {
   }
 
   setModal(id: number): void {
-    this.setState({ modalId: id });
+    this.setState({
+      locationModal: { name: '', type: '', dimension: '' },
+      episodesModal: [{ name: '', air_date: '', episode: '' }],
+    });
+
+    const character: ICharacter | undefined = this.state.results.find(
+      (character: ICharacter): boolean => character.id == id
+    );
+    if (!character) {
+      return;
+    }
+
+    const { name, location, episode } = character;
+
+    this.setState({ nameModal: name });
+
+    const currentLocation: ILocation | undefined = this.state.locations.find(
+      (item: ILocation): boolean => location.url == item.url
+    );
+    if (currentLocation) {
+      this.setState({
+        locationModal: {
+          name: currentLocation.name,
+          type: currentLocation.type,
+          dimension: currentLocation.dimension,
+        },
+      });
+    }
+
+    const currentEpisodes: IEpisode[] | undefined = this.state.episodes.filter(
+      (item: IEpisode): boolean => episode.includes(item.url)
+    );
+    if (currentEpisodes.length && currentEpisodes !== null) {
+      currentEpisodes.forEach((item: IEpisode): void =>
+        this.setState((prevState: Readonly<MyState>) => ({
+          episodesModal: [
+            ...prevState.episodesModal,
+            { name: item.name, air_date: item.air_date, episode: item.episode },
+          ],
+        }))
+      );
+    }
+    // console.log(this.state.episodesModal);
+    // console.log(this.state.locationModal);
   }
 
   render(): JSX.Element {
@@ -112,9 +151,9 @@ export default class Home extends Component<MyProps, MyState> {
         </div>
 
         <Modal
-          modalId={this.state.modalId}
-          locations={this.state.locations}
-          episodes={this.state.episodes}
+          locationModal={this.state.locationModal}
+          episodesModal={this.state.episodesModal}
+          nameModal={this.state.nameModal}
         />
       </div>
     );
