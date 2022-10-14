@@ -41,7 +41,7 @@ export default class Table extends Component<MyProps, MyState> {
                   },
                   index: number
                 ): JSX.Element => (
-                  <tr key={index + 1} className="bg-gray-100 border-b">
+                  <tr key={index + 1} className="bg-white-100 border-b">
                     <td className="px-2 py-2 text-sm font-medium text-gray-900">{index + 1}</td>
                     <td className="text-sm text-gray-900 font-light px-2 py-2">
                       <a

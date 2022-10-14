@@ -119,16 +119,16 @@ export default class Home extends Component<MyProps, MyState> {
     );
     if (currentEpisodes.length && currentEpisodes !== null) {
       currentEpisodes.forEach((item: IEpisode): void =>
-        this.setState((prevState: Readonly<MyState>) => ({
-          episodesModal: [
-            ...prevState.episodesModal,
-            { name: item.name, air_date: item.air_date, episode: item.episode },
-          ],
-        }))
+        this.setState(
+          (prevState: Readonly<MyState>): Pick<IDataForModal, 'episodesModal'> => ({
+            episodesModal: [
+              ...prevState.episodesModal,
+              { name: item.name, air_date: item.air_date, episode: item.episode },
+            ],
+          })
+        )
       );
     }
-    // console.log(this.state.episodesModal);
-    // console.log(this.state.locationModal);
   }
 
   render(): JSX.Element {
@@ -149,7 +149,6 @@ export default class Home extends Component<MyProps, MyState> {
             )
           )}
         </div>
-
         <Modal
           locationModal={this.state.locationModal}
           episodesModal={this.state.episodesModal}
