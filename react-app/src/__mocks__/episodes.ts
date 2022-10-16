@@ -1,7 +1,7 @@
 import { IEpisode } from 'types/models';
 
 // Mock API episodes data (https://rickandmortyapi.com/documentation/#episode-schema)
-const episodes: IEpisode[] = [
+export const episodes: IEpisode[] = [
   {
     id: 1,
     name: 'Pilot',
@@ -1779,5 +1779,3 @@ const episodes: IEpisode[] = [
     created: '2021-10-15T17:00:24.105Z',
   },
 ];
-
-export default episodes;

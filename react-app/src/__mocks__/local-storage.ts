@@ -30,8 +30,6 @@ const localStorageMock = (function () {
 
 Object.defineProperty(window, 'localStorage', { value: localStorageMock });
 
-const setLocalStorage = (id: string, data: unknown): void => {
+export const setLocalStorage = (id: string, data: unknown): void => {
   window.localStorage.setItem(id, JSON.stringify(data));
 };
-
-export default setLocalStorage;

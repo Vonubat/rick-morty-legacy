@@ -24,6 +24,7 @@ class Api extends HttpMethods {
     }
 
     const content: ICharacterContent = await response.json();
+
     return content;
   }
 
