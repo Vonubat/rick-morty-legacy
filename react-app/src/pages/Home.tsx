@@ -60,7 +60,9 @@ export default class Home extends Component<MyProps, MyState> {
     } catch (error: unknown) {
       this.setState({ error: true });
       this.setState({ loading: false });
-      console.error(error);
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
     }
   }
 
@@ -82,7 +84,9 @@ export default class Home extends Component<MyProps, MyState> {
     } catch (error: unknown) {
       this.setState({ error: true });
       this.setState({ loading: false });
-      console.error(error);
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
     }
   }
 

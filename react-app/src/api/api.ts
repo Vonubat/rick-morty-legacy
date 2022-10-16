@@ -10,7 +10,7 @@ import {
 import HttpMethods from './http-methods';
 
 class Api extends HttpMethods {
-  public async getCharacters(pageNumber = 1, filter: IFilter): Promise<ICharacterContent> {
+  public async getCharacters(pageNumber: number, filter: IFilter): Promise<ICharacterContent> {
     let url: URL = new URL(`${CHARACTERS}/?page=${pageNumber}`);
 
     if (filter.value) {
@@ -54,9 +54,6 @@ class Api extends HttpMethods {
       const requests: Promise<ILocation[] | IEpisode[]>[] = allUrls.map(
         async (url: URL): Promise<ILocation[] | IEpisode[]> => {
           const response: Response = await this.get(url);
-          if (!response.ok) {
-            throw new Error(`Can't get the ${type}`);
-          }
           const nextContent: ILocationContent | IEpisodeContent = await response.json();
           return nextContent.results;
         }
@@ -72,7 +69,6 @@ class Api extends HttpMethods {
         })
       );
     }
-
     return content.results;
   }
 }

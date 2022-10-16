@@ -215,7 +215,9 @@ export default class Forms extends Component<MyProps, MyState> {
         checkboxElement,
       };
     } catch (error) {
-      console.error(error);
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
     }
   }
 
