@@ -112,7 +112,7 @@ describe('Navigation component', (): void => {
 
 describe('Card component', (): void => {
   it('renders Card component', (): void => {
-    render(<Card isButtonDisabled={false} character={characters[0]} />);
+    render(<Card isButtonDisabled={false} character={characters.results[0]} />);
 
     const img: HTMLElement = screen.getByRole('img');
     const heading: HTMLElement = screen.getByRole('heading');
@@ -123,12 +123,12 @@ describe('Card component', (): void => {
   });
 
   it('renders all cards from data', (): void => {
-    characters.forEach((character: ICharacter): void => {
+    characters.results.forEach((character: ICharacter): void => {
       render(<Card isButtonDisabled={false} character={character} />);
     });
 
     const arrayOfCards: HTMLElement[] = screen.getAllByTestId('card');
-    expect(arrayOfCards).toHaveLength(characters.length);
+    expect(arrayOfCards).toHaveLength(characters.results.length);
   });
 });
 

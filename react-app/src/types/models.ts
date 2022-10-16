@@ -2,8 +2,8 @@
 export interface IInfo {
   count: number;
   pages: number;
-  next: URL | null;
-  prev: URL | null;
+  next: URL | string | null;
+  prev: URL | string | null;
 }
 
 export interface ICharacter {
