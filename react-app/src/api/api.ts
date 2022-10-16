@@ -71,6 +71,7 @@ class Api extends HttpMethods {
         })
       );
     }
+    console.log(content.results);
 
     return content.results;
   }

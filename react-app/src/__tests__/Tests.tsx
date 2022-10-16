@@ -3,20 +3,20 @@ import { render, screen } from '@testing-library/react';
 import App from './../App';
 import { BrowserRouter, MemoryRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import { setLocalStorage } from 'setupTests';
+import { setLocalStorage } from '__mocks__/local-storage';
 import Navigation from 'components/layout/Navigation';
 import Card from 'components/Card';
-import { characters } from 'data/characters';
+import { characters } from '__mocks__/characters';
 import SearchBar from 'components/SearchBar';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 import { ICharacter, IUserCharacter } from 'types/models';
 import Forms from 'pages/Forms';
 
-describe('App component', (): void => {
+describe('Application root', (): void => {
   it('renders App component', (): void => {
-    render(<App />, { wrapper: BrowserRouter });
+    const { getByText } = render(<App />, { wrapper: BrowserRouter });
 
-    const element: HTMLElement = screen.getByText(/Rick Morty Legacy/i);
+    const element: HTMLElement = getByText(/Rick Morty Legacy/i);
     expect(element).toBeInTheDocument();
   });
 });

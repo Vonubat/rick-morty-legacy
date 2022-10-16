@@ -44,7 +44,7 @@ export interface IEpisode {
   episode: string;
   characters: string[];
   url: string;
-  created: Date;
+  created: string;
 }
 
 export interface IUserCharacter {

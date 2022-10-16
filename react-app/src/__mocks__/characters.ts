@@ -1,5 +1,6 @@
 import { ICharacter } from 'types/models';
 
+// Mock API characters data (https://rickandmortyapi.com/documentation/#character-schema)
 export const characters: ICharacter[] = [
   {
     id: 1,
