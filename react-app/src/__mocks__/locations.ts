@@ -2,7 +2,7 @@ import { ILocation } from 'types/models';
 
 // Mock API locations data (https://rickandmortyapi.com/documentation/#location-schema)
 
-export const locations: ILocation[] = [
+const locations: ILocation[] = [
   {
     id: 1,
     name: 'Earth (C-137)',
@@ -1994,3 +1994,5 @@ export const locations: ILocation[] = [
     created: '2021-11-02T15:18:57.987Z',
   },
 ];
+
+export default locations;

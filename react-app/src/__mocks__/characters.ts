@@ -1,7 +1,7 @@
 import { ICharacter } from 'types/models';
 
 // Mock API characters data (https://rickandmortyapi.com/documentation/#character-schema)
-export const characters: ICharacter[] = [
+const characters: ICharacter[] = [
   {
     id: 1,
     name: 'Rick Sanchez',
@@ -406,3 +406,5 @@ export const characters: ICharacter[] = [
     created: '2017-11-04T20:19:09.017Z',
   },
 ];
+
+export default characters;
