@@ -7,6 +7,7 @@ import 'jest-canvas-mock';
 import './__mocks__/create-object-url';
 import './__mocks__/server';
 
+
 // Change default JEST Timeout
 
 jest.setTimeout(30000);
