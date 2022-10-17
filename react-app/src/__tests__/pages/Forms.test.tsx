@@ -302,7 +302,7 @@ describe('Forms page', (): void => {
     );
 
     /* Check creation user card and reset forms elements to default state*/
-    expect(screen.queryAllByTestId('card')).toHaveLength(1);
+    expect(screen.queryAllByTestId(/card/i)).toHaveLength(1);
     expect(fileInput.value).toMatch('');
     expect(nameInput.value).toMatch('');
     expect(speciesInput.value).toMatch('');
@@ -321,6 +321,6 @@ describe('Forms page', (): void => {
     await user.click(submitBtn);
 
     /* Check availability 2 user cards on page*/
-    expect(screen.queryAllByTestId('card')).toHaveLength(2);
+    expect(screen.queryAllByTestId(/card/i)).toHaveLength(2);
   });
 });

@@ -9,7 +9,7 @@ import {
   ILocation,
   ILocationContent,
 } from 'types/models';
-import { characters } from '__mocks__/characters';
+import { charactersAll } from '__mocks__/characters';
 import { episodes } from '__mocks__/episodes';
 import { locations } from '__mocks__/locations';
 import { server } from '__mocks__/server';
@@ -28,7 +28,7 @@ describe('Api functions', (): void => {
       query: 'name',
       value: '',
     });
-    expect(content).toEqual(characters);
+    expect(content).toEqual(charactersAll);
   });
 
   it('getCharacters method fails', async (): Promise<void> => {
@@ -39,7 +39,7 @@ describe('Api functions', (): void => {
       });
     } catch (e) {
       if (e instanceof Error) {
-        expect(e.message).toEqual("Can't get the caracters");
+        expect(e.message).toBe("Can't get the caracters");
       }
     }
   });
@@ -67,8 +67,7 @@ describe('Api functions', (): void => {
       (await API.getDataForModal(LOCATIONS)) as ILocation[];
     } catch (e) {
       if (e instanceof Error) {
-        console.error(e.message);
-        expect(e.message).toEqual(`Can't get the ${LOCATIONS}`);
+        expect(e.message).toBe(`Can't get the ${LOCATIONS}`);
       }
     }
   });
