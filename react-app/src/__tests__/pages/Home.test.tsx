@@ -23,6 +23,5 @@ describe('Home page', (): void => {
     const rickModalBtn = within(rickCard).getByText('Tell me more!');
     await user.click(rickModalBtn);
     expect(await screen.findByText('Pilot')).toBeInTheDocument();
-    screen.debug();
   });
 });
