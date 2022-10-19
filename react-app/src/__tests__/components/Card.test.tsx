@@ -1,6 +1,6 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import Card from 'components/Card';
+import { Card } from 'components/Card';
 import { charactersAll } from '__mocks__/characters';
 import { ICharacter } from 'types/models';
 import userEvent from '@testing-library/user-event';
