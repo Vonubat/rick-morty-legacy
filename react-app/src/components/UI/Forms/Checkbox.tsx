@@ -27,8 +27,9 @@ export default class Checkbox extends Component<MyProps, MyState> {
             onChange={this.props.onChange}
             ref={this.props.reference}
             data-testid="checkbox"
+            id="checkbox"
           />
-          <label className="form-check-label inline-block text-gray-800" htmlFor="flexCheckDefault">
+          <label className="form-check-label inline-block text-gray-800" htmlFor="checkbox">
             {this.props.children}
           </label>
         </div>
