@@ -4,7 +4,7 @@ import React, { Component, createRef } from 'react';
 import formsImg from './../assets/forms-img.webp';
 import Button from 'components/UI/Button';
 import DateInput from 'components/UI/Forms/DateInput';
-import Checkbox from 'components/UI/Forms/Checkbox';
+import { Checkbox } from 'components/UI/Forms/Checkbox';
 import FileInput from 'components/UI/Forms/FileInput';
 import { IGetFormElementsFn, IUserCharacter } from 'types/models';
 import Card from 'components/Card';
