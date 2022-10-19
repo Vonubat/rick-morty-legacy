@@ -1,6 +1,6 @@
 import { ICharacter, IUserCharacter } from 'types/models';
 import React, { Component } from 'react';
-import Button from './UI/Button';
+import { Button } from './UI/Button';
 
 type MyProps = {
   character: ICharacter | IUserCharacter;
