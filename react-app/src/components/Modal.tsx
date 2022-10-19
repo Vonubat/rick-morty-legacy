@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import { IDataForModal } from 'types/models';
 import { Badge } from './UI/Badge';
-import Table from './UI/Table';
+import { Table } from './UI/Table';
 
 type MyProps = Pick<IDataForModal, 'episodesModal' | 'locationModal' | 'nameModal'>;
 
