@@ -6,7 +6,7 @@ import Button from 'components/UI/Button';
 import DateInput from 'components/UI/Forms/DateInput';
 import Checkbox from 'components/UI/Forms/Checkbox';
 import FileInput from 'components/UI/Forms/FileInput';
-import { IUserCharacter } from 'types/models';
+import { IGetFormElementsFn, IUserCharacter } from 'types/models';
 import Card from 'components/UI/Card';
 import Alert from 'components/UI/Alert';
 import warningMessages from 'utils/warning-messages';
@@ -68,10 +68,8 @@ export default class Forms extends Component<MyProps, MyState> {
     this.validFileExtensions = ['image/png', 'image/jpeg', 'image/gif'];
   }
 
-  onChangeHandler(
-    e: React.ChangeEvent<HTMLInputElement> | React.ChangeEvent<HTMLSelectElement>
-  ): void {
-    const target: (EventTarget & HTMLInputElement) | (EventTarget & HTMLSelectElement) = e.target;
+  onChangeHandler(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void {
+    const target: EventTarget & (HTMLInputElement | HTMLSelectElement) = e.target;
     const name: string = target.name;
     const avatar: HTMLInputElement | null = this.fileInput.current;
 
@@ -87,6 +85,7 @@ export default class Forms extends Component<MyProps, MyState> {
       return { ...prevState, [name]: true };
     }, this.enableButton);
 
+    // better to separate logic for updating form and changing button state
     if (!this.state.firstChangeForm) {
       this.setState({ buttonDisabled: false });
     }
@@ -115,12 +114,11 @@ export default class Forms extends Component<MyProps, MyState> {
         return { ...prevState, [name]: false };
       });
       return false;
-    } else {
-      this.setState((prevState: Readonly<MyState>) => {
-        return { ...prevState, [name]: true };
-      });
-      return true;
     }
+    this.setState((prevState: Readonly<MyState>) => {
+      return { ...prevState, [name]: true };
+    });
+    return true;
   }
 
   validate(): boolean {
@@ -131,15 +129,7 @@ export default class Forms extends Component<MyProps, MyState> {
       genderElement,
       dateElement,
       checkboxElement,
-    } = this.getFormElements() as {
-      fileElement: HTMLInputElement;
-      nameElement: HTMLInputElement;
-      statusElement: HTMLSelectElement;
-      speciesElement: HTMLInputElement;
-      genderElement: HTMLSelectElement;
-      dateElement: HTMLInputElement;
-      checkboxElement: HTMLInputElement;
-    };
+    } = this.getFormElements() as IGetFormElementsFn;
 
     let isValid = true;
 
@@ -154,17 +144,7 @@ export default class Forms extends Component<MyProps, MyState> {
     return isValid;
   }
 
-  getFormElements():
-    | {
-        fileElement: HTMLInputElement;
-        nameElement: HTMLInputElement;
-        statusElement: HTMLSelectElement;
-        speciesElement: HTMLInputElement;
-        genderElement: HTMLSelectElement;
-        dateElement: HTMLInputElement;
-        checkboxElement: HTMLInputElement;
-      }
-    | undefined {
+  getFormElements(): IGetFormElementsFn | undefined {
     try {
       const fileElement: HTMLInputElement | null = this.fileInput.current;
       if (!fileElement) {
@@ -218,23 +198,15 @@ export default class Forms extends Component<MyProps, MyState> {
   onFormSubmit(e: React.FormEvent<HTMLFormElement>): void {
     e.preventDefault();
 
-    const { nameElement, statusElement, speciesElement, genderElement, dateElement } =
-      this.getFormElements() as {
-        fileElement: HTMLInputElement;
-        nameElement: HTMLInputElement;
-        statusElement: HTMLSelectElement;
-        speciesElement: HTMLInputElement;
-        genderElement: HTMLSelectElement;
-        dateElement: HTMLInputElement;
-        checkboxElement: HTMLInputElement;
-      };
-
     this.setState({ firstChangeForm: true });
 
     if (!this.validate()) {
       this.setState({ buttonDisabled: true });
       return;
     }
+
+    const { nameElement, statusElement, speciesElement, genderElement, dateElement } =
+      this.getFormElements() as IGetFormElementsFn;
 
     this.setState({ alertIsVisible: true });
     setTimeout(() => this.setState({ alertIsVisible: false }), 3000);
@@ -248,10 +220,10 @@ export default class Forms extends Component<MyProps, MyState> {
       created: dateElement.value,
     });
 
-    this.resetStateInputs();
+    this.resetForm();
   }
 
-  resetStateInputs(): void {
+  resetForm(): void {
     const {
       fileElement,
       nameElement,
@@ -260,15 +232,7 @@ export default class Forms extends Component<MyProps, MyState> {
       genderElement,
       dateElement,
       checkboxElement,
-    } = this.getFormElements() as {
-      fileElement: HTMLInputElement;
-      nameElement: HTMLInputElement;
-      statusElement: HTMLSelectElement;
-      speciesElement: HTMLInputElement;
-      genderElement: HTMLSelectElement;
-      dateElement: HTMLInputElement;
-      checkboxElement: HTMLInputElement;
-    };
+    } = this.getFormElements() as IGetFormElementsFn;
 
     fileElement.value = '';
     nameElement.value = '';
@@ -309,14 +273,14 @@ export default class Forms extends Component<MyProps, MyState> {
                   >
                     <FileInput
                       valid={this.state.file}
-                      role="File"
+                      subject="File"
                       name="file"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.fileInput}
                       warningMessage={
                         this.state.extension
-                          ? warningMessages.file.empty
-                          : warningMessages.file.imgFormat
+                          ? warningMessages.file.emptyInput
+                          : warningMessages.file.wrongImgFormat
                       }
                     >
                       Choose avatar for your character
@@ -324,11 +288,11 @@ export default class Forms extends Component<MyProps, MyState> {
 
                     <TextInput
                       valid={this.state.name}
-                      role="Name"
+                      subject="Name"
                       name="name"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.nameInput}
-                      warningMessage={warningMessages.name.empty}
+                      warningMessage={warningMessages.name.emptyInput}
                     />
 
                     <Select
@@ -338,16 +302,16 @@ export default class Forms extends Component<MyProps, MyState> {
                       options={['Alive', 'Dead', 'unknown']}
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.statusSelect}
-                      warningMessage={warningMessages.status.empty}
+                      warningMessage={warningMessages.status.emptyInput}
                     />
 
                     <TextInput
                       valid={this.state.species}
-                      role="Species"
+                      subject="Species"
                       name="species"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.speciesInput}
-                      warningMessage={warningMessages.species.empty}
+                      warningMessage={warningMessages.species.emptyInput}
                     />
 
                     <Select
@@ -357,7 +321,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       options={['Male', 'Female']}
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.genderSelect}
-                      warningMessage={warningMessages.gender.empty}
+                      warningMessage={warningMessages.gender.emptyInput}
                     />
 
                     <DateInput
@@ -365,7 +329,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="date"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.dateInput}
-                      warningMessage={warningMessages.date.empty}
+                      warningMessage={warningMessages.date.emptyInput}
                     />
 
                     <Checkbox
@@ -373,7 +337,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       name="checkbox"
                       onChange={this.onChangeHandler.bind(this)}
                       reference={this.checkboxProcessing}
-                      warningMessage={warningMessages.checkbox.empty}
+                      warningMessage={warningMessages.checkbox.emptyInput}
                     >
                       I consent to my personal data by Galactic Federation
                     </Checkbox>
@@ -386,7 +350,7 @@ export default class Forms extends Component<MyProps, MyState> {
                         color="danger"
                         disabled={false}
                         role="reset"
-                        onClick={this.resetStateInputs.bind(this)}
+                        onClick={this.resetForm.bind(this)}
                       >
                         Reset
                       </Button>

@@ -9,20 +9,15 @@ type MyState = Record<string, never>;
 
 export default class ValidationWarning extends Component<MyProps, MyState> {
   render(): JSX.Element {
-    let className = '';
-
     const cls = {
       baseClass: ``,
-      isValid: `text-transparent`,
-      isInvalid: `text-red-700`,
+      validClass: `text-transparent`,
+      invalidClass: `text-red-700`,
     };
 
     const valid = this.props.valid;
-    if (!valid) {
-      className = `${cls.baseClass} ${cls.isInvalid}`;
-    } else {
-      className = `${cls.baseClass} ${cls.isValid}`;
-    }
+    const className = `${cls.baseClass} ${valid ? cls.validClass : cls.invalidClass}`;
+
     return (
       <p className={className} data-testid="validationWarning">
         {this.props.children}

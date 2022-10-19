@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 
 type MyProps = {
-  role: 'button' | 'submit' | 'reset' | undefined;
+  role?: 'button' | 'submit' | 'reset';
   children: string;
   disabled: boolean;
   color: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark'; // tailwind presentation
@@ -12,13 +12,12 @@ type MyState = Record<string, never>;
 
 export default class Button extends Component<MyProps, MyState> {
   render(): JSX.Element {
-    let className = '';
-
     const cls = {
       baseClass: `inline-block px-6 mt-3 py-2.5 font-medium text-xs leading-tight uppercase rounded shadow-md focus:outline-none focus:ring-0 transition duration-150 ease-in-out`,
       nonDisabledBtnClass: `hover:shadow-lg focus:shadow-lg active:shadow-lg`,
       disabledBtnClass: `pointer-events-none opacity-60`,
       // https://tailwindcss.com/docs/content-configuration#dynamic-class-names
+      // https://tailwind-elements.com/docs/standard/components/buttons/
       btnColors: {
         primary: 'bg-blue-600 hover:bg-blue-700 focus:bg-blue-700 active:bg-blue-800 text-white',
         secondary:
@@ -35,11 +34,9 @@ export default class Button extends Component<MyProps, MyState> {
     };
 
     const disabled = this.props.disabled;
-    if (!disabled) {
-      className = `${cls.baseClass} ${cls.nonDisabledBtnClass} ${cls.btnColors[this.props.color]}`;
-    } else {
-      className = `${cls.baseClass} ${cls.disabledBtnClass} ${cls.btnColors[this.props.color]}`;
-    }
+    const className = `${cls.baseClass} ${
+      disabled ? cls.disabledBtnClass : cls.nonDisabledBtnClass
+    } ${cls.btnColors[this.props.color]}`;
 
     return (
       <button

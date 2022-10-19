@@ -1,25 +1,25 @@
 const warningMessages = {
   file: {
-    empty: 'Please, choose avatar for your character',
-    imgFormat: 'Please upload only jpg, png, jpeg, gif files!',
+    emptyInput: 'Please, choose avatar for your character',
+    wrongImgFormat: 'Please upload only jpg, png, jpeg, gif files!',
   },
   name: {
-    empty: 'Name of your character should contains at least 3 chars',
+    emptyInput: 'Name of your character should contains at least 3 chars',
   },
   status: {
-    empty: 'Please, select status of your character',
+    emptyInput: 'Please, select status of your character',
   },
   species: {
-    empty: 'Species of your character should contains at least 3 chars',
+    emptyInput: 'Species of your character should contains at least 3 chars',
   },
   gender: {
-    empty: 'Please, select gender of your character',
+    emptyInput: 'Please, select gender of your character',
   },
   date: {
-    empty: 'Please, choose a date',
+    emptyInput: 'Please, choose a date',
   },
   checkbox: {
-    empty: 'Checkbox is required',
+    emptyInput: 'Checkbox is required',
   },
 };
 

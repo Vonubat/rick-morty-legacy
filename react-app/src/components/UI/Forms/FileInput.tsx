@@ -3,7 +3,7 @@ import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
   children: string;
-  role: string;
+  subject: string;
   name: string;
   valid: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -57,7 +57,7 @@ export default class FileInput extends Component<MyProps, MyState> {
             type="file"
             id="formFile"
             className={className}
-            placeholder={this.props.role}
+            placeholder={this.props.subject}
             name={this.props.name}
             onChange={this.props.onChange}
             ref={this.props.reference}

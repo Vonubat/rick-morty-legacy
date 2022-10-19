@@ -31,3 +31,13 @@ export interface IUserCharacter {
   image: string;
   created: string;
 }
+
+export interface IGetFormElementsFn {
+  fileElement: HTMLInputElement;
+  nameElement: HTMLInputElement;
+  statusElement: HTMLSelectElement;
+  speciesElement: HTMLInputElement;
+  genderElement: HTMLSelectElement;
+  dateElement: HTMLInputElement;
+  checkboxElement: HTMLInputElement;
+}
