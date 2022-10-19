@@ -1,7 +1,7 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
-import Navigation from 'components/layout/Navigation';
+import { Navigation } from 'components/layout/Navigation';
 
 describe('Navigation component', (): void => {
   it('renders Navigation component', (): void => {
