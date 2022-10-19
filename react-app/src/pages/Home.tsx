@@ -14,7 +14,7 @@ import React, { Component } from 'react';
 import Api from 'api/api';
 import { LoadIndicator } from 'components/UI/Indicators/Load';
 import { ErrorIndicator } from 'components/UI/Indicators/Error';
-import Modal from 'components/Modal';
+import { Modal } from 'components/Modal';
 import { EPISODES, LOCATIONS } from 'constants/constants';
 
 type MyProps = Record<string, never>;
