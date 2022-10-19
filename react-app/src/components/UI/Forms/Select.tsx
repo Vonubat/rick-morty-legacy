@@ -1,5 +1,5 @@
 import React from 'react';
-import ValidationWarning from './ValidationWarning';
+import { ValidationWarning } from './ValidationWarning';
 
 type MyProps = {
   name: string;
