@@ -92,3 +92,12 @@ export interface IDataForModal {
   locationModal: { name: string; type: string; dimension: string };
   episodesModal: { name: string; air_date: string; episode: string }[];
 }
+export interface IGetFormElementsFn {
+  fileElement: HTMLInputElement;
+  nameElement: HTMLInputElement;
+  statusElement: HTMLSelectElement;
+  speciesElement: HTMLInputElement;
+  genderElement: HTMLSelectElement;
+  dateElement: HTMLInputElement;
+  checkboxElement: HTMLInputElement;
+}

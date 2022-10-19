@@ -39,8 +39,9 @@ export default class DateInput extends Component<MyProps, MyState> {
             onChange={this.props.onChange}
             ref={this.props.reference}
             data-testid="dateInput"
+            id="dateInput"
           />
-          <label htmlFor="floatingInput" className="text-gray-700">
+          <label htmlFor="dateInput" className="text-gray-700">
             Select a date
           </label>
         </div>

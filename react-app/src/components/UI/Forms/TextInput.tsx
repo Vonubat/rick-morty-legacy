@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
-  role: string;
+  subject: string;
   name: string;
   valid: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
@@ -48,15 +48,15 @@ export default class TextInput extends Component<MyProps, MyState> {
           <input
             type="text"
             className={className}
-            placeholder={this.props.role}
+            placeholder={this.props.subject}
             name={this.props.name}
             onChange={this.props.onChange}
             ref={this.props.reference}
             data-testid="textInput"
-            id={this.props.role}
+            id={this.props.subject}
           />
-          <label htmlFor={this.props.role} className="text-gray-700">
-            {this.props.role}
+          <label htmlFor={this.props.subject} className="text-gray-700">
+            {this.props.subject}
           </label>
         </div>
         <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>
