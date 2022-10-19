@@ -1,5 +1,5 @@
 import { Card } from 'components/Card';
-import SearchBar from 'components/SearchBar';
+import { SearchBar } from 'components/SearchBar';
 import {
   ICharacter,
   ICharacterContent,
