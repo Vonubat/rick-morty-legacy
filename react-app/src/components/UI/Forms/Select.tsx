@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
@@ -12,14 +12,27 @@ type MyProps = {
   warningMessage: string;
 };
 
-type MyState = Record<string, never>;
-
-export default class Select extends Component<MyProps, MyState> {
-  render(): JSX.Element | JSX.Element[] {
-    let className = '';
-
-    const cls = {
-      baseClass: `form-select form-select-lg
+export const Select: ({
+  name,
+  subject,
+  valid,
+  options,
+  defaultValue,
+  reference,
+  onChange,
+  warningMessage,
+}: MyProps) => JSX.Element = ({
+  name,
+  subject,
+  valid,
+  options,
+  defaultValue,
+  reference,
+  onChange,
+  warningMessage,
+}: MyProps): JSX.Element => {
+  const cls = {
+    baseClass: `form-select form-select-lg
       appearance-none
       block
       w-full
@@ -35,44 +48,38 @@ export default class Select extends Component<MyProps, MyState> {
       ease-in-out
       m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none capitalize`,
-      isValid: `is-valid`,
-      isInvalid: `is-invalid`,
-    };
+    validClass: `is-valid`,
+    invalidClass: `is-invalid`,
+  };
 
-    const valid = this.props.valid;
-    if (!valid) {
-      className = `${cls.baseClass} ${cls.isInvalid}`;
-    } else {
-      className = `${cls.baseClass}`;
-    }
+  const className = valid ? `${cls.baseClass}` : `${cls.baseClass} ${cls.invalidClass}`;
 
-    return (
-      <>
-        <div className="mt-3">
-          <select
-            defaultValue={this.props.defaultValue}
-            className={className}
-            aria-label=".form-select-lg"
-            placeholder={this.props.subject}
-            name={this.props.name}
-            onChange={this.props.onChange}
-            ref={this.props.reference}
-            data-testid="select"
-          >
-            <option disabled value="">
-              {this.props.subject}
-            </option>
-            {this.props.options.map((option: string): JSX.Element => {
-              return (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <div className="mt-3">
+        <select
+          defaultValue={defaultValue}
+          className={className}
+          aria-label=".form-select-lg"
+          placeholder={subject}
+          name={name}
+          onChange={onChange}
+          ref={reference}
+          data-testid="select"
+        >
+          <option disabled value="">
+            {subject}
+          </option>
+          {options.map((option: string): JSX.Element => {
+            return (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <ValidationWarning valid={valid}>{warningMessage}</ValidationWarning>
+    </>
+  );
+};

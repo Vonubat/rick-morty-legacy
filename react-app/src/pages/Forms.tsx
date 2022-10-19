@@ -1,4 +1,4 @@
-import Select from '../components/UI/Forms/Select';
+import { Select } from '../components/UI/Forms/Select';
 import TextInput from '../components/UI/Forms/TextInput';
 import React, { Component, createRef } from 'react';
 import formsImg from './../assets/forms-img.webp';
