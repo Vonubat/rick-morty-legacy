@@ -1,4 +1,4 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
@@ -9,44 +9,45 @@ type MyProps = {
   warningMessage: string;
 };
 
-type MyState = Record<string, never>;
+export const DateInput: ({
+  name,
+  valid,
+  onChange,
+  reference,
+  warningMessage,
+}: MyProps) => JSX.Element = ({
+  name,
+  valid,
+  onChange,
+  reference,
+  warningMessage,
+}: MyProps): JSX.Element => {
+  const cls = {
+    baseClass: `form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none`,
+    isValid: `is-valid`,
+    isInvalid: `is-invalid`,
+  };
 
-export default class DateInput extends Component<MyProps, MyState> {
-  render(): JSX.Element {
-    let className = '';
+  const className = valid ? `${cls.baseClass}` : `${cls.baseClass} ${cls.isInvalid}`;
 
-    const cls = {
-      baseClass: `form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none`,
-      isValid: `is-valid`,
-      isInvalid: `is-invalid`,
-    };
-
-    const valid = this.props.valid;
-    if (!valid) {
-      className = `${cls.baseClass} ${cls.isInvalid}`;
-    } else {
-      className = `${cls.baseClass}`;
-    }
-
-    return (
-      <>
-        <div className="datepicker relative form-floating mt-3">
-          <input
-            type="date"
-            className={className}
-            placeholder="Select a date"
-            name={this.props.name}
-            onChange={this.props.onChange}
-            ref={this.props.reference}
-            data-testid="dateInput"
-            id="dateInput"
-          />
-          <label htmlFor="dateInput" className="text-gray-700">
-            Select a date
-          </label>
-        </div>
-        <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <div className="datepicker relative form-floating mt-3">
+        <input
+          type="date"
+          className={className}
+          placeholder="Select a date"
+          name={name}
+          onChange={onChange}
+          ref={reference}
+          data-testid="dateInput"
+          id="dateInput"
+        />
+        <label htmlFor="dateInput" className="text-gray-700">
+          Select a date
+        </label>
+      </div>
+      <ValidationWarning valid={valid}>{warningMessage}</ValidationWarning>
+    </>
+  );
+};
