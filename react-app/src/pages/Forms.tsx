@@ -5,7 +5,7 @@ import formsImg from './../assets/forms-img.webp';
 import Button from 'components/UI/Button';
 import { DateInput } from 'components/UI/Forms/DateInput';
 import { Checkbox } from 'components/UI/Forms/Checkbox';
-import FileInput from 'components/UI/Forms/FileInput';
+import { FileInput } from 'components/UI/Forms/FileInput';
 import { IGetFormElementsFn, IUserCharacter } from 'types/models';
 import Card from 'components/Card';
 import Alert from 'components/UI/Alert';
@@ -278,11 +278,11 @@ export default class Forms extends Component<MyProps, MyState> {
                     onSubmit={this.onFormSubmit}
                   >
                     <FileInput
-                      valid={this.state.file}
-                      subject="File"
                       name="file"
-                      onChange={this.onChangeHandler}
+                      subject="File"
+                      valid={this.state.file}
                       reference={this.fileInput}
+                      onChange={this.onChangeHandler}
                       warningMessage={
                         this.state.extension
                           ? warningMessages.file.emptyInput
@@ -293,68 +293,68 @@ export default class Forms extends Component<MyProps, MyState> {
                     </FileInput>
 
                     <TextInput
-                      valid={this.state.name}
-                      subject="Name"
                       name="name"
-                      onChange={this.onChangeHandler}
+                      subject="Name"
+                      valid={this.state.name}
                       reference={this.nameInput}
+                      onChange={this.onChangeHandler}
                       warningMessage={warningMessages.name.emptyInput}
                     />
 
                     <Select
-                      valid={this.state.status}
-                      subject="Select status"
                       name="status"
+                      subject="Select status"
+                      valid={this.state.status}
                       options={['Alive', 'Dead', 'unknown']}
                       defaultValue=""
-                      onChange={this.onChangeHandler}
                       reference={this.statusSelect}
+                      onChange={this.onChangeHandler}
                       warningMessage={warningMessages.status.emptyInput}
                     />
 
                     <TextInput
-                      valid={this.state.species}
-                      subject="Species"
                       name="species"
-                      onChange={this.onChangeHandler}
+                      subject="Species"
+                      valid={this.state.species}
                       reference={this.speciesInput}
+                      onChange={this.onChangeHandler}
                       warningMessage={warningMessages.species.emptyInput}
                     />
 
                     <Select
-                      valid={this.state.gender}
-                      subject="Select gender"
                       name="gender"
+                      subject="Select gender"
+                      valid={this.state.gender}
                       options={['Male', 'Female', 'unknown']}
                       defaultValue=""
-                      onChange={this.onChangeHandler}
                       reference={this.genderSelect}
+                      onChange={this.onChangeHandler}
                       warningMessage={warningMessages.gender.emptyInput}
                     />
 
                     <DateInput
-                      valid={this.state.date}
                       name="date"
-                      onChange={this.onChangeHandler}
+                      valid={this.state.date}
                       reference={this.dateInput}
+                      onChange={this.onChangeHandler}
                       warningMessage={warningMessages.date.emptyInput}
                     />
 
                     <Checkbox
-                      valid={this.state.checkbox}
                       name="checkbox"
-                      onChange={this.onChangeHandler}
+                      valid={this.state.checkbox}
                       reference={this.checkboxProcessing}
+                      onChange={this.onChangeHandler}
                       warningMessage={warningMessages.checkbox.emptyInput}
                     >
                       I consent to my personal data by Galactic Federation
                     </Checkbox>
 
                     <div className="flex gap-4">
-                      <Button color="primary" disabled={this.state.buttonDisabled} role="submit">
+                      <Button role="submit" color="primary" disabled={this.state.buttonDisabled}>
                         Submit
                       </Button>
-                      <Button color="danger" disabled={false} role="reset" onClick={this.resetForm}>
+                      <Button role="reset" color="danger" disabled={false} onClick={this.resetForm}>
                         Reset
                       </Button>
                     </div>

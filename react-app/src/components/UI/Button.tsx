@@ -2,12 +2,12 @@ import React, { Component } from 'react';
 
 type MyProps = {
   role?: 'button' | 'submit' | 'reset';
-  children: string;
-  disabled: boolean;
   color: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark'; // tailwind presentation
+  disabled: boolean;
   onClick?: () => void;
   dataBsToggle?: string;
   dataBsTarget?: string;
+  children: string;
 };
 
 type MyState = Record<string, never>;

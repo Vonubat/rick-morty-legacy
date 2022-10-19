@@ -1,24 +1,35 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
-  children: string;
-  subject: string;
   name: string;
+  subject: string;
   valid: boolean;
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   reference: React.RefObject<HTMLInputElement>;
   warningMessage: string;
+  children: string;
 };
 
-type MyState = Record<string, never>;
-
-export default class FileInput extends Component<MyProps, MyState> {
-  render(): JSX.Element {
-    let className = '';
-
-    const cls = {
-      baseClass: `form-control
+export const FileInput: ({
+  name,
+  subject,
+  valid,
+  reference,
+  onChange,
+  warningMessage,
+  children,
+}: MyProps) => JSX.Element = ({
+  name,
+  subject,
+  valid,
+  reference,
+  onChange,
+  warningMessage,
+  children,
+}: MyProps): JSX.Element => {
+  const cls = {
+    baseClass: `form-control
       block
       w-full
       px-3
@@ -33,40 +44,31 @@ export default class FileInput extends Component<MyProps, MyState> {
       ease-in-out
       m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none`,
-      isValid: `is-valid`,
-      isInvalid: `is-invalid`,
-    };
+    validClass: `is-valid`,
+    invalidClass: `is-invalid`,
+  };
 
-    const valid = this.props.valid;
-    if (!valid) {
-      className = `${cls.baseClass} ${cls.isInvalid}`;
-    } else {
-      className = `${cls.baseClass}`;
-    }
+  const className = valid ? `${cls.baseClass}` : `${cls.baseClass} ${cls.invalidClass}`;
 
-    return (
-      <>
-        <div className="mt-3">
-          <label
-            htmlFor="formFile"
-            className="form-label inline-block mb-2 text-gray-700 text-start"
-          >
-            {this.props.children}
-          </label>
-          <input
-            type="file"
-            id="formFile"
-            className={className}
-            placeholder={this.props.subject}
-            name={this.props.name}
-            onChange={this.props.onChange}
-            ref={this.props.reference}
-            accept="image/png, image/gif, image/jpeg"
-            data-testid="fileInput"
-          />
-        </div>
-        <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <div className="mt-3">
+        <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700 text-start">
+          {children}
+        </label>
+        <input
+          type="file"
+          id="formFile"
+          className={className}
+          placeholder={subject}
+          name={name}
+          onChange={onChange}
+          ref={reference}
+          accept="image/png, image/gif, image/jpeg"
+          data-testid="fileInput"
+        />
+      </div>
+      <ValidationWarning valid={valid}>{warningMessage}</ValidationWarning>
+    </>
+  );
+};

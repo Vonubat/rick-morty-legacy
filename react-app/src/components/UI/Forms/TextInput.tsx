@@ -2,11 +2,11 @@ import React, { Component } from 'react';
 import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
-  subject: string;
   name: string;
+  subject: string;
   valid: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   reference: React.RefObject<HTMLInputElement>;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   warningMessage: string;
 };
 

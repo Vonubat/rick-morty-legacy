@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import ValidationWarning from './ValidationWarning';
 
 type MyProps = {
-  subject: string;
   name: string;
+  subject: string;
+  valid: boolean;
   options: string[];
   defaultValue: string;
-  valid: boolean;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   reference?: React.RefObject<HTMLSelectElement>;
+  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
   warningMessage: string;
 };
 

@@ -4,31 +4,31 @@ import ValidationWarning from './ValidationWarning';
 type MyProps = {
   name: string;
   valid: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   reference: React.RefObject<HTMLInputElement>;
+  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
   warningMessage: string;
 };
 
 export const DateInput: ({
   name,
   valid,
-  onChange,
   reference,
+  onChange,
   warningMessage,
 }: MyProps) => JSX.Element = ({
   name,
   valid,
-  onChange,
   reference,
+  onChange,
   warningMessage,
 }: MyProps): JSX.Element => {
   const cls = {
     baseClass: `form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none`,
-    isValid: `is-valid`,
-    isInvalid: `is-invalid`,
+    validClass: `is-valid`,
+    invalidClass: `is-invalid`,
   };
 
-  const className = valid ? `${cls.baseClass}` : `${cls.baseClass} ${cls.isInvalid}`;
+  const className = valid ? `${cls.baseClass}` : `${cls.baseClass} ${cls.invalidClass}`;
 
   return (
     <>

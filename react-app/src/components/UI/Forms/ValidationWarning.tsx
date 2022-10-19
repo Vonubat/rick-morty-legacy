@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 
 type MyProps = {
-  children: string;
   valid: boolean;
+  children: string;
 };
 
 type MyState = Record<string, never>;
