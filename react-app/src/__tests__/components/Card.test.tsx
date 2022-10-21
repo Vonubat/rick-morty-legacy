@@ -32,7 +32,7 @@ describe('Card component', (): void => {
     const setModal = jest.fn();
 
     render(
-      <Card isButtonDisabled={false} character={charactersAll.results[0]} setModal={setModal} />
+      <Card isButtonDisabled={false} character={charactersAll.results[0]} fillModal={setModal} />
     );
     const button: HTMLElement = screen.getByRole('button');
 

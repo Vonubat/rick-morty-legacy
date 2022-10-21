@@ -5,13 +5,13 @@ import { Button } from './UI/Button';
 type MyProps = {
   character: ICharacter | IUserCharacter;
   isButtonDisabled: boolean;
-  setModal?: (id: number) => void;
+  fillModal?: (id: number) => void;
 };
 
-export const Card: ({ character, isButtonDisabled, setModal }: MyProps) => JSX.Element = ({
+export const Card: ({ character, isButtonDisabled, fillModal }: MyProps) => JSX.Element = ({
   character,
   isButtonDisabled,
-  setModal,
+  fillModal,
 }: MyProps): JSX.Element => {
   const id: number = (character as ICharacter).id || 1;
   const date: Date = new Date(Date.parse(character.created));
@@ -24,10 +24,7 @@ export const Card: ({ character, isButtonDisabled, setModal }: MyProps) => JSX.E
   const formattedDate: string = date.toLocaleString('en-US', dateOptions);
 
   const handleClick: () => void = (): void => {
-    if (setModal) {
-      setModal(id);
-    }
-    return;
+    fillModal ? fillModal(id) : undefined;
   };
 
   return (
