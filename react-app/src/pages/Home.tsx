@@ -86,7 +86,7 @@ export const Home: () => JSX.Element = (): JSX.Element => {
     }
   };
 
-  useEffect(() => {
+  useEffect((): void => {
     fetchCharacters();
     fetchDataForModal();
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -126,12 +126,14 @@ export const Home: () => JSX.Element = (): JSX.Element => {
     );
     if (currentEpisodes.length && currentEpisodes !== null) {
       currentEpisodes.forEach((item: IEpisode): void =>
-        setEpisodesModal((prevState) => {
-          return [
-            ...prevState,
-            { name: item.name, air_date: item.air_date, episode: item.episode },
-          ];
-        })
+        setEpisodesModal(
+          (prevState: IDataForModal['episodesModal']): IDataForModal['episodesModal'] => {
+            return [
+              ...prevState,
+              { name: item.name, air_date: item.air_date, episode: item.episode },
+            ];
+          }
+        )
       );
     }
   };

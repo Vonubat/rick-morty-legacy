@@ -1,36 +1,36 @@
 import React from 'react';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+import warningMessages from 'utils/warning-messages';
 import { ValidationWarning } from './ValidationWarning';
 
 type MyProps = {
-  name: string;
+  form: UseFormReturn<FieldValues, unknown>;
   subject: string;
-  valid: boolean;
   options: string[];
   defaultValue: string;
-  reference?: React.RefObject<HTMLSelectElement>;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  warningMessage: string;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
 export const Select: ({
-  name,
+  form,
   subject,
-  valid,
   options,
   defaultValue,
-  reference,
   onChange,
-  warningMessage,
 }: MyProps) => JSX.Element = ({
-  name,
+  form,
   subject,
-  valid,
   options,
   defaultValue,
-  reference,
   onChange,
-  warningMessage,
 }: MyProps): JSX.Element => {
+  const {
+    register,
+    formState: { errors },
+  } = form;
+
+  const name: string = subject.toLowerCase();
+
   const cls = {
     baseClass: `form-select form-select-lg
       appearance-none
@@ -52,23 +52,26 @@ export const Select: ({
     invalidClass: `is-invalid`,
   };
 
-  const className = valid ? `${cls.baseClass}` : `${cls.baseClass} ${cls.invalidClass}`;
+  const className: string = errors[name]
+    ? `${cls.baseClass} ${cls.invalidClass}`
+    : `${cls.baseClass}`;
 
   return (
     <>
       <div className="mt-3">
         <select
+          {...register(name, {
+            required: warningMessages[name]?.emptyInput || '',
+            onChange: onChange,
+          })}
           defaultValue={defaultValue}
           className={className}
-          aria-label=".form-select-lg"
-          placeholder={subject}
-          name={name}
-          onChange={onChange}
-          ref={reference}
+          placeholder={`Select ${subject}`}
+          id={name}
           data-testid="select"
         >
           <option disabled value="">
-            {subject}
+            {`Select ${subject}`}
           </option>
           {options.map((option: string): JSX.Element => {
             return (
@@ -79,7 +82,9 @@ export const Select: ({
           })}
         </select>
       </div>
-      <ValidationWarning valid={valid}>{warningMessage}</ValidationWarning>
+      <ValidationWarning valid={!errors[name]}>
+        {(errors[name]?.message as string) || warningMessages[name]?.emptyInput || ''}
+      </ValidationWarning>
     </>
   );
 };

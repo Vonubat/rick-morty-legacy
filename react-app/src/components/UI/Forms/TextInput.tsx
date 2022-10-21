@@ -1,30 +1,24 @@
 import React from 'react';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+import warningMessages from 'utils/warning-messages';
 import { ValidationWarning } from './ValidationWarning';
 
 type MyProps = {
-  name: string;
+  form: UseFormReturn<FieldValues, unknown>;
   subject: string;
-  valid: boolean;
-  reference: React.RefObject<HTMLInputElement>;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  warningMessage: string;
 };
 
-export const TextInput: ({
-  name,
+export const TextInput: ({ form, subject }: MyProps) => JSX.Element = ({
+  form,
   subject,
-  valid,
-  reference,
-  onChange,
-  warningMessage,
-}: MyProps) => JSX.Element = ({
-  name,
-  subject,
-  valid,
-  reference,
-  onChange,
-  warningMessage,
 }: MyProps): JSX.Element => {
+  const {
+    register,
+    formState: { errors },
+  } = form;
+
+  const name: string = subject.toLowerCase();
+
   const cls = {
     baseClass: `form-control
       block
@@ -44,26 +38,34 @@ export const TextInput: ({
     invalidClass: `is-invalid`,
   };
 
-  const className = valid ? `${cls.baseClass}` : `${cls.baseClass} ${cls.invalidClass}`;
+  const className: string = errors[name]
+    ? `${cls.baseClass} ${cls.invalidClass}`
+    : `${cls.baseClass}`;
 
   return (
     <>
       <div className="form-floating mt-3">
         <input
+          {...register(name, {
+            required: warningMessages[name]?.emptyInput,
+            minLength: {
+              value: 3,
+              message: warningMessages[name]?.emptyInput,
+            },
+          })}
           type="text"
           className={className}
           placeholder={subject}
-          name={name}
-          onChange={onChange}
-          ref={reference}
+          id={name}
           data-testid="textInput"
-          id={subject}
         />
-        <label htmlFor={subject} className="text-gray-700">
+        <label htmlFor={name} className="text-gray-700">
           {subject}
         </label>
       </div>
-      <ValidationWarning valid={valid}>{warningMessage}</ValidationWarning>
+      <ValidationWarning valid={!errors[name]}>
+        {(errors[name]?.message as string) || warningMessages[name]?.emptyInput}
+      </ValidationWarning>
     </>
   );
 };

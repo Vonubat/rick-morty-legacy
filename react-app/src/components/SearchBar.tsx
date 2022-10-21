@@ -1,4 +1,5 @@
 import React, { ChangeEvent, useState } from 'react';
+import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { ICharacterFilter, IFilter } from 'types/models';
 import { Select } from './UI/Forms/Select';
 
@@ -13,6 +14,11 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
   const [query, setQuery] = useState(
     (localStorage.getItem('queryValue') as ICharacterFilter) || 'name'
   );
+
+  const form: UseFormReturn<FieldValues, unknown> =
+    useForm(/* {
+    mode: 'onChange',
+  } */);
 
   const onChangeSearchInput: (e: ChangeEvent<HTMLInputElement>) => void = (
     e: ChangeEvent<HTMLInputElement>
@@ -42,13 +48,11 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
     >
       {/* Select search query*/}
       <Select
-        valid={true}
-        subject="Select search query:"
-        name="searchQuery"
+        form={form}
+        subject="search query:"
         options={['name', 'species']}
         defaultValue={query}
         onChange={onChangeSelect}
-        warningMessage={''}
       />
       {/* SearchBar */}
       <div className="w-72 sm:w-96 mt-3">

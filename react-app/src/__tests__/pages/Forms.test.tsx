@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 import { IUserCharacter } from 'types/models';
-import Forms from 'pages/Forms';
+import { Forms } from 'pages/Forms';
 
 describe('Forms page', (): void => {
   const user: UserEvent = userEvent.setup();
@@ -105,22 +105,29 @@ describe('Forms page', (): void => {
     expect(nameValidationWarning).toHaveClass('text-transparent');
     expect(speciesValidationWarning).toHaveClass('text-transparent');
 
-    await user.type(nameInput, 'abc');
-    await user.type(speciesInput, '123');
+    await user.type(nameInput, 'ab');
+    await user.type(speciesInput, '12');
     await user.click(submitBtn);
-    expect(nameValidationWarning).toHaveClass('text-red-700');
-    expect(speciesValidationWarning).toHaveClass('text-red-700');
+
+    await waitFor(() => {
+      expect(nameValidationWarning).toHaveClass('text-red-700');
+      expect(speciesValidationWarning).toHaveClass('text-red-700');
+    });
 
     await user.click(resetBtn);
-    expect(nameValidationWarning).toHaveClass('text-transparent');
-    expect(speciesValidationWarning).toHaveClass('text-transparent');
+    await waitFor(() => {
+      expect(nameValidationWarning).toHaveClass('text-transparent');
+      expect(speciesValidationWarning).toHaveClass('text-transparent');
+    });
 
     await user.type(nameInput, 'abcd');
     await user.type(speciesInput, '1234');
     await user.click(submitBtn);
-    expect(nameValidationWarning).toHaveClass('text-transparent');
-    expect(speciesValidationWarning).toHaveClass('text-transparent');
-    expect(submitBtn).toBeDisabled();
+    await waitFor(() => {
+      expect(nameValidationWarning).toHaveClass('text-transparent');
+      expect(speciesValidationWarning).toHaveClass('text-transparent');
+      expect(submitBtn).toBeDisabled();
+    });
   });
 
   it('check ValidationWarning functionality', async (): Promise<void> => {
@@ -166,81 +173,97 @@ describe('Forms page', (): void => {
 
     await user.click(checkbox);
     await user.click(submitBtn);
-    expect(nameValidationWarning).toHaveClass('text-red-700');
-    expect(speciesValidationWarning).toHaveClass('text-red-700');
-    expect(fileValidationWarning).toHaveClass('text-red-700');
-    expect(statusValidationWarning).toHaveClass('text-red-700');
-    expect(genderValidationWarning).toHaveClass('text-red-700');
-    expect(dateValidationWarning).toHaveClass('text-red-700');
-    expect(checkboxValidationWarning).toHaveClass('text-transparent');
-    expect(submitBtn).toBeDisabled();
+    await waitFor(() => {
+      expect(nameValidationWarning).toHaveClass('text-red-700');
+      expect(speciesValidationWarning).toHaveClass('text-red-700');
+      expect(fileValidationWarning).toHaveClass('text-red-700');
+      expect(statusValidationWarning).toHaveClass('text-red-700');
+      expect(genderValidationWarning).toHaveClass('text-red-700');
+      expect(dateValidationWarning).toHaveClass('text-red-700');
+      expect(checkboxValidationWarning).toHaveClass('text-transparent');
+      expect(submitBtn).toBeDisabled();
+    });
 
     await user.type(nameInput, 'test_name');
-    expect(nameValidationWarning).toHaveClass('text-transparent');
-    expect(speciesValidationWarning).toHaveClass('text-red-700');
-    expect(fileValidationWarning).toHaveClass('text-red-700');
-    expect(statusValidationWarning).toHaveClass('text-red-700');
-    expect(genderValidationWarning).toHaveClass('text-red-700');
-    expect(dateValidationWarning).toHaveClass('text-red-700');
-    expect(checkboxValidationWarning).toHaveClass('text-transparent');
-    expect(submitBtn).toBeDisabled();
+    await waitFor(() => {
+      expect(nameValidationWarning).toHaveClass('text-transparent');
+      expect(speciesValidationWarning).toHaveClass('text-red-700');
+      expect(fileValidationWarning).toHaveClass('text-red-700');
+      expect(statusValidationWarning).toHaveClass('text-red-700');
+      expect(genderValidationWarning).toHaveClass('text-red-700');
+      expect(dateValidationWarning).toHaveClass('text-red-700');
+      expect(checkboxValidationWarning).toHaveClass('text-transparent');
+      expect(submitBtn).toBeDisabled();
+    });
 
     await user.type(speciesInput, 'test_species');
-    expect(nameValidationWarning).toHaveClass('text-transparent');
-    expect(speciesValidationWarning).toHaveClass('text-transparent');
-    expect(fileValidationWarning).toHaveClass('text-red-700');
-    expect(statusValidationWarning).toHaveClass('text-red-700');
-    expect(genderValidationWarning).toHaveClass('text-red-700');
-    expect(dateValidationWarning).toHaveClass('text-red-700');
-    expect(checkboxValidationWarning).toHaveClass('text-transparent');
-    expect(submitBtn).toBeDisabled();
+    await waitFor(() => {
+      expect(nameValidationWarning).toHaveClass('text-transparent');
+      expect(speciesValidationWarning).toHaveClass('text-transparent');
+      expect(fileValidationWarning).toHaveClass('text-red-700');
+      expect(statusValidationWarning).toHaveClass('text-red-700');
+      expect(genderValidationWarning).toHaveClass('text-red-700');
+      expect(dateValidationWarning).toHaveClass('text-red-700');
+      expect(checkboxValidationWarning).toHaveClass('text-transparent');
+      expect(submitBtn).toBeDisabled();
+    });
 
     await user.upload(fileInput, fakeFileImg);
-    expect(nameValidationWarning).toHaveClass('text-transparent');
-    expect(speciesValidationWarning).toHaveClass('text-transparent');
-    expect(fileValidationWarning).toHaveClass('text-transparent');
-    expect(statusValidationWarning).toHaveClass('text-red-700');
-    expect(genderValidationWarning).toHaveClass('text-red-700');
-    expect(dateValidationWarning).toHaveClass('text-red-700');
-    expect(checkboxValidationWarning).toHaveClass('text-transparent');
-    expect(submitBtn).toBeDisabled();
+    await waitFor(() => {
+      expect(nameValidationWarning).toHaveClass('text-transparent');
+      expect(speciesValidationWarning).toHaveClass('text-transparent');
+      expect(fileValidationWarning).toHaveClass('text-transparent');
+      expect(statusValidationWarning).toHaveClass('text-red-700');
+      expect(genderValidationWarning).toHaveClass('text-red-700');
+      expect(dateValidationWarning).toHaveClass('text-red-700');
+      expect(checkboxValidationWarning).toHaveClass('text-transparent');
+      expect(submitBtn).toBeDisabled();
+    });
 
     await user.selectOptions(statusSelect, ['Alive']);
-    expect(nameValidationWarning).toHaveClass('text-transparent');
-    expect(speciesValidationWarning).toHaveClass('text-transparent');
-    expect(fileValidationWarning).toHaveClass('text-transparent');
-    expect(statusValidationWarning).toHaveClass('text-transparent');
-    expect(genderValidationWarning).toHaveClass('text-red-700');
-    expect(dateValidationWarning).toHaveClass('text-red-700');
-    expect(checkboxValidationWarning).toHaveClass('text-transparent');
-    expect(submitBtn).toBeDisabled();
+    await waitFor(() => {
+      expect(nameValidationWarning).toHaveClass('text-transparent');
+      expect(speciesValidationWarning).toHaveClass('text-transparent');
+      expect(fileValidationWarning).toHaveClass('text-transparent');
+      expect(statusValidationWarning).toHaveClass('text-transparent');
+      expect(genderValidationWarning).toHaveClass('text-red-700');
+      expect(dateValidationWarning).toHaveClass('text-red-700');
+      expect(checkboxValidationWarning).toHaveClass('text-transparent');
+      expect(submitBtn).toBeDisabled();
+    });
 
     await user.selectOptions(genderSelect, ['Female']);
-    expect(nameValidationWarning).toHaveClass('text-transparent');
-    expect(speciesValidationWarning).toHaveClass('text-transparent');
-    expect(fileValidationWarning).toHaveClass('text-transparent');
-    expect(statusValidationWarning).toHaveClass('text-transparent');
-    expect(genderValidationWarning).toHaveClass('text-transparent');
-    expect(dateValidationWarning).toHaveClass('text-red-700');
-    expect(checkboxValidationWarning).toHaveClass('text-transparent');
-    expect(submitBtn).toBeDisabled();
+    await waitFor(() => {
+      expect(nameValidationWarning).toHaveClass('text-transparent');
+      expect(speciesValidationWarning).toHaveClass('text-transparent');
+      expect(fileValidationWarning).toHaveClass('text-transparent');
+      expect(statusValidationWarning).toHaveClass('text-transparent');
+      expect(genderValidationWarning).toHaveClass('text-transparent');
+      expect(dateValidationWarning).toHaveClass('text-red-700');
+      expect(checkboxValidationWarning).toHaveClass('text-transparent');
+      expect(submitBtn).toBeDisabled();
+    });
 
     await user.type(dateInput, '1999-12-31');
-    expect(nameValidationWarning).toHaveClass('text-transparent');
-    expect(speciesValidationWarning).toHaveClass('text-transparent');
-    expect(fileValidationWarning).toHaveClass('text-transparent');
-    expect(statusValidationWarning).toHaveClass('text-transparent');
-    expect(genderValidationWarning).toHaveClass('text-transparent');
-    expect(dateValidationWarning).toHaveClass('text-transparent');
-    expect(checkboxValidationWarning).toHaveClass('text-transparent');
-    expect(submitBtn).not.toBeDisabled();
+    await waitFor(() => {
+      expect(nameValidationWarning).toHaveClass('text-transparent');
+      expect(speciesValidationWarning).toHaveClass('text-transparent');
+      expect(fileValidationWarning).toHaveClass('text-transparent');
+      expect(statusValidationWarning).toHaveClass('text-transparent');
+      expect(genderValidationWarning).toHaveClass('text-transparent');
+      expect(dateValidationWarning).toHaveClass('text-transparent');
+      expect(checkboxValidationWarning).toHaveClass('text-transparent');
+      expect(submitBtn).not.toBeDisabled();
+    });
 
     /* Check non-image file validation */
     await user.click(submitBtn);
     fileInput.accept = ''; // turn-off accept="image/png, image/gif, image/jpeg" in fileInput
     await user.upload(fileInput, fakeFilePdf);
     await user.click(submitBtn);
-    expect(screen.getByText(/Please upload only jpg, png, jpeg, gif files!/i)).toBeInTheDocument();
+    expect(
+      await screen.findByText(/Please, upload only jpg, png, jpeg, gif files!/i)
+    ).toBeInTheDocument();
   });
 
   it('check User card creation functionality', async (): Promise<void> => {
@@ -290,26 +313,27 @@ describe('Forms page', (): void => {
     await user.click(checkbox);
     await user.click(submitBtn);
 
-    /* Check condition that alert message is visible only around 3 seconds after submit and create user card */
+    /* Check creation user card and reset forms elements to default state*/
+    await waitFor(() => {
+      expect(screen.queryAllByTestId(/card/i)).toHaveLength(1);
+      expect(fileInput.value).toMatch('');
+      expect(nameInput.value).toMatch('');
+      expect(speciesInput.value).toMatch('');
+      expect(dateInput.value).toMatch('');
+      expect(statusSelect.value).toMatch('');
+      expect(genderSelect.value).toMatch('');
+      expect(checkbox.checked).toBeFalsy();
+      expect(alert).toHaveClass('block');
+    });
 
-    expect(alert).toHaveClass('block');
+    /* Check condition that alert message is visible only around 2 seconds after submit and create user card */
 
     await waitFor(
       () => {
         expect(alert).toHaveClass('hidden');
       },
-      { timeout: 4000 }
+      { timeout: 3000 }
     );
-
-    /* Check creation user card and reset forms elements to default state*/
-    expect(screen.queryAllByTestId(/card/i)).toHaveLength(1);
-    expect(fileInput.value).toMatch('');
-    expect(nameInput.value).toMatch('');
-    expect(speciesInput.value).toMatch('');
-    expect(dateInput.value).toMatch('');
-    expect(statusSelect.value).toMatch('');
-    expect(genderSelect.value).toMatch('');
-    expect(checkbox.checked).toBeFalsy();
 
     await user.upload(fileInput, fakeFile2);
     await user.type(nameInput, mockNewData[1].name);
@@ -321,6 +345,8 @@ describe('Forms page', (): void => {
     await user.click(submitBtn);
 
     /* Check availability 2 user cards on page*/
-    expect(screen.queryAllByTestId(/card/i)).toHaveLength(2);
+    await waitFor(() => {
+      expect(screen.queryAllByTestId(/card/i)).toHaveLength(2);
+    });
   });
 });

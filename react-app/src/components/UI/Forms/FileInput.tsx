@@ -1,33 +1,26 @@
 import React from 'react';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+import warningMessages from 'utils/warning-messages';
 import { ValidationWarning } from './ValidationWarning';
 
 type MyProps = {
-  name: string;
+  form: UseFormReturn<FieldValues, unknown>;
   subject: string;
-  valid: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  reference: React.RefObject<HTMLInputElement>;
-  warningMessage: string;
   children: string;
 };
 
-export const FileInput: ({
-  name,
+export const FileInput: ({ form, subject, children }: MyProps) => JSX.Element = ({
+  form,
   subject,
-  valid,
-  reference,
-  onChange,
-  warningMessage,
-  children,
-}: MyProps) => JSX.Element = ({
-  name,
-  subject,
-  valid,
-  reference,
-  onChange,
-  warningMessage,
   children,
 }: MyProps): JSX.Element => {
+  const {
+    register,
+    formState: { errors },
+  } = form;
+
+  const name: string = subject.toLowerCase();
+
   const cls = {
     baseClass: `form-control
       block
@@ -48,27 +41,38 @@ export const FileInput: ({
     invalidClass: `is-invalid`,
   };
 
-  const className = valid ? `${cls.baseClass}` : `${cls.baseClass} ${cls.invalidClass}`;
+  const className: string = errors[name]
+    ? `${cls.baseClass} ${cls.invalidClass}`
+    : `${cls.baseClass}`;
+
+  const validFileExtensions: string[] = ['image/png', 'image/jpeg', 'image/gif'];
 
   return (
     <>
       <div className="mt-3">
-        <label htmlFor="formFile" className="form-label inline-block mb-2 text-gray-700 text-start">
+        <label htmlFor={name} className="form-label inline-block mb-2 text-gray-700 text-start">
           {children}
         </label>
         <input
+          {...register(name, {
+            required: warningMessages.file.emptyInput,
+            validate: (file: FileList): string | true => {
+              return (
+                validFileExtensions.includes(file[0].type) || warningMessages.file.wrongImgFormat
+              );
+            },
+          })}
           type="file"
-          id="formFile"
           className={className}
           placeholder={subject}
-          name={name}
-          onChange={onChange}
-          ref={reference}
+          id={name}
           accept="image/png, image/gif, image/jpeg"
           data-testid="fileInput"
         />
       </div>
-      <ValidationWarning valid={valid}>{warningMessage}</ValidationWarning>
+      <ValidationWarning valid={!errors[name]}>
+        {(errors[name]?.message as string) || warningMessages.file.emptyInput}
+      </ValidationWarning>
     </>
   );
 };

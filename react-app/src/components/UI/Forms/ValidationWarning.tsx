@@ -9,7 +9,7 @@ export const ValidationWarning: ({ valid, children }: MyProps) => JSX.Element = 
   valid,
   children,
 }: MyProps): JSX.Element => {
-  const cls = {
+  const cls: { [key: string]: string } = {
     baseClass: ``,
     validClass: `text-transparent`,
     invalidClass: `text-red-700`,
