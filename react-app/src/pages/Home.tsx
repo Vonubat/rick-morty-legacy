@@ -1,7 +1,7 @@
-import Card from 'components/Card';
-import SearchBar from 'components/SearchBar';
+import Card from 'components/UI/Card';
+import SearchBar from 'components/UI/SearchBar';
 import { characters } from 'data/characters';
-import { ICharacterSchema } from 'models';
+import { ICharacter } from 'types/models';
 import React, { Component } from 'react';
 
 export default class Home extends Component {
@@ -11,9 +11,11 @@ export default class Home extends Component {
         {/* SearchBar */}
         <SearchBar />
         <div className="flex flex-wrap mx-auto items-center justify-center">
-          {characters.map((character: ICharacterSchema) => (
-            <Card character={character} key={character.id} />
-          ))}
+          {characters.map(
+            (character: ICharacter): JSX.Element => (
+              <Card character={character} key={character.id} />
+            )
+          )}
         </div>
       </div>
     );

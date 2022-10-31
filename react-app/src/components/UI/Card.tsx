@@ -1,16 +1,15 @@
-import { ICharacterSchema } from 'models';
+import { ICharacter, IUserCharacter } from 'types/models';
 import React, { Component } from 'react';
+import Button from './Button';
 
 type MyProps = {
-  character: ICharacterSchema;
+  character: ICharacter | IUserCharacter;
 };
 
-type MyState = {
-  [index: string]: string | number;
-};
+type MyState = Record<string, never>;
 
 export default class Card extends Component<MyProps, MyState> {
-  character: ICharacterSchema = this.props.character;
+  character: ICharacter | IUserCharacter = this.props.character;
   date: Date = new Date(Date.parse(this.character.created));
   dateOptions: Intl.DateTimeFormatOptions = {
     weekday: 'long',
@@ -40,15 +39,12 @@ export default class Card extends Component<MyProps, MyState> {
             <p className="text-gray-700 text-base mb-2 text-start">
               <i> The gender:</i> <b>{this.character.gender}</b>
             </p>
-            <button
-              type="button"
-              className=" inline-block px-6 mt-3 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
-            >
+            <Button disabled={true} role="button" color="primary">
               Tell me more!
-            </button>
+            </Button>
           </div>
           <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
-            Time at which the character was created in the database: <br />{' '}
+            <div>Time at which the character was created in the database:</div>
             <b>{this.formattedDate}</b>
           </div>
         </div>

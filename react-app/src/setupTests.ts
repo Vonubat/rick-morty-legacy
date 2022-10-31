@@ -3,37 +3,8 @@
 // expect(element).toHaveTextContent(/react/i)
 // learn more: https://github.com/testing-library/jest-dom
 import '@testing-library/jest-dom';
+import './__mocks__/create-object-url';
 
-const localStorageMock = (function () {
-  let store: { [index: string]: string } = {};
+// Change default JEST Timeout
 
-  return {
-    getItem(key: string): string {
-      return store[key];
-    },
-
-    setItem(key: string, value: string): void {
-      store[key] = value;
-    },
-
-    clear() {
-      store = {};
-    },
-
-    removeItem(key: string): void {
-      delete store[key];
-    },
-
-    getAll(): {
-      [index: string]: string;
-    } {
-      return store;
-    },
-  };
-})();
-
-Object.defineProperty(window, 'localStorage', { value: localStorageMock });
-
-export const setLocalStorage = (id: string, data: unknown) => {
-  window.localStorage.setItem(id, JSON.stringify(data));
-};
+jest.setTimeout(30000);
