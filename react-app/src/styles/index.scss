@@ -1,0 +1,19 @@
+@import-normalize;
+@import url(https://fonts.googleapis.com/css?family=Ubuntu:300,300italic,regular,italic,500,500italic,700,700italic);
+@import './pages/PageNotFound.module';
+@import './pages/About.module';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+* {
+  font-family: Ubuntu, sans-serif;
+}
+
+.active-nav-link {
+  --tw-text-opacity: 1;
+  color: rgb(55 65 81 / var(--tw-text-opacity));
+  text-underline-offset: 3px;
+  text-decoration: underline;
+}
