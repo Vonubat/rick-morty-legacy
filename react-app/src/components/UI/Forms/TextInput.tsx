@@ -21,7 +21,6 @@ export default class TextInput extends Component<MyProps, MyState> {
       block
       w-full
       px-3
-      py-1.5
       text-base
       font-normal
       text-gray-700
@@ -45,7 +44,7 @@ export default class TextInput extends Component<MyProps, MyState> {
 
     return (
       <>
-        <div className="form-floating mt-3 xl:w-96">
+        <div className="form-floating mt-3">
           <input
             type="text"
             className={className}
