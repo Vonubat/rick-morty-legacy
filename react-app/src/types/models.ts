@@ -70,12 +70,15 @@ export interface IEpisodeContent {
   info: IInfo;
   results: IEpisode[];
 }
-
-export type ICharacterFilter = 'name' | 'species';
+type IQuery = 'name' | 'species';
+type IGender = 'any' | 'female' | 'male' | 'genderless' | 'unknown';
+type IStatus = 'any' | 'alive' | 'dead' | 'unknown';
 
 export interface IFilter {
-  query: ICharacterFilter;
   value: string;
+  query: IQuery;
+  gender: IGender;
+  status: IStatus;
 }
 
 // Internal interfaces
@@ -91,13 +94,4 @@ export interface IAdditionalData {
   isCharacterPageReady: boolean;
   locationCharacter: { name: string; type: string; dimension: string };
   episodesCharacter: { name: string; air_date: string; episode: string }[];
-}
-export interface IGetFormElementsFn {
-  fileElement: HTMLInputElement;
-  nameElement: HTMLInputElement;
-  statusElement: HTMLSelectElement;
-  speciesElement: HTMLInputElement;
-  genderElement: HTMLSelectElement;
-  dateElement: HTMLInputElement;
-  checkboxElement: HTMLInputElement;
 }

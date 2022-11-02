@@ -1,6 +1,5 @@
 import {
   ICharacterContent,
-  ICharacterFilter,
   IAdditionalData,
   IEpisode,
   IFilter,
@@ -63,47 +62,47 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   const [isCharacterPageReady, setIsCharacterPageReady] =
     useState<IAdditionalData['isCharacterPageReady']>(false);
 
-  const fetchCharacters: (filter?: IFilter) => Promise<void> = useCallback(
-    async (filter?: IFilter): Promise<void> => {
-      try {
-        setIsError(false);
-        const params: IFilter = filter || {
-          query: (localStorage.getItem('queryValue') as ICharacterFilter) || 'name',
-          value: localStorage.getItem('searchValue') || '',
-        };
-        const key: string = JSON.stringify(params).toLowerCase();
-        setResults([]);
-        setInfo({
-          count: 0,
-          pages: 0,
-          next: null,
-          prev: null,
-        });
+  const fetchCharacters: () => Promise<void> = useCallback(async (): Promise<void> => {
+    try {
+      setIsError(false);
+      const filter: IFilter = {
+        value: localStorage.getItem('searchValue') || '',
+        query: form.getValues('search query') || 'name',
+        gender: form.getValues('gender') || 'any',
+        status: form.getValues('status') || 'any',
+      };
 
-        if (contentStorage.has(key)) {
-          setInfo(contentStorage.get(key)!.info);
-          setResults(contentStorage.get(key)!.results);
-          return;
-        }
+      const key: string = JSON.stringify(filter).toLowerCase();
+      setResults([]);
+      setInfo({
+        count: 0,
+        pages: 0,
+        next: null,
+        prev: null,
+      });
 
-        setIsLoading(true);
-
-        const content: ICharacterContent = await api.getCharacters(1, params);
-        contentStorage.set(key, content);
-        setInfo(content.info);
-        setResults(content.results);
-
-        setIsLoading(false);
-      } catch (error: unknown) {
-        setIsError(true);
-        setIsLoading(false);
-        if (error instanceof Error) {
-          console.error(error.message);
-        }
+      if (contentStorage.has(key)) {
+        setInfo(contentStorage.get(key)!.info);
+        setResults(contentStorage.get(key)!.results);
+        return;
       }
-    },
-    [api, contentStorage]
-  );
+
+      setIsLoading(true);
+
+      const content: ICharacterContent = await api.getCharacters(1, filter);
+      contentStorage.set(key, content);
+      setInfo(content.info);
+      setResults(content.results);
+
+      setIsLoading(false);
+    } catch (error: unknown) {
+      setIsError(true);
+      setIsLoading(false);
+      if (error instanceof Error) {
+        console.error(error.message);
+      }
+    }
+  }, [api, contentStorage, form]);
 
   const fetchAdditionalData: () => void = useCallback(async (): Promise<void> => {
     try {

@@ -1,33 +1,28 @@
 import React, { ChangeEvent, useState } from 'react';
-import { IFilter } from 'types/models';
 import settingsIcon from 'assets/settings.png';
 import { Settings } from './Settings';
+import { useHomeContextUpdater } from 'context/HomeContext';
 
 type MyProps = {
-  search: (filter?: IFilter) => Promise<void>;
+  search: () => Promise<void>;
 };
 
 export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
   search,
 }: MyProps): JSX.Element => {
   const [value, setValue] = useState(localStorage.getItem('searchValue') || '');
+  const { form } = useHomeContextUpdater();
+  const { handleSubmit, register } = form;
 
-  const onChangeSearchInput: (e: ChangeEvent<HTMLInputElement>) => void = (
-    e: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setValue(e.target.value);
-    localStorage.setItem('searchValue', e.target.value);
-  };
-
-  const handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void> = async (
-    e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    e.preventDefault();
-    await search({ query: 'name', value });
+  const onFormSubmit: () => Promise<void> = async (): Promise<void> => {
+    await search();
   };
 
   return (
-    <form onSubmit={handleSubmit} className="flex justify-center items-center flex-wrap-reverse">
+    <form
+      onSubmit={handleSubmit(onFormSubmit)}
+      className="flex justify-center items-center flex-wrap-reverse"
+    >
       {/* Settings */}
       <img
         src={settingsIcon}
@@ -40,8 +35,13 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
       <div className="w-72 sm:w-96 mt-3">
         <div className="input-group relative flex flex-wrap items-stretch w-full rounded">
           <input
-            value={value}
-            onChange={onChangeSearchInput}
+            {...register('value', {
+              value: value,
+              onChange: (e: ChangeEvent<HTMLInputElement>): void => {
+                setValue(e.target.value);
+                localStorage.setItem('searchValue', e.target.value);
+              },
+            })}
             type="search"
             className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder="Search..."
