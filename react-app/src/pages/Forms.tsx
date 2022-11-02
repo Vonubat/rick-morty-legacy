@@ -272,10 +272,10 @@ export default class Forms extends Component<MyProps, MyState> {
           <div className="container mx-auto xl:px-32 text-left">
             <div className="grid sm:grid-cols-2 items-center">
               <div className="-mb-12 sm:mb-0">
-                <div className="jumbotron-forms block rounded-sm shadow-sm px-6 py-12 sm:py-6 xl:py-12 sm:px-12 sm:-mr-14">
-                  <h3 className="text-2xl font-bold text-blue-600 mb-3 ">Character generator</h3>
+                <div className="jumbotron-forms block rounded-sm shadow-sm py-12 px-12 sm:-mr-14">
+                  <h3 className="text-2xl font-bold text-blue-600 mb-3">Character generator</h3>
                   <form
-                    className="flex flex-col justify-center sm:justify-start xl:justify-start xl:w-96"
+                    className="flex flex-col justify-center sm:justify-start xl:justify-start"
                     onSubmit={this.onFormSubmit}
                   >
                     <FileInput
