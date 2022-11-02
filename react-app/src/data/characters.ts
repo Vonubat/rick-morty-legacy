@@ -1,6 +1,6 @@
-import { ICharacter } from 'types/models';
+import { ICharacterSchema } from 'models';
 
-export const characters: ICharacter[] = [
+export const characters: ICharacterSchema[] = [
   {
     id: 1,
     name: 'Rick Sanchez',
