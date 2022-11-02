@@ -1,9 +1,11 @@
 import React, { Component, ChangeEvent } from 'react';
 
-type MyProps = Record<string, never>;
+type MyProps = {
+  [index: string]: string | number;
+};
 
 type MyState = {
-  value: string;
+  [index: string]: string | number;
 };
 
 export default class SearchBar extends Component<MyProps, MyState> {
@@ -21,7 +23,7 @@ export default class SearchBar extends Component<MyProps, MyState> {
   }
 
   componentWillUnmount(): void {
-    localStorage.setItem('searchValue', this.state.value);
+    localStorage.setItem('searchValue', `${this.state.value}`);
   }
 
   render(): JSX.Element {
