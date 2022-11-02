@@ -6,8 +6,6 @@ type MyProps = {
   disabled: boolean;
   color: 'primary' | 'secondary' | 'success' | 'danger' | 'warning' | 'info' | 'light' | 'dark'; // tailwind presentation
   onClick?: () => void;
-  dataBsToggle?: string;
-  dataBsTarget?: string;
 };
 
 type MyState = Record<string, never>;
@@ -15,7 +13,7 @@ type MyState = Record<string, never>;
 export default class Button extends Component<MyProps, MyState> {
   render(): JSX.Element {
     const cls = {
-      baseClass: `btn px-6 mt-3 py-2.5 font-medium text-xs leading-tight uppercase rounded shadow-md focus:outline-none focus:ring-0 transition duration-150 ease-in-out`,
+      baseClass: `inline-block px-6 mt-3 py-2.5 font-medium text-xs leading-tight uppercase rounded shadow-md focus:outline-none focus:ring-0 transition duration-150 ease-in-out`,
       nonDisabledBtnClass: `hover:shadow-lg focus:shadow-lg active:shadow-lg`,
       disabledBtnClass: `pointer-events-none opacity-60`,
       // https://tailwindcss.com/docs/content-configuration#dynamic-class-names
@@ -46,8 +44,6 @@ export default class Button extends Component<MyProps, MyState> {
         className={className}
         disabled={this.props.disabled}
         onClick={this.props.onClick}
-        data-bs-toggle={this.props.dataBsToggle}
-        data-bs-target={this.props.dataBsTarget}
       >
         {this.props.children}
       </button>
