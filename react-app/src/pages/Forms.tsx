@@ -7,8 +7,7 @@ import DateInput from 'components/UI/Forms/DateInput';
 import Checkbox from 'components/UI/Forms/Checkbox';
 import FileInput from 'components/UI/Forms/FileInput';
 import { IGetFormElementsFn, IUserCharacter } from 'types/models';
-import Card from 'components/Card';
-
+import Card from 'components/UI/Card';
 import Alert from 'components/UI/Alert';
 import warningMessages from 'utils/warning-messages';
 
@@ -67,10 +66,6 @@ export default class Forms extends Component<MyProps, MyState> {
 
     this.userCards = [];
     this.validFileExtensions = ['image/png', 'image/jpeg', 'image/gif'];
-
-    this.onFormSubmit = this.onFormSubmit.bind(this);
-    this.onChangeHandler = this.onChangeHandler.bind(this);
-    this.resetForm = this.resetForm.bind(this);
   }
 
   onChangeHandler(e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>): void {
@@ -196,9 +191,7 @@ export default class Forms extends Component<MyProps, MyState> {
         checkboxElement,
       };
     } catch (error) {
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
+      console.error(error);
     }
   }
 
@@ -275,14 +268,14 @@ export default class Forms extends Component<MyProps, MyState> {
                 <div className="jumbotron-forms block rounded-sm shadow-sm px-6 py-12 sm:py-6 xl:py-12 sm:px-12 sm:-mr-14">
                   <h3 className="text-2xl font-bold text-blue-600 mb-3 ">Character generator</h3>
                   <form
-                    className="flex flex-col justify-center sm:justify-start xl:justify-start xl:w-96"
-                    onSubmit={this.onFormSubmit}
+                    className="flex flex-col justify-center sm:justify-start xl:justify-start"
+                    onSubmit={this.onFormSubmit.bind(this)}
                   >
                     <FileInput
                       valid={this.state.file}
                       subject="File"
                       name="file"
-                      onChange={this.onChangeHandler}
+                      onChange={this.onChangeHandler.bind(this)}
                       reference={this.fileInput}
                       warningMessage={
                         this.state.extension
@@ -297,7 +290,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       valid={this.state.name}
                       subject="Name"
                       name="name"
-                      onChange={this.onChangeHandler}
+                      onChange={this.onChangeHandler.bind(this)}
                       reference={this.nameInput}
                       warningMessage={warningMessages.name.emptyInput}
                     />
@@ -307,8 +300,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       subject="Select status"
                       name="status"
                       options={['Alive', 'Dead', 'unknown']}
-                      defaultValue=""
-                      onChange={this.onChangeHandler}
+                      onChange={this.onChangeHandler.bind(this)}
                       reference={this.statusSelect}
                       warningMessage={warningMessages.status.emptyInput}
                     />
@@ -317,7 +309,7 @@ export default class Forms extends Component<MyProps, MyState> {
                       valid={this.state.species}
                       subject="Species"
                       name="species"
-                      onChange={this.onChangeHandler}
+                      onChange={this.onChangeHandler.bind(this)}
                       reference={this.speciesInput}
                       warningMessage={warningMessages.species.emptyInput}
                     />
@@ -326,9 +318,8 @@ export default class Forms extends Component<MyProps, MyState> {
                       valid={this.state.gender}
                       subject="Select gender"
                       name="gender"
-                      options={['Male', 'Female', 'unknown']}
-                      defaultValue=""
-                      onChange={this.onChangeHandler}
+                      options={['Male', 'Female']}
+                      onChange={this.onChangeHandler.bind(this)}
                       reference={this.genderSelect}
                       warningMessage={warningMessages.gender.emptyInput}
                     />
@@ -336,7 +327,7 @@ export default class Forms extends Component<MyProps, MyState> {
                     <DateInput
                       valid={this.state.date}
                       name="date"
-                      onChange={this.onChangeHandler}
+                      onChange={this.onChangeHandler.bind(this)}
                       reference={this.dateInput}
                       warningMessage={warningMessages.date.emptyInput}
                     />
@@ -344,7 +335,7 @@ export default class Forms extends Component<MyProps, MyState> {
                     <Checkbox
                       valid={this.state.checkbox}
                       name="checkbox"
-                      onChange={this.onChangeHandler}
+                      onChange={this.onChangeHandler.bind(this)}
                       reference={this.checkboxProcessing}
                       warningMessage={warningMessages.checkbox.emptyInput}
                     >
@@ -355,7 +346,12 @@ export default class Forms extends Component<MyProps, MyState> {
                       <Button color="primary" disabled={this.state.buttonDisabled} role="submit">
                         Submit
                       </Button>
-                      <Button color="danger" disabled={false} role="reset" onClick={this.resetForm}>
+                      <Button
+                        color="danger"
+                        disabled={false}
+                        role="reset"
+                        onClick={this.resetForm.bind(this)}
+                      >
                         Reset
                       </Button>
                     </div>
@@ -374,7 +370,7 @@ export default class Forms extends Component<MyProps, MyState> {
               {this.userCards.length > 0 &&
                 this.userCards.map(
                   (character: IUserCharacter, index: number): JSX.Element => (
-                    <Card character={character} key={index} isButtonDisabled={true} />
+                    <Card character={character} key={index} />
                   )
                 )}
             </div>

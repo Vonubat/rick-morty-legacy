@@ -13,7 +13,6 @@
     "postcss-normalize": "^10.0.1",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-    "react-lottie-player": "^1.4.3",
     "react-router-dom": "^6.4.1",
     "react-scripts": "5.0.1",
     "sass": "^1.55.0",
@@ -57,20 +56,9 @@
     "eslint-plugin-prettier": "^4.0.0",
     "eslint-plugin-react": "^7.31.8",
     "husky": "^7.0.4",
-    "jest-canvas-mock": "^2.4.0",
     "lint-staged": "^12.4.1",
-    "msw": "^0.47.4",
     "postcss": "^8.4.16",
     "prettier": "^2.6.2",
     "tailwindcss": "^3.1.8"
-  },
-  "jest": {
-    "collectCoverageFrom": [
-      "src/**/*.{ts,tsx}",
-      "!src/serviceWorker.ts",
-      "!src/index.tsx",
-      "!src/react-app-env.d.ts",
-      "!src/types/models.ts"
-    ]
   }
 }
