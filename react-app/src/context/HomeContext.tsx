@@ -8,6 +8,7 @@ import {
   IHomeContextState,
   IHomeContextUpdater,
   ActionPage,
+  ICharacter,
 } from 'types/models';
 import React, {
   createContext,
@@ -54,13 +55,16 @@ interface MyProps {
 export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   children,
 }: MyProps): JSX.Element => {
+  // for memoization
   const contentStorage: Map<string, ICharacterContent> = useMemo(
     (): Map<string, ICharacterContent> => new Map(),
     []
   );
+  // for API
   const api: Api = useMemo((): Api => new Api(), []);
+  // for Settings & SearchBar components
   const form: UseFormReturn<FieldValues, unknown> = useForm();
-
+  // for Home page
   const [isError, setIsError] = useState<IPageIndicators['isError']>(false);
   const [isLoading, setIsLoading] = useState<IPageIndicators['isLoading']>(false);
   const [isCharacterPageReady, setIsCharacterPageReady] =
@@ -74,7 +78,19 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   const [results, setResults] = useState<ICharacterContent['results']>([]);
   const [locations, setLocations] = useState<IAdditionalData['locations']>([]);
   const [episodes, setEpisodes] = useState<IAdditionalData['episodes']>([]);
+  // for Pagination component
   const [currentPage, dispatchPage] = useReducer(pageReducer, 1);
+  // for Character page
+  const [currentCharacter, setCurrentCharacter] = useState<ICharacter | null>(null);
+  const [locationCharacter, setLocationCharacter] = useState<IAdditionalData['locationCharacter']>({
+    name: '',
+    type: '',
+    dimension: '',
+  });
+  const [episodesCharacter, setEpisodesCharacter] = useState<IAdditionalData['episodesCharacter']>([
+    { name: '', air_date: '', episode: '' },
+  ]);
+  // ==============
 
   const fetchCharacters: () => Promise<void> = useCallback(async (): Promise<void> => {
     try {
@@ -148,6 +164,54 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
     fetchCharacters();
   }, [fetchCharacters]);
 
+  const fillCharacterPage: (id: number) => void = (id: number): void => {
+    setLocationCharacter({
+      name: '',
+      type: '',
+      dimension: '',
+    });
+    setEpisodesCharacter([{ name: '', air_date: '', episode: '' }]);
+
+    const character: ICharacter | undefined = results.find(
+      (character: ICharacter): boolean => character.id == id
+    );
+    if (!character) {
+      return;
+    }
+
+    const { location: locationOfChar, episode: episodesOfChar } = character;
+    setCurrentCharacter(character);
+
+    const currentLocation: ILocation | undefined = locations.find(
+      (item: ILocation): boolean => locationOfChar.url == item.url
+    );
+    if (currentLocation) {
+      setLocationCharacter({
+        name: currentLocation.name,
+        type: currentLocation.type,
+        dimension: currentLocation.dimension,
+      });
+    }
+
+    const currentEpisodes: IEpisode[] | undefined = episodes.filter((item: IEpisode): boolean =>
+      episodesOfChar.includes(item.url)
+    );
+    if (currentEpisodes.length && currentEpisodes !== null) {
+      currentEpisodes.forEach((item: IEpisode): void =>
+        setEpisodesCharacter(
+          (
+            prevState: IAdditionalData['episodesCharacter']
+          ): IAdditionalData['episodesCharacter'] => {
+            return [
+              ...prevState,
+              { name: item.name, air_date: item.air_date, episode: item.episode },
+            ];
+          }
+        )
+      );
+    }
+  };
+
   return (
     <HomeContextState.Provider
       value={{
@@ -159,9 +223,14 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
         episodes,
         isCharacterPageReady,
         currentPage,
+        currentCharacter,
+        locationCharacter,
+        episodesCharacter,
       }}
     >
-      <HomeContextUpdater.Provider value={{ fetchCharacters, form, dispatchPage }}>
+      <HomeContextUpdater.Provider
+        value={{ fetchCharacters, dispatchPage, fillCharacterPage, form }}
+      >
         {children}
       </HomeContextUpdater.Provider>
     </HomeContextState.Provider>

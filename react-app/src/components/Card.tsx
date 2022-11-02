@@ -1,17 +1,18 @@
 import { ICharacter, IUserCharacter } from 'types/models';
 import React from 'react';
 import { Button } from './UI/Button';
+import { NavLink } from 'react-router-dom';
 
 type MyProps = {
   character: ICharacter | IUserCharacter;
   isButtonDisabled: boolean;
-  fillModal?: (id: number) => void;
+  fillCharacterPage?: (id: number) => void;
 };
 
-export const Card: ({ character, isButtonDisabled, fillModal }: MyProps) => JSX.Element = ({
+export const Card: ({ character, isButtonDisabled, fillCharacterPage }: MyProps) => JSX.Element = ({
   character,
   isButtonDisabled,
-  fillModal,
+  fillCharacterPage,
 }: MyProps): JSX.Element => {
   const id: number = (character as ICharacter).id || 1;
   const date: Date = new Date(Date.parse(character.created));
@@ -24,8 +25,14 @@ export const Card: ({ character, isButtonDisabled, fillModal }: MyProps) => JSX.
   const formattedDate: string = date.toLocaleString('en-US', dateOptions);
 
   const handleClick: () => void = (): void => {
-    fillModal ? fillModal(id) : undefined;
+    fillCharacterPage ? fillCharacterPage(id) : undefined;
   };
+
+  const btn: JSX.Element = (
+    <Button role="button" color="primary" disabled={isButtonDisabled} onClick={handleClick}>
+      Tell me more!
+    </Button>
+  );
 
   return (
     <div className="flex justify-center mx-3 my-3" data-testid={`card ${character.name}`}>
@@ -47,16 +54,7 @@ export const Card: ({ character, isButtonDisabled, fillModal }: MyProps) => JSX.
           <p className="text-gray-700 text-base mb-2 text-start">
             <i> The gender:</i> <b>{character.gender}</b>
           </p>
-          <Button
-            role="button"
-            color="primary"
-            disabled={isButtonDisabled}
-            onClick={handleClick}
-            dataBsToggle="modal"
-            dataBsTarget="#modalCenteredScrollable"
-          >
-            Tell me more!
-          </Button>
+          {isButtonDisabled ? btn : <NavLink to={`/character/${id}`}>{btn}</NavLink>}
         </div>
         <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
           <div>Time at which the character was created in the database:</div>

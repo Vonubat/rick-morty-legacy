@@ -107,12 +107,16 @@ export interface IHomeContextState {
   episodes: IAdditionalData['episodes'];
   isCharacterPageReady: IAdditionalData['isCharacterPageReady'];
   currentPage: number;
+  currentCharacter: ICharacter | null;
+  locationCharacter: IAdditionalData['locationCharacter'];
+  episodesCharacter: IAdditionalData['episodesCharacter'];
 }
 
 export interface IHomeContextUpdater {
   fetchCharacters: () => Promise<void>;
   form: UseFormReturn<FieldValues, unknown>;
   dispatchPage: React.Dispatch<ActionPage>;
+  fillCharacterPage: (id: number) => void;
 }
 
 export interface IFormsContextState {

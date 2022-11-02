@@ -7,6 +7,7 @@ import { Layout } from 'components/layout/Layout';
 import { Forms } from 'pages/Forms';
 import { HomeContextProvider } from 'context/HomeContext';
 import { FormsContextProvider } from 'context/FormsContext';
+import { Character } from 'pages/Character';
 
 function App(): JSX.Element {
   return (
@@ -17,6 +18,7 @@ function App(): JSX.Element {
             <Route index element={<Home />} />
             <Route path="about" element={<About />} />
             <Route path="forms" element={<Forms />} />
+            <Route path="/character/:id" element={<Character />} />
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
