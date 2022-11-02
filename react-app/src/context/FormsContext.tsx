@@ -1,19 +1,6 @@
-import { IUserCharacter } from 'types/models';
+import { IFormsContextState, IFormsContextUpdater, IUserCharacter } from 'types/models';
 import React, { createContext, useContext, useState } from 'react';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
-
-interface IFormsContextState {
-  userCards: IUserCharacter[];
-}
-
-interface IFormsContextUpdater {
-  setUserCards: React.Dispatch<React.SetStateAction<IUserCharacter[]>>;
-  form: UseFormReturn<FieldValues, unknown>;
-}
-
-interface MyProps {
-  children?: React.ReactNode;
-}
 
 const FormsContextState: React.Context<IFormsContextState | undefined> = createContext<
   IFormsContextState | undefined
@@ -22,6 +9,10 @@ const FormsContextState: React.Context<IFormsContextState | undefined> = createC
 const FormsContextUpdater: React.Context<IFormsContextUpdater | undefined> = createContext<
   IFormsContextUpdater | undefined
 >(undefined);
+
+interface MyProps {
+  children?: React.ReactNode;
+}
 
 export const FormsContextProvider: ({ children }: MyProps) => JSX.Element = ({
   children,

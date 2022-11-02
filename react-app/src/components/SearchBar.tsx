@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
 import settingsIcon from 'assets/settings.png';
 import { Settings } from './Settings';
-import { useHomeContextUpdater } from 'context/HomeContext';
+import { useHomeContextState, useHomeContextUpdater } from 'context/HomeContext';
 
 type MyProps = {
   search: () => Promise<void>;
@@ -11,11 +11,15 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
   search,
 }: MyProps): JSX.Element => {
   const [value, setValue] = useState(localStorage.getItem('searchValue') || '');
-  const { form } = useHomeContextUpdater();
+  const { currentPage } = useHomeContextState();
+  const { form, dispatchPage } = useHomeContextUpdater();
   const { handleSubmit, register } = form;
 
-  const onFormSubmit: () => Promise<void> = async (): Promise<void> => {
-    await search();
+  const onFormSubmit: () => void = (): void => {
+    if (currentPage === 1) {
+      search();
+    }
+    dispatchPage({ type: 'set', payload: 1 });
   };
 
   return (
@@ -69,7 +73,7 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
           </button>
         </div>
       </div>
-      <Settings></Settings>
+      <Settings />
     </form>
   );
 };

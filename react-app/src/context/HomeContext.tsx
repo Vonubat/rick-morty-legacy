@@ -5,30 +5,22 @@ import {
   IFilter,
   ILocation,
   IPageIndicators,
+  IHomeContextState,
+  IHomeContextUpdater,
+  ActionPage,
 } from 'types/models';
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, {
+  createContext,
+  useCallback,
+  useContext,
+  useEffect,
+  useMemo,
+  useReducer,
+  useState,
+} from 'react';
 import Api from 'api/api';
 import { EPISODES, LOCATIONS } from 'constants/constants';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
-
-interface IHomeContextState {
-  isError: IPageIndicators['isError'];
-  isLoading: IPageIndicators['isLoading'];
-  info: ICharacterContent['info'];
-  results: ICharacterContent['results'];
-  locations: IAdditionalData['locations'];
-  episodes: IAdditionalData['episodes'];
-  isCharacterPageReady: IAdditionalData['isCharacterPageReady'];
-}
-
-interface IHomeContextUpdater {
-  fetchCharacters: (filter?: IFilter) => Promise<void>;
-  form: UseFormReturn<FieldValues, unknown>;
-}
-
-interface MyProps {
-  children?: React.ReactNode;
-}
 
 const HomeContextState: React.Context<IHomeContextState | undefined> = createContext<
   IHomeContextState | undefined
@@ -37,6 +29,27 @@ const HomeContextState: React.Context<IHomeContextState | undefined> = createCon
 const HomeContextUpdater: React.Context<IHomeContextUpdater | undefined> = createContext<
   IHomeContextUpdater | undefined
 >(undefined);
+
+const pageReducer: (currentPage: number, action: ActionPage) => number = (
+  currentPage: number,
+  action: ActionPage
+): number => {
+  switch (action.type) {
+    case 'increment':
+      return currentPage + action.payload;
+    case 'decrement':
+      return currentPage - action.payload;
+    case 'set':
+      currentPage = action.payload;
+      return currentPage;
+    default:
+      throw new Error(`Unknown action type`);
+  }
+};
+
+interface MyProps {
+  children?: React.ReactNode;
+}
 
 export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   children,
@@ -50,6 +63,8 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
 
   const [isError, setIsError] = useState<IPageIndicators['isError']>(false);
   const [isLoading, setIsLoading] = useState<IPageIndicators['isLoading']>(false);
+  const [isCharacterPageReady, setIsCharacterPageReady] =
+    useState<IAdditionalData['isCharacterPageReady']>(false);
   const [info, setInfo] = useState<ICharacterContent['info']>({
     count: 0,
     pages: 0,
@@ -59,13 +74,14 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   const [results, setResults] = useState<ICharacterContent['results']>([]);
   const [locations, setLocations] = useState<IAdditionalData['locations']>([]);
   const [episodes, setEpisodes] = useState<IAdditionalData['episodes']>([]);
-  const [isCharacterPageReady, setIsCharacterPageReady] =
-    useState<IAdditionalData['isCharacterPageReady']>(false);
+  const [currentPage, dispatchPage] = useReducer(pageReducer, 1);
 
   const fetchCharacters: () => Promise<void> = useCallback(async (): Promise<void> => {
     try {
       setIsError(false);
+      window.scrollTo(0, 0);
       const filter: IFilter = {
+        page: currentPage,
         value: localStorage.getItem('searchValue') || '',
         query: form.getValues('search query') || 'name',
         gender: form.getValues('gender') || 'any',
@@ -89,7 +105,7 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
 
       setIsLoading(true);
 
-      const content: ICharacterContent = await api.getCharacters(1, filter);
+      const content: ICharacterContent = await api.getCharacters(filter);
       contentStorage.set(key, content);
       setInfo(content.info);
       setResults(content.results);
@@ -102,7 +118,7 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
         console.error(error.message);
       }
     }
-  }, [api, contentStorage, form]);
+  }, [api, contentStorage, form, currentPage]);
 
   const fetchAdditionalData: () => void = useCallback(async (): Promise<void> => {
     try {
@@ -124,16 +140,28 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   }, [api]);
 
   useEffect((): void => {
-    fetchCharacters();
     fetchAdditionalData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
+  useEffect((): void => {
+    fetchCharacters();
+  }, [fetchCharacters]);
+
   return (
     <HomeContextState.Provider
-      value={{ isError, isLoading, info, results, locations, episodes, isCharacterPageReady }}
+      value={{
+        isError,
+        isLoading,
+        info,
+        results,
+        locations,
+        episodes,
+        isCharacterPageReady,
+        currentPage,
+      }}
     >
-      <HomeContextUpdater.Provider value={{ fetchCharacters, form }}>
+      <HomeContextUpdater.Provider value={{ fetchCharacters, form, dispatchPage }}>
         {children}
       </HomeContextUpdater.Provider>
     </HomeContextState.Provider>

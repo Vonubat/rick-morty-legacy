@@ -1,3 +1,5 @@
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+
 // API data interfaces & types
 export interface IInfo {
   count: number;
@@ -75,6 +77,7 @@ type IGender = 'any' | 'female' | 'male' | 'genderless' | 'unknown';
 type IStatus = 'any' | 'alive' | 'dead' | 'unknown';
 
 export interface IFilter {
+  page: number;
   value: string;
   query: IQuery;
   gender: IGender;
@@ -95,3 +98,33 @@ export interface IAdditionalData {
   locationCharacter: { name: string; type: string; dimension: string };
   episodesCharacter: { name: string; air_date: string; episode: string }[];
 }
+export interface IHomeContextState {
+  isError: IPageIndicators['isError'];
+  isLoading: IPageIndicators['isLoading'];
+  info: ICharacterContent['info'];
+  results: ICharacterContent['results'];
+  locations: IAdditionalData['locations'];
+  episodes: IAdditionalData['episodes'];
+  isCharacterPageReady: IAdditionalData['isCharacterPageReady'];
+  currentPage: number;
+}
+
+export interface IHomeContextUpdater {
+  fetchCharacters: () => Promise<void>;
+  form: UseFormReturn<FieldValues, unknown>;
+  dispatchPage: React.Dispatch<ActionPage>;
+}
+
+export interface IFormsContextState {
+  userCards: IUserCharacter[];
+}
+
+export interface IFormsContextUpdater {
+  setUserCards: React.Dispatch<React.SetStateAction<IUserCharacter[]>>;
+  form: UseFormReturn<FieldValues, unknown>;
+}
+
+export type ActionPage =
+  | { type: 'increment'; payload: number }
+  | { type: 'decrement'; payload: number }
+  | { type: 'set'; payload: number };

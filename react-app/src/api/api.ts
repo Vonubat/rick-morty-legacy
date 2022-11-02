@@ -10,9 +10,9 @@ import {
 import HttpMethods from './http-methods';
 
 class Api extends HttpMethods {
-  public async getCharacters(pageNumber: number, filter: IFilter): Promise<ICharacterContent> {
+  public async getCharacters(filter: IFilter): Promise<ICharacterContent> {
     const url: URL = new URL(
-      `${CHARACTERS}/?page=${pageNumber}${filter.value ? `&${filter.query}=${filter.value}` : ''}${
+      `${CHARACTERS}/?page=${filter.page}${filter.value ? `&${filter.query}=${filter.value}` : ''}${
         filter.gender !== 'any' ? `&gender=${filter.gender}` : ''
       }${filter.status !== 'any' ? `&status=${filter.status}` : ''}`
     );

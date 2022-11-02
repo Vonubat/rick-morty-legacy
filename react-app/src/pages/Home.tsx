@@ -4,8 +4,9 @@ import { ICharacter, IAdditionalData, IEpisode, ILocation } from 'types/models';
 import React, { useState } from 'react';
 import { LoadIndicator } from 'components/UI/Indicators/Load';
 import { ErrorIndicator } from 'components/UI/Indicators/Error';
-import { Modal } from 'components/Modal';
 import { useHomeContextState, useHomeContextUpdater } from 'context/HomeContext';
+import { Character } from './Character';
+import { Pagination } from 'components/Pagination';
 
 export const Home: () => JSX.Element = (): JSX.Element => {
   const { isError, isLoading, results, locations, episodes, isCharacterPageReady } =
@@ -87,7 +88,8 @@ export const Home: () => JSX.Element = (): JSX.Element => {
           )
         )}
       </div>
-      <Modal
+      <Pagination />
+      <Character
         locationCharacter={locationCharacter}
         episodesCharacter={episodesCharacter}
         characterName={characterName}
