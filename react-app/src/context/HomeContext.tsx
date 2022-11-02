@@ -10,6 +10,7 @@ import {
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Api from 'api/api';
 import { EPISODES, LOCATIONS } from 'constants/constants';
+import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 
 interface IHomeContextState {
   isError: IPageIndicators['isError'];
@@ -23,6 +24,7 @@ interface IHomeContextState {
 
 interface IHomeContextUpdater {
   fetchCharacters: (filter?: IFilter) => Promise<void>;
+  form: UseFormReturn<FieldValues, unknown>;
 }
 
 interface MyProps {
@@ -45,6 +47,7 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
     []
   );
   const api: Api = useMemo((): Api => new Api(), []);
+  const form: UseFormReturn<FieldValues, unknown> = useForm();
 
   const [isError, setIsError] = useState<IPageIndicators['isError']>(false);
   const [isLoading, setIsLoading] = useState<IPageIndicators['isLoading']>(false);
@@ -131,7 +134,7 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
     <HomeContextState.Provider
       value={{ isError, isLoading, info, results, locations, episodes, isCharacterPageReady }}
     >
-      <HomeContextUpdater.Provider value={{ fetchCharacters }}>
+      <HomeContextUpdater.Provider value={{ fetchCharacters, form }}>
         {children}
       </HomeContextUpdater.Provider>
     </HomeContextState.Provider>

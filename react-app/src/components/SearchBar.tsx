@@ -1,7 +1,7 @@
 import React, { ChangeEvent, useState } from 'react';
-import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
-import { ICharacterFilter, IFilter } from 'types/models';
-import { Select } from './UI/Forms/Select';
+import { IFilter } from 'types/models';
+import settingsIcon from 'assets/settings.png';
+import { Settings } from './Settings';
 
 type MyProps = {
   search: (filter?: IFilter) => Promise<void>;
@@ -11,14 +11,6 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
   search,
 }: MyProps): JSX.Element => {
   const [value, setValue] = useState(localStorage.getItem('searchValue') || '');
-  const [query, setQuery] = useState(
-    (localStorage.getItem('queryValue') as ICharacterFilter) || 'name'
-  );
-
-  const form: UseFormReturn<FieldValues, unknown> =
-    useForm(/* {
-    mode: 'onChange',
-  } */);
 
   const onChangeSearchInput: (e: ChangeEvent<HTMLInputElement>) => void = (
     e: ChangeEvent<HTMLInputElement>
@@ -27,32 +19,22 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
     localStorage.setItem('searchValue', e.target.value);
   };
 
-  const onChangeSelect: (e: React.ChangeEvent<HTMLSelectElement>) => void = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ): void => {
-    setQuery(e.target.value as ICharacterFilter);
-    localStorage.setItem('queryValue', e.target.value);
-  };
-
   const handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void> = async (
     e: React.FormEvent<HTMLFormElement>
   ): Promise<void> => {
     e.preventDefault();
-    await search({ query, value });
+    await search({ query: 'name', value });
   };
 
   return (
-    <form
-      onSubmit={handleSubmit}
-      className="flex justify-center gap-1 items-center flex-wrap-reverse"
-    >
-      {/* Select search query*/}
-      <Select
-        form={form}
-        subject="search query:"
-        options={['name', 'species']}
-        defaultValue={query}
-        onChange={onChangeSelect}
+    <form onSubmit={handleSubmit} className="flex justify-center items-center flex-wrap-reverse">
+      {/* Settings */}
+      <img
+        src={settingsIcon}
+        alt="settingsIcon"
+        className="w-10 mt-3 mr-3 hover:animate-spin hover:cursor-pointer block"
+        data-bs-toggle="modal"
+        data-bs-target="#settings"
       />
       {/* SearchBar */}
       <div className="w-72 sm:w-96 mt-3">
@@ -87,6 +69,7 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
           </button>
         </div>
       </div>
+      <Settings></Settings>
     </form>
   );
 };
