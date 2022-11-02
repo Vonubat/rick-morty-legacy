@@ -1,16 +1,29 @@
-import { ICharacterSchema } from 'models';
+import { ICharacter, IUserCharacter } from 'types/models';
 import React, { Component } from 'react';
+import Button from './UI/Button';
 
 type MyProps = {
-  character: ICharacterSchema;
+  character: ICharacter | IUserCharacter;
+  isButtonDisabled: boolean;
+  setModal?: (id: number) => void;
 };
 
 type MyState = {
-  [index: string]: string | number;
+  id: number;
 };
 
 export default class Card extends Component<MyProps, MyState> {
-  character: ICharacterSchema = this.props.character;
+  constructor(props: MyProps) {
+    super(props);
+
+    this.state = {
+      id: (this.props.character as ICharacter).id || 1,
+    };
+
+    this.handleClick = this.handleClick.bind(this);
+  }
+
+  character: ICharacter | IUserCharacter = this.props.character;
   date: Date = new Date(Date.parse(this.character.created));
   dateOptions: Intl.DateTimeFormatOptions = {
     weekday: 'long',
@@ -20,14 +33,22 @@ export default class Card extends Component<MyProps, MyState> {
   };
   formattedDate: string = this.date.toLocaleString('en-US', this.dateOptions);
 
+  handleClick(): void {
+    if (this.props.setModal) {
+      this.props.setModal(this.state.id);
+    }
+    return;
+  }
+
   render(): JSX.Element {
     return (
-      <div className="flex justify-center mx-3 my-3" data-testid="card">
+      <div className="flex justify-center mx-3 my-3" data-testid={`card ${this.character.name}`}>
         <div className="flex flex-col rounded-lg shadow-lg bg-white max-w-xs text-center">
           <img
             className="rounded-t-lg max-w-full h-auto"
             src={this.character.image}
             alt={this.character.name}
+            loading="lazy"
           />
           <div className="p-5">
             <h5 className="text-gray-900 text-xl font-medium mb-2">{this.character.name}</h5>
@@ -40,15 +61,19 @@ export default class Card extends Component<MyProps, MyState> {
             <p className="text-gray-700 text-base mb-2 text-start">
               <i> The gender:</i> <b>{this.character.gender}</b>
             </p>
-            <button
-              type="button"
-              className=" inline-block px-6 mt-3 py-2.5 bg-blue-600 text-white font-medium text-xs leading-tight uppercase rounded shadow-md hover:bg-blue-700 hover:shadow-lg focus:bg-blue-700 focus:shadow-lg focus:outline-none focus:ring-0 active:bg-blue-800 active:shadow-lg transition duration-150 ease-in-out"
+            <Button
+              disabled={this.props.isButtonDisabled}
+              role="button"
+              color="primary"
+              dataBsToggle="modal"
+              dataBsTarget="#modalCenteredScrollable"
+              onClick={this.handleClick}
             >
               Tell me more!
-            </button>
+            </Button>
           </div>
           <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
-            Time at which the character was created in the database: <br />{' '}
+            <div>Time at which the character was created in the database:</div>
             <b>{this.formattedDate}</b>
           </div>
         </div>
