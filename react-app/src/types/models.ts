@@ -80,17 +80,17 @@ export interface IFilter {
 
 // Internal interfaces
 export interface IPageIndicators {
-  error: boolean;
-  loading: boolean;
+  isError: boolean;
+  isLoading: boolean;
 }
 
-export interface IDataForModal {
+export interface IAdditionalData {
   locations: ILocation[];
   episodes: IEpisode[];
-  nameModal: string;
-  btnModalDisabled: boolean;
-  locationModal: { name: string; type: string; dimension: string };
-  episodesModal: { name: string; air_date: string; episode: string }[];
+  characterName: string;
+  isCharacterPageReady: boolean;
+  locationCharacter: { name: string; type: string; dimension: string };
+  episodesCharacter: { name: string; air_date: string; episode: string }[];
 }
 export interface IGetFormElementsFn {
   fileElement: HTMLInputElement;

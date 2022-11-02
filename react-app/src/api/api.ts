@@ -28,7 +28,7 @@ class Api extends HttpMethods {
     return content;
   }
 
-  public async getDataForModal(
+  public async getLocationsOrEpisodes(
     type: typeof LOCATIONS | typeof EPISODES
   ): Promise<ILocation[] | IEpisode[]> {
     let content: ILocationContent | IEpisodeContent = {

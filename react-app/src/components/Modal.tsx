@@ -1,16 +1,20 @@
 import React from 'react';
-import { IDataForModal } from 'types/models';
+import { IAdditionalData } from 'types/models';
 import { Badge } from './UI/Badge';
 import { Table } from './UI/Table';
 
-type MyProps = Pick<IDataForModal, 'episodesModal' | 'locationModal' | 'nameModal'>;
+type MyProps = Pick<IAdditionalData, 'episodesCharacter' | 'locationCharacter' | 'characterName'>;
 
-export const Modal: ({ episodesModal, locationModal, nameModal }: MyProps) => JSX.Element = ({
-  episodesModal,
-  locationModal,
-  nameModal,
+export const Modal: ({
+  episodesCharacter,
+  locationCharacter,
+  characterName,
+}: MyProps) => JSX.Element = ({
+  episodesCharacter,
+  locationCharacter,
+  characterName,
 }: MyProps): JSX.Element => {
-  const { name: nameofLocation, type, dimension } = locationModal;
+  const { name: nameofLocation, type, dimension } = locationCharacter;
   return (
     <div
       className="modal fade fixed top-0 left-0 hidden w-full h-full outline-none overflow-x-hidden overflow-y-auto"
@@ -27,7 +31,7 @@ export const Modal: ({ episodesModal, locationModal, nameModal }: MyProps) => JS
               className="text-3xl font-medium leading-normal text-gray-800"
               id="modalCenteredScrollableLabel"
             >
-              {nameModal}
+              {characterName}
             </h2>
             <button
               type="button"
@@ -49,7 +53,10 @@ export const Modal: ({ episodesModal, locationModal, nameModal }: MyProps) => JS
             <h3 className="text-2xl text-blue-600 font-mono text-center">
               List of episodes in which this character appeared:
             </h3>
-            <Table heading={['Name', 'Air date', ' Episode']} episodesModal={episodesModal} />
+            <Table
+              heading={['Name', 'Air date', ' Episode']}
+              episodesCharacter={episodesCharacter}
+            />
           </div>
         </div>
       </div>
