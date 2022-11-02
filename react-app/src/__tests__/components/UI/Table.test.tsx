@@ -1,5 +1,5 @@
 import React from 'react';
-import { render } from '@testing-library/react';
+import { render } from '../../../__mocks__/all-the-providers';
 import { Table } from 'components/UI/Table';
 
 describe('Table component', (): void => {
@@ -18,7 +18,7 @@ describe('Table component', (): void => {
 
   it('renders table', (): void => {
     const { getByText } = render(
-      <Table heading={['Name', 'Air date', ' Episode']} episodesModal={mockTableData} />
+      <Table heading={['Name', 'Air date', ' Episode']} episodesCharacter={mockTableData} />
     );
 
     expect(getByText('Name')).toBeInTheDocument();

@@ -1,13 +1,10 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '../../__mocks__/all-the-providers';
 import { Card } from 'components/Card';
 import { charactersAll } from '__mocks__/characters';
 import { ICharacter } from 'types/models';
-import userEvent from '@testing-library/user-event';
-import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 
 describe('Card component', (): void => {
-  const user: UserEvent = userEvent.setup();
   it('renders Card component', (): void => {
     render(<Card isButtonDisabled={false} character={charactersAll.results[0]} />);
 
@@ -26,17 +23,5 @@ describe('Card component', (): void => {
 
     const arrayOfCards: HTMLElement[] = screen.getAllByTestId(/card/i);
     expect(arrayOfCards).toHaveLength(charactersAll.results.length);
-  });
-
-  it('check passed in to component callback', async (): Promise<void> => {
-    const setModal = jest.fn();
-
-    render(
-      <Card isButtonDisabled={false} character={charactersAll.results[0]} fillModal={setModal} />
-    );
-    const button: HTMLElement = screen.getByRole('button');
-
-    await user.click(button);
-    expect(setModal).toBeCalledWith(1);
   });
 });
