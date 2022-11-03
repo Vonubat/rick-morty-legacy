@@ -1,7 +1,9 @@
 import React, { ChangeEvent, useState } from 'react';
 import settingsIcon from 'assets/settings.png';
 import { Settings } from './Settings';
-import { useHomeContextState, useHomeContextUpdater } from 'context/HomeContext';
+import { useHomeContextUpdater } from 'context/HomeContext';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { selectPage, setPage } from 'store/reducers/pageSlice';
 
 type MyProps = {
   search: () => Promise<void>;
@@ -11,15 +13,16 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
   search,
 }: MyProps): JSX.Element => {
   const [value, setValue] = useState(localStorage.getItem('searchValue') || '');
-  const { currentPage } = useHomeContextState();
-  const { form, dispatchPage } = useHomeContextUpdater();
+  const { form } = useHomeContextUpdater();
   const { handleSubmit, register } = form;
+  const currentPage: number = useAppSelector(selectPage);
+  const dispatch = useAppDispatch();
 
   const onFormSubmit: () => void = (): void => {
     if (currentPage === 1) {
       search();
     }
-    dispatchPage({ type: 'set', payload: 1 });
+    dispatch(setPage(1));
   };
 
   return (

@@ -106,7 +106,6 @@ export interface IHomeContextState {
   locations: IAdditionalData['locations'];
   episodes: IAdditionalData['episodes'];
   isCharacterPageReady: IAdditionalData['isCharacterPageReady'];
-  currentPage: number;
   currentCharacter: ICharacter | null;
   locationCharacter: IAdditionalData['locationCharacter'];
   episodesCharacter: IAdditionalData['episodesCharacter'];
@@ -115,7 +114,6 @@ export interface IHomeContextState {
 export interface IHomeContextUpdater {
   fetchCharacters: () => Promise<void>;
   form: UseFormReturn<FieldValues, unknown>;
-  dispatchPage: React.Dispatch<ActionPage>;
   fillCharacterPage: (id: number) => void;
 }
 
@@ -128,7 +126,6 @@ export interface IFormsContextUpdater {
   form: UseFormReturn<FieldValues, unknown>;
 }
 
-export type ActionPage =
-  | { type: 'increment'; payload: number }
-  | { type: 'decrement'; payload: number }
-  | { type: 'set'; payload: number };
+export interface IPageState {
+  currentPage: number;
+}

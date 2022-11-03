@@ -7,21 +7,14 @@ import {
   IPageIndicators,
   IHomeContextState,
   IHomeContextUpdater,
-  ActionPage,
   ICharacter,
 } from 'types/models';
-import React, {
-  createContext,
-  useCallback,
-  useContext,
-  useEffect,
-  useMemo,
-  useReducer,
-  useState,
-} from 'react';
+import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Api from 'api/api';
 import { EPISODES, LOCATIONS } from 'constants/constants';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
+import { useAppSelector } from 'hooks/hooks';
+import { selectPage } from 'store/reducers/pageSlice';
 
 const HomeContextState: React.Context<IHomeContextState | undefined> = createContext<
   IHomeContextState | undefined
@@ -30,23 +23,6 @@ const HomeContextState: React.Context<IHomeContextState | undefined> = createCon
 const HomeContextUpdater: React.Context<IHomeContextUpdater | undefined> = createContext<
   IHomeContextUpdater | undefined
 >(undefined);
-
-const pageReducer: (currentPage: number, action: ActionPage) => number = (
-  currentPage: number,
-  action: ActionPage
-): number => {
-  switch (action.type) {
-    case 'increment':
-      return currentPage + action.payload;
-    case 'decrement':
-      return currentPage - action.payload;
-    case 'set':
-      currentPage = action.payload;
-      return currentPage;
-    default:
-      throw new Error(`Unknown action type`);
-  }
-};
 
 interface MyProps {
   children?: React.ReactNode;
@@ -79,7 +55,7 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   const [locations, setLocations] = useState<IAdditionalData['locations']>([]);
   const [episodes, setEpisodes] = useState<IAdditionalData['episodes']>([]);
   // for Pagination component
-  const [currentPage, dispatchPage] = useReducer(pageReducer, 1);
+  const currentPage: number = useAppSelector(selectPage);
   // for Character page
   const [currentCharacter, setCurrentCharacter] = useState<ICharacter | null>(null);
   const [locationCharacter, setLocationCharacter] = useState<IAdditionalData['locationCharacter']>({
@@ -222,15 +198,12 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
         locations,
         episodes,
         isCharacterPageReady,
-        currentPage,
         currentCharacter,
         locationCharacter,
         episodesCharacter,
       }}
     >
-      <HomeContextUpdater.Provider
-        value={{ fetchCharacters, dispatchPage, fillCharacterPage, form }}
-      >
+      <HomeContextUpdater.Provider value={{ fetchCharacters, fillCharacterPage, form }}>
         {children}
       </HomeContextUpdater.Provider>
     </HomeContextState.Provider>
