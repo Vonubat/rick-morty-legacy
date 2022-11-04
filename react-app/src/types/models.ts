@@ -72,9 +72,9 @@ export interface IEpisodeContent {
   info: IInfo;
   results: IEpisode[];
 }
-type IQuery = 'name' | 'species';
-type IGender = 'any' | 'female' | 'male' | 'genderless' | 'unknown';
-type IStatus = 'any' | 'alive' | 'dead' | 'unknown';
+export type IQuery = 'name' | 'species';
+export type IGender = 'any' | 'female' | 'male' | 'genderless' | 'unknown';
+export type IStatus = 'any' | 'alive' | 'dead' | 'unknown';
 
 export interface IFilter {
   page: number;
@@ -112,13 +112,13 @@ export interface IHomeContextState {
 }
 
 export interface IHomeContextUpdater {
-  fetchCharacters: () => Promise<void>;
-  form: UseFormReturn<FieldValues, unknown>;
+  fetchCharacters: (query?: IQuery, gender?: IGender, status?: IStatus) => Promise<void>;
   fillCharacterPage: (id: number) => void;
 }
 
 export interface IFormsContextState {
   formsPageForm: UseFormReturn<FieldValues, unknown>;
+  searchBarForm: UseFormReturn<FieldValues, unknown>;
 }
 
 export interface IPageState {

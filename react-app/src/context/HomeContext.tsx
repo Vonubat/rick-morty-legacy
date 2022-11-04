@@ -7,10 +7,12 @@ import {
   IHomeContextState,
   IHomeContextUpdater,
   ICharacter,
+  IQuery,
+  IGender,
+  IStatus,
 } from 'types/models';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Api from 'api/api';
-import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { selectPage } from 'store/reducers/pageSlice';
 import {
@@ -42,8 +44,7 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   );
   // for API
   const api: Api = useMemo((): Api => new Api(), []);
-  // for Settings & SearchBar components
-  const form: UseFormReturn<FieldValues, unknown> = useForm();
+
   // for Home page
   const [isError, setIsError] = useState<IPageIndicators['isError']>(false);
   const [isLoading, setIsLoading] = useState<IPageIndicators['isLoading']>(false);
@@ -72,49 +73,53 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   >([{ name: '', air_date: '', episode: '' }]);
   // ==============
 
-  const fetchCharacters: () => Promise<void> = useCallback(async (): Promise<void> => {
-    try {
-      setIsError(false);
-      window.scrollTo(0, 0);
-      const filter: IFilter = {
-        page: currentPage,
-        value: localStorage.getItem('searchValue') || '',
-        query: form.getValues('search query') || 'name',
-        gender: form.getValues('gender') || 'any',
-        status: form.getValues('status') || 'any',
-      };
+  const fetchCharacters: (query?: IQuery, gender?: IGender, status?: IStatus) => Promise<void> =
+    useCallback(
+      async (query?: IQuery, gender?: IGender, status?: IStatus): Promise<void> => {
+        try {
+          setIsError(false);
+          window.scrollTo(0, 0);
+          const filter: IFilter = {
+            page: currentPage,
+            value: localStorage.getItem('searchValue') || '',
+            query: query || 'name',
+            gender: gender || 'any',
+            status: status || 'any',
+          };
 
-      const key: string = JSON.stringify(filter).toLowerCase();
-      setResults([]);
-      setInfo({
-        count: 0,
-        pages: 0,
-        next: null,
-        prev: null,
-      });
+          const key: string = JSON.stringify(filter).toLowerCase();
+          setResults([]);
+          setInfo({
+            count: 0,
+            pages: 0,
+            next: null,
+            prev: null,
+          });
 
-      if (contentStorage.has(key)) {
-        setInfo(contentStorage.get(key)!.info);
-        setResults(contentStorage.get(key)!.results);
-        return;
-      }
+          if (contentStorage.has(key)) {
+            setInfo(contentStorage.get(key)!.info);
+            setResults(contentStorage.get(key)!.results);
+            return;
+          }
 
-      setIsLoading(true);
+          setIsLoading(true);
 
-      const content: ICharacterContent = await api.getCharacters(filter);
-      contentStorage.set(key, content);
-      setInfo(content.info);
-      setResults(content.results);
+          const content: ICharacterContent = await api.getCharacters(filter);
+          contentStorage.set(key, content);
+          setInfo(content.info);
+          setResults(content.results);
 
-      setIsLoading(false);
-    } catch (error: unknown) {
-      setIsError(true);
-      setIsLoading(false);
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-    }
-  }, [api, contentStorage, form, currentPage]);
+          setIsLoading(false);
+        } catch (error: unknown) {
+          setIsError(true);
+          setIsLoading(false);
+          if (error instanceof Error) {
+            console.error(error.message);
+          }
+        }
+      },
+      [api, contentStorage, currentPage]
+    );
 
   useEffect((): void => {
     if (episodesStatus === 'idle') {
@@ -191,7 +196,7 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
         episodesCharacter,
       }}
     >
-      <HomeContextUpdater.Provider value={{ fetchCharacters, fillCharacterPage, form }}>
+      <HomeContextUpdater.Provider value={{ fetchCharacters, fillCharacterPage }}>
         {children}
       </HomeContextUpdater.Provider>
     </HomeContextState.Provider>

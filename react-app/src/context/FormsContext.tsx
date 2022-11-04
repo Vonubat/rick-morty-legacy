@@ -14,9 +14,12 @@ export const FormsContextProvider: ({ children }: MyProps) => JSX.Element = ({
   children,
 }: MyProps): JSX.Element => {
   const formsPageForm: UseFormReturn<FieldValues, unknown> = useForm();
+  const searchBarForm: UseFormReturn<FieldValues, unknown> = useForm();
 
   return (
-    <FormsContextState.Provider value={{ formsPageForm }}>{children}</FormsContextState.Provider>
+    <FormsContextState.Provider value={{ formsPageForm, searchBarForm }}>
+      {children}
+    </FormsContextState.Provider>
   );
 };
 

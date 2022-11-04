@@ -1,26 +1,27 @@
 import React, { ChangeEvent, useState } from 'react';
 import settingsIcon from 'assets/settings.png';
 import { Settings } from './Settings';
-import { useHomeContextUpdater } from 'context/HomeContext';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { selectPage, setPage } from 'store/reducers/pageSlice';
+import { useFormsContextState } from 'context/FormsContext';
+import { IGender, IQuery, IStatus } from 'types/models';
 
 type MyProps = {
-  search: () => Promise<void>;
+  search: (query?: IQuery, gender?: IGender, status?: IStatus) => Promise<void>;
 };
 
 export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
   search,
 }: MyProps): JSX.Element => {
   const [value, setValue] = useState(localStorage.getItem('searchValue') || '');
-  const { form } = useHomeContextUpdater();
-  const { handleSubmit, register } = form;
+  const { searchBarForm: form } = useFormsContextState();
+  const { handleSubmit, register, getValues } = form;
   const currentPage: number = useAppSelector(selectPage);
   const dispatch = useAppDispatch();
 
   const onFormSubmit: () => void = (): void => {
     if (currentPage === 1) {
-      search();
+      search(getValues('search query'), getValues('gender'), getValues('status'));
     }
     dispatch(setPage(1));
   };

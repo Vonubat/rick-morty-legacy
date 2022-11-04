@@ -11,8 +11,8 @@ import { Character } from 'pages/Character';
 
 function App(): JSX.Element {
   return (
-    <HomeContextProvider>
-      <FormsContextProvider>
+    <FormsContextProvider>
+      <HomeContextProvider>
         <Routes>
           <Route path="/" element={<Layout />}>
             <Route index element={<Home />} />
@@ -22,8 +22,8 @@ function App(): JSX.Element {
             <Route path="*" element={<PageNotFound />} />
           </Route>
         </Routes>
-      </FormsContextProvider>
-    </HomeContextProvider>
+      </HomeContextProvider>
+    </FormsContextProvider>
   );
 }
 
