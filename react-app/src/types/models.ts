@@ -118,12 +118,7 @@ export interface IHomeContextUpdater {
 }
 
 export interface IFormsContextState {
-  userCards: IUserCharacter[];
-}
-
-export interface IFormsContextUpdater {
-  setUserCards: React.Dispatch<React.SetStateAction<IUserCharacter[]>>;
-  form: UseFormReturn<FieldValues, unknown>;
+  formsPageForm: UseFormReturn<FieldValues, unknown>;
 }
 
 export interface IPageState {
