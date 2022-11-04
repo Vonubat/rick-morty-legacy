@@ -1,18 +1,11 @@
 import {
-  ICharacterContent,
   IEpisode,
-  IFilter,
   ILocation,
-  IPageIndicators,
   IHomeContextState,
   IHomeContextUpdater,
   ICharacter,
-  IQuery,
-  IGender,
-  IStatus,
 } from 'types/models';
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
-import Api from 'api/api';
+import React, { createContext, useContext, useEffect, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { selectPage } from 'store/reducers/pageSlice';
 import {
@@ -20,6 +13,7 @@ import {
   fetchLocations,
   selectAdditionalData,
 } from 'store/reducers/additionalDataSlice';
+import { fetchCharacters, selectResults } from 'store/reducers/characterContentSlice';
 
 const HomeContextState: React.Context<IHomeContextState | undefined> = createContext<
   IHomeContextState | undefined
@@ -37,26 +31,9 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   children,
 }: MyProps): JSX.Element => {
   const dispatch = useAppDispatch();
-  // for memoization
-  const contentStorage: Map<string, ICharacterContent> = useMemo(
-    (): Map<string, ICharacterContent> => new Map(),
-    []
-  );
-  // for API
-  const api: Api = useMemo((): Api => new Api(), []);
-
-  // for Home page
-  const [isError, setIsError] = useState<IPageIndicators['isError']>(false);
-  const [isLoading, setIsLoading] = useState<IPageIndicators['isLoading']>(false);
-  const [info, setInfo] = useState<ICharacterContent['info']>({
-    count: 0,
-    pages: 0,
-    next: null,
-    prev: null,
-  });
-  const [results, setResults] = useState<ICharacterContent['results']>([]);
   const { locations, locationsStatus, episodes, episodesStatus } =
     useAppSelector(selectAdditionalData);
+  const results: ICharacter[] = useAppSelector(selectResults);
   // for Pagination component
   const currentPage: number = useAppSelector(selectPage);
   // for Character page
@@ -73,54 +50,6 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   >([{ name: '', air_date: '', episode: '' }]);
   // ==============
 
-  const fetchCharacters: (query?: IQuery, gender?: IGender, status?: IStatus) => Promise<void> =
-    useCallback(
-      async (query?: IQuery, gender?: IGender, status?: IStatus): Promise<void> => {
-        try {
-          setIsError(false);
-          window.scrollTo(0, 0);
-          const filter: IFilter = {
-            page: currentPage,
-            value: localStorage.getItem('searchValue') || '',
-            query: query || 'name',
-            gender: gender || 'any',
-            status: status || 'any',
-          };
-
-          const key: string = JSON.stringify(filter).toLowerCase();
-          setResults([]);
-          setInfo({
-            count: 0,
-            pages: 0,
-            next: null,
-            prev: null,
-          });
-
-          if (contentStorage.has(key)) {
-            setInfo(contentStorage.get(key)!.info);
-            setResults(contentStorage.get(key)!.results);
-            return;
-          }
-
-          setIsLoading(true);
-
-          const content: ICharacterContent = await api.getCharacters(filter);
-          contentStorage.set(key, content);
-          setInfo(content.info);
-          setResults(content.results);
-
-          setIsLoading(false);
-        } catch (error: unknown) {
-          setIsError(true);
-          setIsLoading(false);
-          if (error instanceof Error) {
-            console.error(error.message);
-          }
-        }
-      },
-      [api, contentStorage, currentPage]
-    );
-
   useEffect((): void => {
     if (episodesStatus === 'idle') {
       dispatch(fetchEpisodes());
@@ -131,8 +60,8 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   }, [episodesStatus, locationsStatus, dispatch]);
 
   useEffect((): void => {
-    fetchCharacters();
-  }, [fetchCharacters]);
+    dispatch(fetchCharacters());
+  }, [currentPage, dispatch]);
 
   const fillCharacterPage: (id: number) => void = (id: number): void => {
     setLocationCharacter({
@@ -185,10 +114,6 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   return (
     <HomeContextState.Provider
       value={{
-        isError,
-        isLoading,
-        info,
-        results,
         locations,
         episodes,
         currentCharacter,
@@ -196,7 +121,7 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
         episodesCharacter,
       }}
     >
-      <HomeContextUpdater.Provider value={{ fetchCharacters, fillCharacterPage }}>
+      <HomeContextUpdater.Provider value={{ fillCharacterPage }}>
         {children}
       </HomeContextUpdater.Provider>
     </HomeContextState.Provider>

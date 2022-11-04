@@ -1,10 +1,11 @@
-import { useHomeContextState } from 'context/HomeContext';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import React from 'react';
+import { selectInfo } from 'store/reducers/characterContentSlice';
 import { decrementPage, incrementPage, selectPage, setPage } from 'store/reducers/pageSlice';
+import { IInfo } from 'types/models';
 
 export const Pagination: () => JSX.Element = (): JSX.Element => {
-  const { info } = useHomeContextState();
+  const info: IInfo = useAppSelector(selectInfo);
   const currentPage: number = useAppSelector(selectPage);
   const dispatch = useAppDispatch();
 

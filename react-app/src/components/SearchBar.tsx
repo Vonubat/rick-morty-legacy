@@ -4,15 +4,9 @@ import { Settings } from './Settings';
 import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { selectPage, setPage } from 'store/reducers/pageSlice';
 import { useFormsContextState } from 'context/FormsContext';
-import { IGender, IQuery, IStatus } from 'types/models';
+import { fetchCharacters } from 'store/reducers/characterContentSlice';
 
-type MyProps = {
-  search: (query?: IQuery, gender?: IGender, status?: IStatus) => Promise<void>;
-};
-
-export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
-  search,
-}: MyProps): JSX.Element => {
+export const SearchBar: () => JSX.Element = (): JSX.Element => {
   const [value, setValue] = useState(localStorage.getItem('searchValue') || '');
   const { searchBarForm: form } = useFormsContextState();
   const { handleSubmit, register, getValues } = form;
@@ -21,7 +15,13 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
 
   const onFormSubmit: () => void = (): void => {
     if (currentPage === 1) {
-      search(getValues('search query'), getValues('gender'), getValues('status'));
+      dispatch(
+        fetchCharacters({
+          query: getValues('search query'),
+          gender: getValues('gender'),
+          status: getValues('status'),
+        })
+      );
     }
     dispatch(setPage(1));
   };

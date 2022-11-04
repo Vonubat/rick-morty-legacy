@@ -100,10 +100,6 @@ export interface IAdditionalData {
 }
 
 export interface IHomeContextState {
-  isError: IPageIndicators['isError'];
-  isLoading: IPageIndicators['isLoading'];
-  info: ICharacterContent['info'];
-  results: ICharacterContent['results'];
   locations: IAdditionalData['locations'];
   episodes: IAdditionalData['episodes'];
   currentCharacter: ICharacter | null;
@@ -112,7 +108,6 @@ export interface IHomeContextState {
 }
 
 export interface IHomeContextUpdater {
-  fetchCharacters: (query?: IQuery, gender?: IGender, status?: IStatus) => Promise<void>;
   fillCharacterPage: (id: number) => void;
 }
 
@@ -123,4 +118,9 @@ export interface IFormsContextState {
 
 export interface IPageState {
   currentPage: number;
+}
+
+export interface ICharacterContentState {
+  characterContent: ICharacterContent;
+  status: StatusType;
 }
