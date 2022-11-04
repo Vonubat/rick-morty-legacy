@@ -4,14 +4,12 @@ import { ICharacter, StatusType } from 'types/models';
 import React from 'react';
 import { LoadIndicator } from 'components/UI/Indicators/Load';
 import { ErrorIndicator } from 'components/UI/Indicators/Error';
-import { useHomeContextUpdater } from 'context/HomeContext';
 import { Pagination } from 'components/Pagination';
 import { useAppSelector } from 'hooks/hooks';
 import { selectAdditionalData } from 'store/reducers/additionalDataSlice';
 import { selectResults, selectCharactersStatus } from 'store/reducers/characterContentSlice';
 
 export const Home: () => JSX.Element = (): JSX.Element => {
-  const { fillCharacterPage } = useHomeContextUpdater();
   const results: ICharacter[] = useAppSelector(selectResults);
 
   const charactersStatus: StatusType = useAppSelector(selectCharactersStatus);
@@ -34,7 +32,6 @@ export const Home: () => JSX.Element = (): JSX.Element => {
               character={character}
               key={character.id}
               isButtonDisabled={!isCharacterPageReady}
-              fillCharacterPage={fillCharacterPage}
             />
           )
         )}

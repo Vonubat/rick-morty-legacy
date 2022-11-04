@@ -2,18 +2,20 @@ import { ICharacter, IUserCharacter } from 'types/models';
 import React from 'react';
 import { Button } from './UI/Button';
 import { NavLink } from 'react-router-dom';
+import { useAppDispatch } from 'hooks/hooks';
+import { fillCharacterPage } from 'store/reducers/fillCharacterSlice';
 
 type MyProps = {
   character: ICharacter | IUserCharacter;
   isButtonDisabled: boolean;
-  fillCharacterPage?: (id: number) => void;
 };
 
-export const Card: ({ character, isButtonDisabled, fillCharacterPage }: MyProps) => JSX.Element = ({
+export const Card: ({ character, isButtonDisabled }: MyProps) => JSX.Element = ({
   character,
   isButtonDisabled,
-  fillCharacterPage,
 }: MyProps): JSX.Element => {
+  const dispatch = useAppDispatch();
+  // const { fillCharacterPage } = useHomeContextUpdater();
   const id: number = (character as ICharacter).id || 1;
   const date: Date = new Date(Date.parse(character.created));
   const dateOptions: Intl.DateTimeFormatOptions = {
@@ -25,7 +27,7 @@ export const Card: ({ character, isButtonDisabled, fillCharacterPage }: MyProps)
   const formattedDate: string = date.toLocaleString('en-US', dateOptions);
 
   const handleClick: () => void = (): void => {
-    fillCharacterPage ? fillCharacterPage(id) : undefined;
+    dispatch(fillCharacterPage(id));
   };
 
   const btn: JSX.Element = (
@@ -54,7 +56,13 @@ export const Card: ({ character, isButtonDisabled, fillCharacterPage }: MyProps)
           <p className="text-gray-700 text-base mb-2 text-start">
             <i> The gender:</i> <b>{character.gender}</b>
           </p>
-          {isButtonDisabled ? btn : <NavLink to={`/character/${id}`}>{btn}</NavLink>}
+          {isButtonDisabled ? (
+            btn
+          ) : (
+            <NavLink to={`/character/${id}`} state={id}>
+              {btn}
+            </NavLink>
+          )}
         </div>
         <div className="py-3 px-6 border-t border-gray-300 text-gray-600">
           <div>Time at which the character was created in the database:</div>

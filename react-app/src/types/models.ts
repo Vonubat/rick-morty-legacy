@@ -124,3 +124,9 @@ export interface ICharacterContentState {
   characterContent: ICharacterContent;
   status: StatusType;
 }
+
+export interface IFillCharacterState {
+  currentCharacter: ICharacter | null;
+  locationCharacter: { name: string; type: string; dimension: string };
+  episodesCharacter: { name: string; air_date: string; episode: string }[];
+}

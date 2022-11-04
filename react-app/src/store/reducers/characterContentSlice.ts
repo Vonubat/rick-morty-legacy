@@ -53,7 +53,6 @@ export const fetchCharacters = createAsyncThunk<
 
   const key: string = JSON.stringify(filter).toLowerCase();
   if (contentStorage.has(key)) {
-    console.log('has');
     return contentStorage.get(key);
   }
 
