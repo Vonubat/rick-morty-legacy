@@ -1,9 +1,9 @@
 import React from 'react';
-import { IAdditionalData } from 'types/models';
+import { IHomeContextState } from 'types/models';
 
 type MyProps = {
   heading: string[];
-} & Pick<IAdditionalData, 'episodesCharacter'>;
+} & Pick<IHomeContextState, 'episodesCharacter'>;
 
 export const Table: ({ heading, episodesCharacter }: MyProps) => JSX.Element = ({
   heading,

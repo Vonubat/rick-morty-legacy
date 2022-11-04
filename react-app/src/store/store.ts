@@ -1,7 +1,8 @@
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import pageReducer from './reducers/pageSlice';
+import additionalDataReducer from './reducers/additionalDataSlice';
 
-const rootReducer = combineReducers({ page: pageReducer });
+const rootReducer = combineReducers({ page: pageReducer, additionalData: additionalDataReducer });
 
 export const store = configureStore({
   reducer: rootReducer,

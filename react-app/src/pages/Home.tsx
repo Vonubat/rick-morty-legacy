@@ -6,10 +6,15 @@ import { LoadIndicator } from 'components/UI/Indicators/Load';
 import { ErrorIndicator } from 'components/UI/Indicators/Error';
 import { useHomeContextState, useHomeContextUpdater } from 'context/HomeContext';
 import { Pagination } from 'components/Pagination';
+import { useAppSelector } from 'hooks/hooks';
+import { selectAdditionalData } from 'store/reducers/additionalDataSlice';
 
 export const Home: () => JSX.Element = (): JSX.Element => {
-  const { isError, isLoading, results, isCharacterPageReady } = useHomeContextState();
+  const { isError, isLoading, results } = useHomeContextState();
   const { fetchCharacters, fillCharacterPage } = useHomeContextUpdater();
+  const { episodesStatus, locationsStatus } = useAppSelector(selectAdditionalData);
+  const isCharacterPageReady: boolean =
+    episodesStatus === 'succeeded' && locationsStatus === 'succeeded';
 
   return (
     <div className="flex flex-col">

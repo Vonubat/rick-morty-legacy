@@ -90,14 +90,15 @@ export interface IPageIndicators {
   isLoading: boolean;
 }
 
+export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
+
 export interface IAdditionalData {
   locations: ILocation[];
   episodes: IEpisode[];
-  characterName: string;
-  isCharacterPageReady: boolean;
-  locationCharacter: { name: string; type: string; dimension: string };
-  episodesCharacter: { name: string; air_date: string; episode: string }[];
+  locationsStatus: StatusType;
+  episodesStatus: StatusType;
 }
+
 export interface IHomeContextState {
   isError: IPageIndicators['isError'];
   isLoading: IPageIndicators['isLoading'];
@@ -105,10 +106,9 @@ export interface IHomeContextState {
   results: ICharacterContent['results'];
   locations: IAdditionalData['locations'];
   episodes: IAdditionalData['episodes'];
-  isCharacterPageReady: IAdditionalData['isCharacterPageReady'];
   currentCharacter: ICharacter | null;
-  locationCharacter: IAdditionalData['locationCharacter'];
-  episodesCharacter: IAdditionalData['episodesCharacter'];
+  locationCharacter: { name: string; type: string; dimension: string };
+  episodesCharacter: { name: string; air_date: string; episode: string }[];
 }
 
 export interface IHomeContextUpdater {

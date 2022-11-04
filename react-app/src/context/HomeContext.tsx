@@ -1,6 +1,5 @@
 import {
   ICharacterContent,
-  IAdditionalData,
   IEpisode,
   IFilter,
   ILocation,
@@ -11,10 +10,14 @@ import {
 } from 'types/models';
 import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
 import Api from 'api/api';
-import { EPISODES, LOCATIONS } from 'constants/constants';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
-import { useAppSelector } from 'hooks/hooks';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import { selectPage } from 'store/reducers/pageSlice';
+import {
+  fetchEpisodes,
+  fetchLocations,
+  selectAdditionalData,
+} from 'store/reducers/additionalDataSlice';
 
 const HomeContextState: React.Context<IHomeContextState | undefined> = createContext<
   IHomeContextState | undefined
@@ -31,6 +34,7 @@ interface MyProps {
 export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   children,
 }: MyProps): JSX.Element => {
+  const dispatch = useAppDispatch();
   // for memoization
   const contentStorage: Map<string, ICharacterContent> = useMemo(
     (): Map<string, ICharacterContent> => new Map(),
@@ -43,8 +47,6 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
   // for Home page
   const [isError, setIsError] = useState<IPageIndicators['isError']>(false);
   const [isLoading, setIsLoading] = useState<IPageIndicators['isLoading']>(false);
-  const [isCharacterPageReady, setIsCharacterPageReady] =
-    useState<IAdditionalData['isCharacterPageReady']>(false);
   const [info, setInfo] = useState<ICharacterContent['info']>({
     count: 0,
     pages: 0,
@@ -52,20 +54,22 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
     prev: null,
   });
   const [results, setResults] = useState<ICharacterContent['results']>([]);
-  const [locations, setLocations] = useState<IAdditionalData['locations']>([]);
-  const [episodes, setEpisodes] = useState<IAdditionalData['episodes']>([]);
+  const { locations, locationsStatus, episodes, episodesStatus } =
+    useAppSelector(selectAdditionalData);
   // for Pagination component
   const currentPage: number = useAppSelector(selectPage);
   // for Character page
   const [currentCharacter, setCurrentCharacter] = useState<ICharacter | null>(null);
-  const [locationCharacter, setLocationCharacter] = useState<IAdditionalData['locationCharacter']>({
+  const [locationCharacter, setLocationCharacter] = useState<
+    IHomeContextState['locationCharacter']
+  >({
     name: '',
     type: '',
     dimension: '',
   });
-  const [episodesCharacter, setEpisodesCharacter] = useState<IAdditionalData['episodesCharacter']>([
-    { name: '', air_date: '', episode: '' },
-  ]);
+  const [episodesCharacter, setEpisodesCharacter] = useState<
+    IHomeContextState['episodesCharacter']
+  >([{ name: '', air_date: '', episode: '' }]);
   // ==============
 
   const fetchCharacters: () => Promise<void> = useCallback(async (): Promise<void> => {
@@ -112,29 +116,14 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
     }
   }, [api, contentStorage, form, currentPage]);
 
-  const fetchAdditionalData: () => void = useCallback(async (): Promise<void> => {
-    try {
-      setIsError(false);
-      setIsLoading(true);
-
-      setLocations((await api.getLocationsOrEpisodes(LOCATIONS)) as ILocation[]);
-      setEpisodes((await api.getLocationsOrEpisodes(EPISODES)) as IEpisode[]);
-
-      setIsCharacterPageReady(true);
-      setIsLoading(false);
-    } catch (error) {
-      setIsError(true);
-      setIsLoading(false);
-      if (error instanceof Error) {
-        console.error(error.message);
-      }
-    }
-  }, [api]);
-
   useEffect((): void => {
-    fetchAdditionalData();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    if (episodesStatus === 'idle') {
+      dispatch(fetchEpisodes());
+    }
+    if (locationsStatus === 'idle') {
+      dispatch(fetchLocations());
+    }
+  }, [episodesStatus, locationsStatus, dispatch]);
 
   useEffect((): void => {
     fetchCharacters();
@@ -176,8 +165,8 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
       currentEpisodes.forEach((item: IEpisode): void =>
         setEpisodesCharacter(
           (
-            prevState: IAdditionalData['episodesCharacter']
-          ): IAdditionalData['episodesCharacter'] => {
+            prevState: IHomeContextState['episodesCharacter']
+          ): IHomeContextState['episodesCharacter'] => {
             return [
               ...prevState,
               { name: item.name, air_date: item.air_date, episode: item.episode },
@@ -197,7 +186,6 @@ export const HomeContextProvider: ({ children }: MyProps) => JSX.Element = ({
         results,
         locations,
         episodes,
-        isCharacterPageReady,
         currentCharacter,
         locationCharacter,
         episodesCharacter,
