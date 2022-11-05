@@ -1,6 +1,5 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import Api from 'api/api';
-import { EPISODES, LOCATIONS } from 'constants/constants';
 import { RootState } from 'store/store';
 import { IAdditionalData, IEpisode, ILocation } from 'types/models';
 
@@ -13,15 +12,21 @@ const initialState: IAdditionalData = {
   episodesStatus: 'idle',
 };
 
-export const fetchLocations = createAsyncThunk('locations/fetchLocations', async () => {
-  const content: ILocation[] = (await api.getLocationsOrEpisodes(LOCATIONS)) as ILocation[];
-  return content;
-});
+export const fetchLocations = createAsyncThunk(
+  'locations/fetchLocations',
+  async (): Promise<ILocation[]> => {
+    const content: ILocation[] = await api.getLocations();
+    return content;
+  }
+);
 
-export const fetchEpisodes = createAsyncThunk('episodes/fetchEpisodes', async () => {
-  const content: IEpisode[] = (await api.getLocationsOrEpisodes(EPISODES)) as IEpisode[];
-  return content;
-});
+export const fetchEpisodes = createAsyncThunk(
+  'episodes/fetchEpisodes',
+  async (): Promise<IEpisode[]> => {
+    const content: IEpisode[] = await api.getEpisodes();
+    return content;
+  }
+);
 
 export const additionalDataSlice = createSlice({
   name: 'additionalData',
@@ -34,7 +39,7 @@ export const additionalDataSlice = createSlice({
       })
       .addCase(fetchLocations.fulfilled, (state, action) => {
         state.locationsStatus = 'succeeded';
-        state.locations = state.locations.concat(action.payload as ILocation[]);
+        state.locations = state.locations.concat(action.payload);
       })
       .addCase(fetchLocations.rejected, (state, action) => {
         state.locationsStatus = 'failed';
@@ -45,7 +50,7 @@ export const additionalDataSlice = createSlice({
       })
       .addCase(fetchEpisodes.fulfilled, (state, action) => {
         state.episodesStatus = 'succeeded';
-        state.episodes = state.episodes.concat(action.payload as IEpisode[]);
+        state.episodes = state.episodes.concat(action.payload);
       })
       .addCase(fetchEpisodes.rejected, (state, action) => {
         state.episodesStatus = 'failed';
