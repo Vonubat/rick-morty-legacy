@@ -1,5 +1,4 @@
 import React, { ReactElement } from 'react';
-import { HomeContextProvider } from 'context/HomeContext';
 import { FormsContextProvider } from 'context/FormsContext';
 import { render, RenderOptions } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
@@ -11,9 +10,7 @@ export const AllTheProviders: ({ children }: { children: React.ReactNode }) => J
 }): JSX.Element => {
   return (
     <BrowserRouter>
-      <HomeContextProvider>
-        <FormsContextProvider>{children}</FormsContextProvider>
-      </HomeContextProvider>
+      <FormsContextProvider>{children}</FormsContextProvider>
     </BrowserRouter>
   );
 };

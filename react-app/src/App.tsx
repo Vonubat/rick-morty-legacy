@@ -5,24 +5,21 @@ import { Home } from 'pages/Home';
 import { PageNotFound } from 'pages/PageNotFound';
 import { Layout } from 'components/layout/Layout';
 import { Forms } from 'pages/Forms';
-import { HomeContextProvider } from 'context/HomeContext';
 import { FormsContextProvider } from 'context/FormsContext';
 import { Character } from 'pages/Character';
 
 function App(): JSX.Element {
   return (
     <FormsContextProvider>
-      <HomeContextProvider>
-        <Routes>
-          <Route path="/" element={<Layout />}>
-            <Route index element={<Home />} />
-            <Route path="about" element={<About />} />
-            <Route path="forms" element={<Forms />} />
-            <Route path="/character/:id" element={<Character />} />
-            <Route path="*" element={<PageNotFound />} />
-          </Route>
-        </Routes>
-      </HomeContextProvider>
+      <Routes>
+        <Route path="/" element={<Layout />}>
+          <Route index element={<Home />} />
+          <Route path="about" element={<About />} />
+          <Route path="forms" element={<Forms />} />
+          <Route path="/character/:id" element={<Character />} />
+          <Route path="*" element={<PageNotFound />} />
+        </Route>
+      </Routes>
     </FormsContextProvider>
   );
 }
