@@ -135,6 +135,7 @@ describe('Forms page', (): void => {
 
     const fakeFileImg: File = new File(['(⌐□_□)'], 'chucknorris.png', { type: 'image/png' });
     const fakeFilePdf: File = new File(['pdfFile'], 'chucknorris.pdf', { type: 'application/pdf' });
+    const resetBtn: HTMLButtonElement = screen.getByText(/reset/i);
     const submitBtn: HTMLButtonElement = screen.getByText(/submit/i);
 
     const fileInput: HTMLInputElement = screen.getByLabelText('Choose avatar for your character');
@@ -257,7 +258,7 @@ describe('Forms page', (): void => {
     });
 
     /* Check non-image file validation */
-    await user.click(submitBtn);
+    await user.click(resetBtn);
     fileInput.accept = ''; // turn-off accept="image/png, image/gif, image/jpeg" in fileInput
     await user.upload(fileInput, fakeFilePdf);
     await user.click(submitBtn);

@@ -50,21 +50,19 @@ describe('Api functions', (): void => {
     }
   });
 
-  it('getLocationsOrEpisodes method works correctly (success)', async (): Promise<void> => {
-    const contentLocations: ILocation[] = (await API.getLocationsOrEpisodes(
-      LOCATIONS
-    )) as ILocation[];
+  it('getLocations and getEpisodes method works correctly (success)', async (): Promise<void> => {
+    const contentLocations: ILocation[] = await API.getLocations();
     await waitFor(() => {
       expect(contentLocations).toEqual(locationsResult);
     });
 
-    const contentEpisodes: IEpisode[] = (await API.getLocationsOrEpisodes(EPISODES)) as IEpisode[];
+    const contentEpisodes: IEpisode[] = await API.getEpisodes();
     await waitFor(() => {
       expect(contentEpisodes).toEqual(episodesResult);
     });
   });
 
-  it('getLocationsOrEpisodes method fails', async (): Promise<void> => {
+  it('getLocations and getEpisodes method fails', async (): Promise<void> => {
     try {
       server.use(
         rest.get(LOCATIONS, (req, res, ctx) => {
@@ -72,10 +70,26 @@ describe('Api functions', (): void => {
         })
       );
 
-      (await API.getLocationsOrEpisodes(LOCATIONS)) as ILocation[];
+      await API.getLocations();
     } catch (e) {
       if (e instanceof Error) {
-        expect(e.message).toBe(`Can't get the ${LOCATIONS}`);
+        expect(e.message).toBe(`Can't get the LOCATIONS`);
+      }
+    }
+  });
+
+  it('getEpisodes method fails', async (): Promise<void> => {
+    try {
+      server.use(
+        rest.get(EPISODES, (req, res, ctx) => {
+          return res(ctx.status(404), ctx.json({ error: 'There is nothing here' }));
+        })
+      );
+
+      await API.getEpisodes();
+    } catch (e) {
+      if (e instanceof Error) {
+        expect(e.message).toBe(`Can't get the EPISODES`);
       }
     }
   });

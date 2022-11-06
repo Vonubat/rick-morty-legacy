@@ -1,6 +1,7 @@
 import React from 'react';
-import { render, screen } from '@testing-library/react';
-import { BrowserRouter, MemoryRouter } from 'react-router-dom';
+import { render, screen } from '../__mocks__/all-the-providers';
+import { render as nativeRender } from '@testing-library/react';
+import { MemoryRouter } from 'react-router-dom';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 import userEvent from '@testing-library/user-event';
 import App from '../App';
@@ -9,7 +10,7 @@ describe('Router', (): void => {
   const user: UserEvent = userEvent.setup();
 
   it('full app rendering/navigating', async (): Promise<void> => {
-    render(<App />, { wrapper: BrowserRouter });
+    render(<App />);
 
     // verify page content for default route
     expect(screen.getByRole('searchbox')).toBeInTheDocument();
@@ -27,7 +28,7 @@ describe('Router', (): void => {
     const badRoute = '/some/bad/route';
 
     // use <MemoryRouter> when you want to manually control the history
-    render(
+    nativeRender(
       <MemoryRouter initialEntries={[badRoute]}>
         <App />
       </MemoryRouter>
