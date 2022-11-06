@@ -17,16 +17,7 @@ export const fillCharacterPage = createAsyncThunk<
   number,
   { state: RootState }
 >('currentCharacterInfo/fillCharacterPage', async (id: number, { getState }) => {
-  const content: IFillCharacterState = {
-    currentCharacter: null,
-    locationCharacter: {
-      name: '',
-      type: '',
-      dimension: '',
-    },
-    episodesCharacter: [{ name: '', air_date: '', episode: '' }],
-  };
-
+  const content: IFillCharacterState = initialState;
   const results: ICharacter[] = getState().characterContent.characterContent.results;
   const locations: ILocation[] = getState().additionalData.locations;
   const episodes: IEpisode[] = getState().additionalData.episodes;

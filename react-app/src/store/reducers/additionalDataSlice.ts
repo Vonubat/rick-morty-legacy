@@ -12,19 +12,39 @@ const initialState: IAdditionalData = {
   episodesStatus: 'idle',
 };
 
-export const fetchLocations = createAsyncThunk(
+export const fetchLocations = createAsyncThunk<ILocation[], void, { state: RootState }>(
   'locations/fetchLocations',
   async (): Promise<ILocation[]> => {
     const content: ILocation[] = await api.getLocations();
     return content;
+  },
+  {
+    condition: (_: void, { getState }): false | undefined => {
+      const { additionalData } = getState();
+      const { locationsStatus } = additionalData;
+      if (locationsStatus === 'succeeded' || locationsStatus === 'loading') {
+        // Already fetched or in progress, don't need to re-fetch
+        return false;
+      }
+    },
   }
 );
 
-export const fetchEpisodes = createAsyncThunk(
+export const fetchEpisodes = createAsyncThunk<IEpisode[], void, { state: RootState }>(
   'episodes/fetchEpisodes',
   async (): Promise<IEpisode[]> => {
     const content: IEpisode[] = await api.getEpisodes();
     return content;
+  },
+  {
+    condition: (_: void, { getState }): false | undefined => {
+      const { additionalData } = getState();
+      const { episodesStatus } = additionalData;
+      if (episodesStatus === 'succeeded' || episodesStatus === 'loading') {
+        // Already fetched or in progress, don't need to re-fetch
+        return false;
+      }
+    },
   }
 );
 
