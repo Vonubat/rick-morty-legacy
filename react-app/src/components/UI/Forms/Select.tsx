@@ -1,25 +1,38 @@
-import React, { Component } from 'react';
-import ValidationWarning from './ValidationWarning';
+import React from 'react';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+import warningMessages from 'utils/warning-messages';
+import { ValidationWarning } from './ValidationWarning';
 
 type MyProps = {
+  form: UseFormReturn<FieldValues, unknown>;
   subject: string;
-  name: string;
   options: string[];
   defaultValue: string;
-  valid: boolean;
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  reference?: React.RefObject<HTMLSelectElement>;
-  warningMessage: string;
+  onChange?: (e: React.ChangeEvent<HTMLSelectElement>) => void;
 };
 
-type MyState = Record<string, never>;
+export const Select: ({
+  form,
+  subject,
+  options,
+  defaultValue,
+  onChange,
+}: MyProps) => JSX.Element = ({
+  form,
+  subject,
+  options,
+  defaultValue,
+  onChange,
+}: MyProps): JSX.Element => {
+  const {
+    register,
+    formState: { errors },
+  } = form;
 
-export default class Select extends Component<MyProps, MyState> {
-  render(): JSX.Element | JSX.Element[] {
-    let className = '';
+  const name: string = subject.toLowerCase();
 
-    const cls = {
-      baseClass: `form-select form-select-lg
+  const cls = {
+    baseClass: `form-select form-select-lg
       appearance-none
       block
       w-full
@@ -35,44 +48,43 @@ export default class Select extends Component<MyProps, MyState> {
       ease-in-out
       m-0
       focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none capitalize`,
-      isValid: `is-valid`,
-      isInvalid: `is-invalid`,
-    };
+    validClass: `is-valid`,
+    invalidClass: `is-invalid`,
+  };
 
-    const valid = this.props.valid;
-    if (!valid) {
-      className = `${cls.baseClass} ${cls.isInvalid}`;
-    } else {
-      className = `${cls.baseClass}`;
-    }
+  const className: string = errors[name]
+    ? `${cls.baseClass} ${cls.invalidClass}`
+    : `${cls.baseClass}`;
 
-    return (
-      <>
-        <div className="mt-3">
-          <select
-            defaultValue={this.props.defaultValue}
-            className={className}
-            aria-label=".form-select-lg"
-            placeholder={this.props.subject}
-            name={this.props.name}
-            onChange={this.props.onChange}
-            ref={this.props.reference}
-            data-testid="select"
-          >
-            <option disabled value="">
-              {this.props.subject}
-            </option>
-            {this.props.options.map((option: string): JSX.Element => {
-              return (
-                <option key={option} value={option}>
-                  {option}
-                </option>
-              );
-            })}
-          </select>
-        </div>
-        <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <div className="mt-3">
+        <select
+          {...register(name, {
+            required: warningMessages[name]?.emptyInput || '',
+            onChange: onChange,
+          })}
+          defaultValue={defaultValue}
+          className={className}
+          placeholder={`Select ${subject}`}
+          id={name}
+          data-testid="select"
+        >
+          <option disabled value="">
+            {`Select ${subject}`}
+          </option>
+          {options.map((option: string): JSX.Element => {
+            return (
+              <option key={option} value={option}>
+                {option}
+              </option>
+            );
+          })}
+        </select>
+      </div>
+      <ValidationWarning valid={!errors[name]}>
+        {(errors[name]?.message as string) || warningMessages[name]?.emptyInput || ''}
+      </ValidationWarning>
+    </>
+  );
+};

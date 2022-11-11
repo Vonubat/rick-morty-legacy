@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
-import Home from 'pages/Home';
+import { Home } from 'pages/Home';
 
 describe('Home page', (): void => {
   const user: UserEvent = userEvent.setup({ delay: 5000 });
@@ -23,6 +23,5 @@ describe('Home page', (): void => {
     const rickModalBtn = within(rickCard).getByText('Tell me more!');
     await user.click(rickModalBtn);
     expect(await screen.findByText('Pilot')).toBeInTheDocument();
-    screen.debug();
   });
 });

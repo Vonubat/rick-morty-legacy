@@ -1,52 +1,59 @@
-import React, { Component } from 'react';
-import ValidationWarning from './ValidationWarning';
+import React from 'react';
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+import warningMessages from 'utils/warning-messages';
+import { ValidationWarning } from './ValidationWarning';
 
 type MyProps = {
-  name: string;
-  valid: boolean;
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  reference: React.RefObject<HTMLInputElement>;
-  warningMessage: string;
+  form: UseFormReturn<FieldValues, unknown>;
+  subject: string;
 };
 
-type MyState = Record<string, never>;
+export const DateInput: ({ form, subject }: MyProps) => JSX.Element = ({
+  form,
+  subject,
+}: MyProps): JSX.Element => {
+  const {
+    register,
+    formState: { errors },
+  } = form;
 
-export default class DateInput extends Component<MyProps, MyState> {
-  render(): JSX.Element {
-    let className = '';
+  const name: string = subject.toLowerCase();
 
-    const cls = {
-      baseClass: `form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none`,
-      isValid: `is-valid`,
-      isInvalid: `is-invalid`,
-    };
+  const cls = {
+    baseClass: `form-control block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none`,
+    validClass: `is-valid`,
+    invalidClass: `is-invalid`,
+  };
 
-    const valid = this.props.valid;
-    if (!valid) {
-      className = `${cls.baseClass} ${cls.isInvalid}`;
-    } else {
-      className = `${cls.baseClass}`;
-    }
+  const className: string = errors[name]
+    ? `${cls.baseClass} ${cls.invalidClass}`
+    : `${cls.baseClass}`;
 
-    return (
-      <>
-        <div className="datepicker relative form-floating mt-3">
-          <input
-            type="date"
-            className={className}
-            placeholder="Select a date"
-            name={this.props.name}
-            onChange={this.props.onChange}
-            ref={this.props.reference}
-            data-testid="dateInput"
-            id="dateInput"
-          />
-          <label htmlFor="dateInput" className="text-gray-700">
-            Select a date
-          </label>
-        </div>
-        <ValidationWarning valid={this.props.valid}>{this.props.warningMessage}</ValidationWarning>
-      </>
-    );
-  }
-}
+  return (
+    <>
+      <div className="datepicker relative form-floating mt-3">
+        <input
+          {...register(name, {
+            required: warningMessages.date.emptyInput,
+            validate: (value: string): string | true => {
+              const currentDate: number = Date.now();
+              const userDate: number = Date.parse(value);
+              return userDate < currentDate || warningMessages.date.nonExistingDate;
+            },
+          })}
+          type="date"
+          className={className}
+          placeholder="Select a date"
+          id={name}
+          data-testid="dateInput"
+        />
+        <label htmlFor={name} className="text-gray-700">
+          Select a date
+        </label>
+      </div>
+      <ValidationWarning valid={!errors[name]}>
+        {(errors[name]?.message as string) || warningMessages.date.emptyInput}
+      </ValidationWarning>
+    </>
+  );
+};

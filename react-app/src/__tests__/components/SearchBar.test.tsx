@@ -3,7 +3,7 @@ import { render, screen, waitFor } from '@testing-library/react';
 import App from 'App';
 import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
-import SearchBar from 'components/SearchBar';
+import { SearchBar } from 'components/SearchBar';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
 
 describe('SearchBar component', (): void => {
