@@ -1,65 +1,51 @@
 import React, { ChangeEvent, useState } from 'react';
-import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
-import { ICharacterFilter, IFilter } from 'types/models';
-import { Select } from './UI/Forms/Select';
+import settingsIcon from 'assets/settings.png';
+import { Settings } from './Settings';
+import { useHomeContextState, useHomeContextUpdater } from 'context/HomeContext';
 
 type MyProps = {
-  search: (filter?: IFilter) => Promise<void>;
+  search: () => Promise<void>;
 };
 
 export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
   search,
 }: MyProps): JSX.Element => {
   const [value, setValue] = useState(localStorage.getItem('searchValue') || '');
-  const [query, setQuery] = useState(
-    (localStorage.getItem('queryValue') as ICharacterFilter) || 'name'
-  );
+  const { currentPage } = useHomeContextState();
+  const { form, dispatchPage } = useHomeContextUpdater();
+  const { handleSubmit, register } = form;
 
-  const form: UseFormReturn<FieldValues, unknown> =
-    useForm(/* {
-    mode: 'onChange',
-  } */);
-
-  const onChangeSearchInput: (e: ChangeEvent<HTMLInputElement>) => void = (
-    e: ChangeEvent<HTMLInputElement>
-  ): void => {
-    setValue(e.target.value);
-    localStorage.setItem('searchValue', e.target.value);
-  };
-
-  const onChangeSelect: (e: React.ChangeEvent<HTMLSelectElement>) => void = (
-    e: React.ChangeEvent<HTMLSelectElement>
-  ): void => {
-    setQuery(e.target.value as ICharacterFilter);
-    localStorage.setItem('queryValue', e.target.value);
-  };
-
-  const handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void> = async (
-    e: React.FormEvent<HTMLFormElement>
-  ): Promise<void> => {
-    e.preventDefault();
-    await search({ query, value });
+  const onFormSubmit: () => void = (): void => {
+    if (currentPage === 1) {
+      search();
+    }
+    dispatchPage({ type: 'set', payload: 1 });
   };
 
   return (
     <form
-      onSubmit={handleSubmit}
-      className="flex justify-center gap-1 items-center flex-wrap-reverse"
+      onSubmit={handleSubmit(onFormSubmit)}
+      className="flex justify-center items-center flex-wrap-reverse"
     >
-      {/* Select search query*/}
-      <Select
-        form={form}
-        subject="search query:"
-        options={['name', 'species']}
-        defaultValue={query}
-        onChange={onChangeSelect}
+      {/* Settings */}
+      <img
+        src={settingsIcon}
+        alt="settingsIcon"
+        className="w-10 mt-3 mr-3 hover:animate-spin hover:cursor-pointer block"
+        data-bs-toggle="modal"
+        data-bs-target="#settings"
       />
       {/* SearchBar */}
       <div className="w-72 sm:w-96 mt-3">
         <div className="input-group relative flex flex-wrap items-stretch w-full rounded">
           <input
-            value={value}
-            onChange={onChangeSearchInput}
+            {...register('value', {
+              value: value,
+              onChange: (e: ChangeEvent<HTMLInputElement>): void => {
+                setValue(e.target.value);
+                localStorage.setItem('searchValue', e.target.value);
+              },
+            })}
             type="search"
             className="form-control relative flex-auto min-w-0 block w-full px-3 py-1.5 text-base font-normal text-gray-700 bg-white bg-clip-padding border border-solid border-gray-300 rounded transition ease-in-out m-0 focus:text-gray-700 focus:bg-white focus:border-blue-600 focus:outline-none"
             placeholder="Search..."
@@ -87,6 +73,7 @@ export const SearchBar: ({ search }: MyProps) => JSX.Element = ({
           </button>
         </div>
       </div>
+      <Settings />
     </form>
   );
 };

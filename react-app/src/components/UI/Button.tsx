@@ -7,7 +7,8 @@ type MyProps = {
   onClick?: () => void;
   dataBsToggle?: string;
   dataBsTarget?: string;
-  children: string;
+  dataBsDismiss?: string;
+  children: string | React.ReactNode;
 };
 
 export const Button: ({
@@ -17,6 +18,7 @@ export const Button: ({
   onClick,
   dataBsToggle,
   dataBsTarget,
+  dataBsDismiss,
   children,
 }: MyProps) => JSX.Element = ({
   role,
@@ -25,6 +27,7 @@ export const Button: ({
   onClick,
   dataBsToggle,
   dataBsTarget,
+  dataBsDismiss,
   children,
 }: MyProps): JSX.Element => {
   const cls = {
@@ -59,6 +62,7 @@ export const Button: ({
       onClick={onClick}
       data-bs-toggle={dataBsToggle}
       data-bs-target={dataBsTarget}
+      data-bs-dismiss={dataBsDismiss}
     >
       {children}
     </button>

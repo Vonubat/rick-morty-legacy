@@ -1,3 +1,5 @@
+import { FieldValues, UseFormReturn } from 'react-hook-form';
+
 // API data interfaces & types
 export interface IInfo {
   count: number;
@@ -70,34 +72,63 @@ export interface IEpisodeContent {
   info: IInfo;
   results: IEpisode[];
 }
-
-export type ICharacterFilter = 'name' | 'species';
+type IQuery = 'name' | 'species';
+type IGender = 'any' | 'female' | 'male' | 'genderless' | 'unknown';
+type IStatus = 'any' | 'alive' | 'dead' | 'unknown';
 
 export interface IFilter {
-  query: ICharacterFilter;
+  page: number;
   value: string;
+  query: IQuery;
+  gender: IGender;
+  status: IStatus;
 }
 
 // Internal interfaces
 export interface IPageIndicators {
-  error: boolean;
-  loading: boolean;
+  isError: boolean;
+  isLoading: boolean;
 }
 
-export interface IDataForModal {
+export interface IAdditionalData {
   locations: ILocation[];
   episodes: IEpisode[];
-  nameModal: string;
-  btnModalDisabled: boolean;
-  locationModal: { name: string; type: string; dimension: string };
-  episodesModal: { name: string; air_date: string; episode: string }[];
+  characterName: string;
+  isCharacterPageReady: boolean;
+  locationCharacter: { name: string; type: string; dimension: string };
+  episodesCharacter: { name: string; air_date: string; episode: string }[];
 }
-export interface IGetFormElementsFn {
-  fileElement: HTMLInputElement;
-  nameElement: HTMLInputElement;
-  statusElement: HTMLSelectElement;
-  speciesElement: HTMLInputElement;
-  genderElement: HTMLSelectElement;
-  dateElement: HTMLInputElement;
-  checkboxElement: HTMLInputElement;
+export interface IHomeContextState {
+  isError: IPageIndicators['isError'];
+  isLoading: IPageIndicators['isLoading'];
+  info: ICharacterContent['info'];
+  results: ICharacterContent['results'];
+  locations: IAdditionalData['locations'];
+  episodes: IAdditionalData['episodes'];
+  isCharacterPageReady: IAdditionalData['isCharacterPageReady'];
+  currentPage: number;
+  currentCharacter: ICharacter | null;
+  locationCharacter: IAdditionalData['locationCharacter'];
+  episodesCharacter: IAdditionalData['episodesCharacter'];
 }
+
+export interface IHomeContextUpdater {
+  fetchCharacters: () => Promise<void>;
+  form: UseFormReturn<FieldValues, unknown>;
+  dispatchPage: React.Dispatch<ActionPage>;
+  fillCharacterPage: (id: number) => void;
+}
+
+export interface IFormsContextState {
+  userCards: IUserCharacter[];
+}
+
+export interface IFormsContextUpdater {
+  setUserCards: React.Dispatch<React.SetStateAction<IUserCharacter[]>>;
+  form: UseFormReturn<FieldValues, unknown>;
+}
+
+export type ActionPage =
+  | { type: 'increment'; payload: number }
+  | { type: 'decrement'; payload: number }
+  | { type: 'set'; payload: number };

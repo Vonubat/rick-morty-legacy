@@ -24,18 +24,24 @@ describe('Api functions', (): void => {
     .flat();
 
   it('getCharacters method works correctly (success)', async (): Promise<void> => {
-    const content: ICharacterContent = await API.getCharacters(1, {
-      query: 'name',
+    const content: ICharacterContent = await API.getCharacters({
+      page: 1,
       value: '',
+      query: 'name',
+      gender: 'any',
+      status: 'any',
     });
     expect(content).toEqual(charactersAll);
   });
 
   it('getCharacters method fails', async (): Promise<void> => {
     try {
-      await API.getCharacters(100, {
-        query: 'name',
+      await API.getCharacters({
+        page: 100,
         value: '',
+        query: 'name',
+        gender: 'any',
+        status: 'any',
       });
     } catch (e) {
       if (e instanceof Error) {
@@ -44,19 +50,21 @@ describe('Api functions', (): void => {
     }
   });
 
-  it('getDataForModal method works correctly (success)', async (): Promise<void> => {
-    const contentLocations: ILocation[] = (await API.getDataForModal(LOCATIONS)) as ILocation[];
+  it('getLocationsOrEpisodes method works correctly (success)', async (): Promise<void> => {
+    const contentLocations: ILocation[] = (await API.getLocationsOrEpisodes(
+      LOCATIONS
+    )) as ILocation[];
     await waitFor(() => {
       expect(contentLocations).toEqual(locationsResult);
     });
 
-    const contentEpisodes: IEpisode[] = (await API.getDataForModal(EPISODES)) as IEpisode[];
+    const contentEpisodes: IEpisode[] = (await API.getLocationsOrEpisodes(EPISODES)) as IEpisode[];
     await waitFor(() => {
       expect(contentEpisodes).toEqual(episodesResult);
     });
   });
 
-  it('getDataForModal method fails', async (): Promise<void> => {
+  it('getLocationsOrEpisodes method fails', async (): Promise<void> => {
     try {
       server.use(
         rest.get(LOCATIONS, (req, res, ctx) => {
@@ -64,7 +72,7 @@ describe('Api functions', (): void => {
         })
       );
 
-      (await API.getDataForModal(LOCATIONS)) as ILocation[];
+      (await API.getLocationsOrEpisodes(LOCATIONS)) as ILocation[];
     } catch (e) {
       if (e instanceof Error) {
         expect(e.message).toBe(`Can't get the ${LOCATIONS}`);

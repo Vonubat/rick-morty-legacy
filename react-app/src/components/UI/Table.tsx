@@ -1,13 +1,13 @@
 import React from 'react';
-import { IDataForModal } from 'types/models';
+import { IAdditionalData } from 'types/models';
 
 type MyProps = {
   heading: string[];
-} & Pick<IDataForModal, 'episodesModal'>;
+} & Pick<IAdditionalData, 'episodesCharacter'>;
 
-export const Table: ({ heading, episodesModal }: MyProps) => JSX.Element = ({
+export const Table: ({ heading, episodesCharacter }: MyProps) => JSX.Element = ({
   heading,
-  episodesModal,
+  episodesCharacter,
 }: MyProps): JSX.Element => {
   return (
     <div className="flex flex-col">
@@ -32,7 +32,7 @@ export const Table: ({ heading, episodesModal }: MyProps) => JSX.Element = ({
             </tr>
           </thead>
           <tbody>
-            {episodesModal.slice(1).map(
+            {episodesCharacter.slice(1).map(
               (
                 item: {
                   name: string;

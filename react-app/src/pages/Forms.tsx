@@ -9,16 +9,13 @@ import { FileInput } from 'components/UI/Forms/FileInput';
 import { IUserCharacter } from 'types/models';
 import { Card } from 'components/Card';
 import { Alert } from 'components/UI/Alert';
-import { FieldValues, SubmitHandler, useForm, UseFormReturn } from 'react-hook-form';
+import { FieldValues, SubmitHandler } from 'react-hook-form';
+import { useFormsContextState, useFormsContextUpdater } from 'context/FormsContext';
 
 export const Forms: () => JSX.Element = (): JSX.Element => {
-  const [userCards, setUserCards] = useState<IUserCharacter[]>([]);
+  const { userCards } = useFormsContextState();
+  const { setUserCards, form } = useFormsContextUpdater();
   const [alertVisibility, setAlertVisibility] = useState<boolean>(false);
-
-  const form: UseFormReturn<FieldValues, unknown> =
-    useForm(/* {
-    mode: 'onChange',
-  } */);
   const {
     handleSubmit,
     reset,
@@ -27,7 +24,7 @@ export const Forms: () => JSX.Element = (): JSX.Element => {
 
   const onFormSubmit: SubmitHandler<FieldValues> = (data: FieldValues): void => {
     setAlertVisibility(true);
-    setTimeout(() => setAlertVisibility(false), 2000);
+    setTimeout((): void => setAlertVisibility(false), 2000);
     setUserCards((prevState: IUserCharacter[]): IUserCharacter[] => {
       return [
         ...prevState,
@@ -85,7 +82,7 @@ export const Forms: () => JSX.Element = (): JSX.Element => {
                   <Select
                     form={form}
                     subject="Gender"
-                    options={['Male', 'Female', 'unknown']}
+                    options={['Male', 'Female', 'Genderless', 'unknown']}
                     defaultValue=""
                   />
 

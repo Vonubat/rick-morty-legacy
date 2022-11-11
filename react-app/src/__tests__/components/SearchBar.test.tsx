@@ -1,7 +1,6 @@
 import React from 'react';
-import { render, screen, waitFor } from '@testing-library/react';
+import { render, screen, waitFor } from '../../__mocks__/all-the-providers';
 import App from 'App';
-import { BrowserRouter } from 'react-router-dom';
 import userEvent from '@testing-library/user-event';
 import { SearchBar } from 'components/SearchBar';
 import { UserEvent } from '@testing-library/user-event/dist/types/setup/setup';
@@ -27,9 +26,7 @@ describe('SearchBar component', (): void => {
 
   it('case: Input value and select value should be saved to LocalStorage during component’s unmount. During the initialization pick the value from LocalStorage and show it.', async (): Promise<void> => {
     window.localStorage.clear();
-    const { getByTestId, getByRole, queryByDisplayValue, getAllByText } = render(<App />, {
-      wrapper: BrowserRouter,
-    });
+    const { getByTestId, getByRole, queryByDisplayValue, getAllByText } = render(<App />);
 
     const select: HTMLElement = getByTestId('select');
     const optionName: HTMLOptionElement = getByRole('option', {
@@ -57,7 +54,7 @@ describe('SearchBar component', (): void => {
 
   it('search filter is working', async (): Promise<void> => {
     window.localStorage.clear();
-    render(<App />, { wrapper: BrowserRouter });
+    render(<App />);
 
     await waitFor(() => {
       expect(screen.getByText('Rick Sanchez')).toBeInTheDocument();

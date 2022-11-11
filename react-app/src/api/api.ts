@@ -10,12 +10,12 @@ import {
 import HttpMethods from './http-methods';
 
 class Api extends HttpMethods {
-  public async getCharacters(pageNumber: number, filter: IFilter): Promise<ICharacterContent> {
-    let url: URL = new URL(`${CHARACTERS}/?page=${pageNumber}`);
-
-    if (filter.value) {
-      url = new URL(`${url}&${filter.query}=${filter.value}`);
-    }
+  public async getCharacters(filter: IFilter): Promise<ICharacterContent> {
+    const url: URL = new URL(
+      `${CHARACTERS}/?page=${filter.page}${filter.value ? `&${filter.query}=${filter.value}` : ''}${
+        filter.gender !== 'any' ? `&gender=${filter.gender}` : ''
+      }${filter.status !== 'any' ? `&status=${filter.status}` : ''}`
+    );
 
     const response: Response = await this.get(url);
 
@@ -28,7 +28,7 @@ class Api extends HttpMethods {
     return content;
   }
 
-  public async getDataForModal(
+  public async getLocationsOrEpisodes(
     type: typeof LOCATIONS | typeof EPISODES
   ): Promise<ILocation[] | IEpisode[]> {
     let content: ILocationContent | IEpisodeContent = {
