@@ -72,9 +72,9 @@ export interface IEpisodeContent {
   info: IInfo;
   results: IEpisode[];
 }
-type IQuery = 'name' | 'species';
-type IGender = 'any' | 'female' | 'male' | 'genderless' | 'unknown';
-type IStatus = 'any' | 'alive' | 'dead' | 'unknown';
+export type IQuery = 'name' | 'species';
+export type IGender = 'any' | 'female' | 'male' | 'genderless' | 'unknown';
+export type IStatus = 'any' | 'alive' | 'dead' | 'unknown';
 
 export interface IFilter {
   page: number;
@@ -90,45 +90,43 @@ export interface IPageIndicators {
   isLoading: boolean;
 }
 
+export type StatusType = 'idle' | 'loading' | 'succeeded' | 'failed';
+
 export interface IAdditionalData {
   locations: ILocation[];
   episodes: IEpisode[];
-  characterName: string;
-  isCharacterPageReady: boolean;
+  locationsStatus: StatusType;
+  episodesStatus: StatusType;
+}
+
+export interface IHomeContextState {
+  locations: IAdditionalData['locations'];
+  episodes: IAdditionalData['episodes'];
+  currentCharacter: ICharacter | null;
   locationCharacter: { name: string; type: string; dimension: string };
   episodesCharacter: { name: string; air_date: string; episode: string }[];
 }
-export interface IHomeContextState {
-  isError: IPageIndicators['isError'];
-  isLoading: IPageIndicators['isLoading'];
-  info: ICharacterContent['info'];
-  results: ICharacterContent['results'];
-  locations: IAdditionalData['locations'];
-  episodes: IAdditionalData['episodes'];
-  isCharacterPageReady: IAdditionalData['isCharacterPageReady'];
-  currentPage: number;
-  currentCharacter: ICharacter | null;
-  locationCharacter: IAdditionalData['locationCharacter'];
-  episodesCharacter: IAdditionalData['episodesCharacter'];
-}
 
 export interface IHomeContextUpdater {
-  fetchCharacters: () => Promise<void>;
-  form: UseFormReturn<FieldValues, unknown>;
-  dispatchPage: React.Dispatch<ActionPage>;
   fillCharacterPage: (id: number) => void;
 }
 
 export interface IFormsContextState {
-  userCards: IUserCharacter[];
+  formsPageForm: UseFormReturn<FieldValues, unknown>;
+  searchBarForm: UseFormReturn<FieldValues, unknown>;
 }
 
-export interface IFormsContextUpdater {
-  setUserCards: React.Dispatch<React.SetStateAction<IUserCharacter[]>>;
-  form: UseFormReturn<FieldValues, unknown>;
+export interface IPageState {
+  currentPage: number;
 }
 
-export type ActionPage =
-  | { type: 'increment'; payload: number }
-  | { type: 'decrement'; payload: number }
-  | { type: 'set'; payload: number };
+export interface ICharacterContentState {
+  characterContent: ICharacterContent;
+  status: StatusType;
+}
+
+export interface IFillCharacterState {
+  currentCharacter: ICharacter | null;
+  locationCharacter: { name: string; type: string; dimension: string };
+  episodesCharacter: { name: string; air_date: string; episode: string }[];
+}

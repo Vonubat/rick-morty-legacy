@@ -1,8 +1,9 @@
 import React, { ReactElement } from 'react';
-import { HomeContextProvider } from 'context/HomeContext';
 import { FormsContextProvider } from 'context/FormsContext';
 import { render, RenderOptions } from '@testing-library/react';
 import { BrowserRouter } from 'react-router-dom';
+import { Provider } from 'react-redux';
+import { store } from 'store/store';
 
 export const AllTheProviders: ({ children }: { children: React.ReactNode }) => JSX.Element = ({
   children,
@@ -10,11 +11,11 @@ export const AllTheProviders: ({ children }: { children: React.ReactNode }) => J
   children: React.ReactNode;
 }): JSX.Element => {
   return (
-    <BrowserRouter>
-      <HomeContextProvider>
+    <Provider store={store}>
+      <BrowserRouter>
         <FormsContextProvider>{children}</FormsContextProvider>
-      </HomeContextProvider>
-    </BrowserRouter>
+      </BrowserRouter>
+    </Provider>
   );
 };
 

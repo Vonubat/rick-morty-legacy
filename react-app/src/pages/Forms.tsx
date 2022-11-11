@@ -10,34 +10,35 @@ import { IUserCharacter } from 'types/models';
 import { Card } from 'components/Card';
 import { Alert } from 'components/UI/Alert';
 import { FieldValues, SubmitHandler } from 'react-hook-form';
-import { useFormsContextState, useFormsContextUpdater } from 'context/FormsContext';
+import { useFormsContextState } from 'context/FormsContext';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
+import { addUserCard, selectUserCardsStorage } from 'store/reducers/userCardsSlice';
 
 export const Forms: () => JSX.Element = (): JSX.Element => {
-  const { userCards } = useFormsContextState();
-  const { setUserCards, form } = useFormsContextUpdater();
   const [alertVisibility, setAlertVisibility] = useState<boolean>(false);
+  const { formsPageForm: form } = useFormsContextState();
   const {
     handleSubmit,
     reset,
     formState: { isSubmitSuccessful, isDirty, errors },
   } = form;
 
+  const userCards: IUserCharacter[] = useAppSelector(selectUserCardsStorage);
+  const dispatch = useAppDispatch();
+
   const onFormSubmit: SubmitHandler<FieldValues> = (data: FieldValues): void => {
     setAlertVisibility(true);
     setTimeout((): void => setAlertVisibility(false), 2000);
-    setUserCards((prevState: IUserCharacter[]): IUserCharacter[] => {
-      return [
-        ...prevState,
-        {
-          name: data.name,
-          status: data.status,
-          species: data.species,
-          gender: data.gender,
-          image: URL.createObjectURL(data.file[0]),
-          created: data.date,
-        },
-      ];
-    });
+    dispatch(
+      addUserCard({
+        name: data.name,
+        status: data.status,
+        species: data.species,
+        gender: data.gender,
+        image: URL.createObjectURL(data.file[0]),
+        created: data.date,
+      })
+    );
   };
 
   const resetForm: () => void = useCallback((): void => {

@@ -1,11 +1,11 @@
-import { useHomeContextUpdater } from 'context/HomeContext';
 import React from 'react';
+import { useFormsContextState } from 'context/FormsContext';
 import { Button } from './UI/Button';
 import { RadioBtn } from './UI/Forms/RadioBtn';
 import { Select } from './UI/Forms/Select';
 
 export const Settings: () => JSX.Element = (): JSX.Element => {
-  const { form } = useHomeContextUpdater();
+  const { searchBarForm: form } = useFormsContextState();
 
   return (
     <div

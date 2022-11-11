@@ -1,9 +1,13 @@
-import { useHomeContextState, useHomeContextUpdater } from 'context/HomeContext';
+import { useAppDispatch, useAppSelector } from 'hooks/hooks';
 import React from 'react';
+import { selectInfo } from 'store/reducers/characterContentSlice';
+import { decrementPage, incrementPage, selectPage, setPage } from 'store/reducers/pageSlice';
+import { IInfo } from 'types/models';
 
 export const Pagination: () => JSX.Element = (): JSX.Element => {
-  const { info, currentPage } = useHomeContextState();
-  const { dispatchPage } = useHomeContextUpdater();
+  const info: IInfo = useAppSelector(selectInfo);
+  const currentPage: number = useAppSelector(selectPage);
+  const dispatch = useAppDispatch();
 
   const getPagination: () => (string | number)[] = (): (string | number)[] => {
     switch (info.pages) {
@@ -52,7 +56,7 @@ export const Pagination: () => JSX.Element = (): JSX.Element => {
                 : 'hover:bg-gray-50 cursor-pointer'
             }`}
             onClick={(): void => {
-              dispatchPage({ type: 'decrement', payload: 1 });
+              dispatch(decrementPage());
             }}
           >
             Previous
@@ -75,7 +79,7 @@ export const Pagination: () => JSX.Element = (): JSX.Element => {
                 onClick={
                   typeof item === 'number'
                     ? (): void => {
-                        dispatchPage({ type: 'set', payload: item });
+                        dispatch(setPage(item));
                       }
                     : undefined
                 }
@@ -91,7 +95,7 @@ export const Pagination: () => JSX.Element = (): JSX.Element => {
                 : 'hover:bg-gray-50 cursor-pointer'
             }`}
             onClick={(): void => {
-              dispatchPage({ type: 'increment', payload: 1 });
+              dispatch(incrementPage());
             }}
           >
             Next

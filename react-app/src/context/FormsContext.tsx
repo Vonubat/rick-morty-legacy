@@ -1,13 +1,9 @@
-import { IFormsContextState, IFormsContextUpdater, IUserCharacter } from 'types/models';
-import React, { createContext, useContext, useState } from 'react';
+import { IFormsContextState } from 'types/models';
+import React, { createContext, useContext } from 'react';
 import { FieldValues, useForm, UseFormReturn } from 'react-hook-form';
 
 const FormsContextState: React.Context<IFormsContextState | undefined> = createContext<
   IFormsContextState | undefined
->(undefined);
-
-const FormsContextUpdater: React.Context<IFormsContextUpdater | undefined> = createContext<
-  IFormsContextUpdater | undefined
 >(undefined);
 
 interface MyProps {
@@ -17,14 +13,12 @@ interface MyProps {
 export const FormsContextProvider: ({ children }: MyProps) => JSX.Element = ({
   children,
 }: MyProps): JSX.Element => {
-  const [userCards, setUserCards] = useState<IUserCharacter[]>([]);
-  const form: UseFormReturn<FieldValues, unknown> = useForm();
+  const formsPageForm: UseFormReturn<FieldValues, unknown> = useForm();
+  const searchBarForm: UseFormReturn<FieldValues, unknown> = useForm();
 
   return (
-    <FormsContextState.Provider value={{ userCards }}>
-      <FormsContextUpdater.Provider value={{ setUserCards, form }}>
-        {children}
-      </FormsContextUpdater.Provider>
+    <FormsContextState.Provider value={{ formsPageForm, searchBarForm }}>
+      {children}
     </FormsContextState.Provider>
   );
 };
@@ -35,16 +29,6 @@ export const useFormsContextState: () => IFormsContextState = (): IFormsContextS
   // if `undefined`, throw an error
   if (context === undefined) {
     throw new Error('useFormsContextState was used outside of its Provider');
-  }
-  return context;
-};
-
-export const useFormsContextUpdater: () => IFormsContextUpdater = (): IFormsContextUpdater => {
-  // get the context
-  const context: IFormsContextUpdater | undefined = useContext(FormsContextUpdater);
-  // if `undefined`, throw an error
-  if (context === undefined) {
-    throw new Error('useFormsContextUpdater was used outside of its Provider');
   }
   return context;
 };

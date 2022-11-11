@@ -1,17 +1,38 @@
 import { Button } from 'components/UI/Button';
-import { useHomeContextState } from 'context/HomeContext';
+import { useAppSelector } from 'hooks/hooks';
 import React from 'react';
-import { Navigate, NavLink } from 'react-router-dom';
+import { Navigate, NavLink, useLocation } from 'react-router-dom';
+import { selectAdditionalData } from 'store/reducers/additionalDataSlice';
+import { selectResults } from 'store/reducers/characterContentSlice';
+import { ICharacter, IEpisode, ILocation } from 'types/models';
 import { Badge } from '../components/UI/Badge';
 import { Table } from '../components/UI/Table';
 
 export const Character: () => JSX.Element = (): JSX.Element => {
-  const { currentCharacter, locationCharacter, episodesCharacter } = useHomeContextState();
-  const { name: nameofLocation, type, dimension } = locationCharacter;
+  const { state: id } = useLocation();
+  const results: ICharacter[] = useAppSelector(selectResults);
+  const { locations, episodes } = useAppSelector(selectAdditionalData);
+
+  const currentCharacter: ICharacter | undefined = results.find(
+    (character: ICharacter): boolean => character.id === id
+  );
+
+  if (!currentCharacter) {
+    return <Navigate to="/" />;
+  }
+
+  const { location: locationOfChar, episode: episodesOfChar } = currentCharacter as ICharacter;
+
+  const currentLocation: ILocation | undefined = locations.find(
+    (item: ILocation): boolean => locationOfChar.url === item.url
+  );
+
+  const currentEpisodes: IEpisode[] | undefined = episodes.filter((item: IEpisode): boolean =>
+    episodesOfChar.includes(item.url)
+  );
 
   return (
     <>
-      {!currentCharacter ? <Navigate to="/" /> : null}
       <div className="flex justify-center mx-3 my-3">
         <div className="flex flex-col text-center">
           <h2 className="text-3xl text-blue-600 font-mono text-center mb-2">
@@ -31,14 +52,14 @@ export const Character: () => JSX.Element = (): JSX.Element => {
             [Name =&gt; Type =&gt; Dimension]
           </h3>
           <div className="flex flex-wrap gap-2 items-center justify-center mb-6">
-            <Badge option={nameofLocation} />
-            <Badge option={type} />
-            <Badge option={dimension} />
+            <Badge option={currentLocation?.name || 'unknown'} />
+            <Badge option={currentLocation?.type || 'unknown'} />
+            <Badge option={currentLocation?.dimension || 'unknown'} />
           </div>
           <h3 className="text-2xl text-blue-600 font-mono text-center">
             List of episodes in which this character appeared:
           </h3>
-          <Table heading={['Name', 'Air date', ' Episode']} episodesCharacter={episodesCharacter} />
+          <Table heading={['Name', 'Air date', ' Episode']} episodesCharacter={currentEpisodes} />
           <div className="text-center mb-5">
             <NavLink to="/">
               <Button role="button" color="danger" disabled={false}>

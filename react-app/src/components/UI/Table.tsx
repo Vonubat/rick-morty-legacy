@@ -1,9 +1,9 @@
 import React from 'react';
-import { IAdditionalData } from 'types/models';
+import { IHomeContextState } from 'types/models';
 
 type MyProps = {
   heading: string[];
-} & Pick<IAdditionalData, 'episodesCharacter'>;
+} & Pick<IHomeContextState, 'episodesCharacter'>;
 
 export const Table: ({ heading, episodesCharacter }: MyProps) => JSX.Element = ({
   heading,
@@ -32,7 +32,7 @@ export const Table: ({ heading, episodesCharacter }: MyProps) => JSX.Element = (
             </tr>
           </thead>
           <tbody>
-            {episodesCharacter.slice(1).map(
+            {episodesCharacter.map(
               (
                 item: {
                   name: string;
