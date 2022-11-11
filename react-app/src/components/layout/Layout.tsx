@@ -1,14 +1,12 @@
 import React from 'react';
 import { Outlet } from 'react-router-dom';
 import { Footer } from './Footer';
-import { Navigation } from './Navigation';
+import { Header } from './Header';
 
 export const Layout: () => JSX.Element = (): JSX.Element => {
   return (
     <>
-      <header>
-        <Navigation />
-      </header>
+      <Header />
       <Outlet />
       <Footer />
     </>

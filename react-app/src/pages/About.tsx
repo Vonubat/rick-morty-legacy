@@ -2,7 +2,7 @@ import React from 'react';
 
 export const About: () => JSX.Element = (): JSX.Element => {
   return (
-    <div className="container-img p-12 text-center relative overflow-hidden bg-no-repeat bg-cover">
+    <div className="container-img p-12 text-center relative overflow-hidden bg-no-repeat bg-cover flex-1">
       <div className="wrapper-img absolute top-0 right-0 bottom-0 left-0 w-full h-full overflow-hidden bg-fixed">
         <div className="flex justify-center items-center h-full">
           <div className="text-white">

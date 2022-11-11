@@ -52,7 +52,7 @@ export const Forms: () => JSX.Element = (): JSX.Element => {
   }, [isSubmitSuccessful, resetForm]);
 
   return (
-    <div className="container py-6 px-6 mx-auto">
+    <div className="container py-6 px-6 mx-auto flex-1">
       {/* <!-- Section: Design Block --> */}
       <section className="text-gray-800">
         {/* <!-- Jumbotron --> */}

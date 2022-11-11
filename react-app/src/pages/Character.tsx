@@ -33,7 +33,7 @@ export const Character: () => JSX.Element = (): JSX.Element => {
 
   return (
     <>
-      <div className="flex justify-center mx-3 my-3">
+      <div className="flex justify-center mx-3 my-3 flex-1">
         <div className="flex flex-col text-center">
           <h2 className="text-3xl text-blue-600 font-mono text-center mb-2">
             {`${currentCharacter?.name} [id: ${currentCharacter?.id}]`}

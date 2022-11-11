@@ -54,7 +54,7 @@ export const Home: () => JSX.Element = (): JSX.Element => {
   }, [currentPage, getValues, dispatch]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex flex-col flex-1">
       <SearchBar />
       <div className="flex flex-wrap mx-auto items-center justify-center">
         {isLoading && <LoadIndicator />}
